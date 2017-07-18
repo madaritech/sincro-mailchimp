@@ -213,22 +213,28 @@ class Sincro_Mailchimp_Admin {
 			var data = {
 				'action': 'esegui_iscrizione',
 				'check_status': checked,
-				'user_email' : '<?php echo $user->user_email; ?>',
-				'user_role' : '<?php echo $user->roles[0]; ?>',
+				'user_email' : '<?php echo esc_js($user->user_email); ?>',
+				'user_role' : '<?php echo esc_js($user->roles[0]); ?>',
 				'_wpnonce' : '<?php  $nonce = wp_create_nonce( 'esegui_iscrizione' );
 									echo $nonce; ?>'
 			};
 
 			jQuery.post(ajaxurl, data, function(response) {
-				jQuery("#spinner").hide();
-				jQuery("#chk_block").hide();
-				jQuery("#sm_result").fadeIn();
-				setTimeout(function(){
-    				jQuery("#sm_result").hide();
-    				jQuery("#chk_block").fadeIn();
-				}, 5000);
 				
-				//alert(response.data);
+				if (response.success) {
+					jQuery("#spinner").hide();
+					jQuery("#chk_block").hide();
+					jQuery("#sm_result").fadeIn();
+					setTimeout(function(){
+	    				jQuery("#sm_result").hide();
+	    				jQuery("#chk_block").fadeIn();
+					}, 5000);
+				}
+				else {
+					jQuery("#spinner").hide();
+					alert(response.data);
+				}
+				
 			});
 		});
 		</script> <?php
@@ -244,18 +250,24 @@ class Sincro_Mailchimp_Admin {
 		check_admin_referer('esegui_iscrizione', '_wpnonce');
 
 		$check_status = intval( $_POST['check_status'] );
-		$user_email = strval( $_POST['user_email'] );
-		$user_role = strval( $_POST['user_role'] );
+		$user_email = sanitize_email((strval( $_POST['user_email'] )));
+		$user_role = strip_tags(strval( $_POST['user_role'] ));
 		$ut = isset($_POST['ut']) ?  intval($_POST['ut']) : 0;
+
+		$check_status =6;
+
+		if (!is_email($user_email) || $check_status < 0 || $check_status > 1) wp_send_json_error( 'Operazione fallita' );
 
 		if ($ut) wp_send_json_success( 'Verifica Unit Test' );
 			
-		$subscription_status = $this->check_subscription_status($user_email, $user_role);
+		if (!current_user_can('administrator')) wp_send_json_error( 'Permessi non sufficienti, operazione fallita' );
 
+		//Elaborazione
+		$subscription_status = $this->check_subscription_status($user_email, $user_role);
 		if ($check_status) $this->subscribe_process($subscription_status, $user_email, $user_role);
 		else $this->unsubscribe_process($subscription_status, $user_email, $user_role);
 
-		if ($ut) wp_send_json_success( 'Operazione eseguita' );
+		wp_send_json_success( 'Operazione eseguita' );
 	}
 
 	/**

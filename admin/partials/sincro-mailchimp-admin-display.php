@@ -26,7 +26,6 @@
 	                       class="regular-text ltr"
 	                       id="mc_subscribe"
 	                       name="mc_subscribe"
-	                       value="<?= esc_attr(get_user_meta($user->ID, 'mc_subscribe', true)); ?>"
 	                       <?php checked($checked,1); ?>
 	                       title="Iscrizione utente alla/e mailing list MailChimp"
 	                       <?php if (!current_user_can('administrator')) echo "disabled" ?>
