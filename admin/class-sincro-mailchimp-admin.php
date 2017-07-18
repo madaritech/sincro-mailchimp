@@ -199,64 +199,6 @@ class Sincro_Mailchimp_Admin {
 
 		require_once('partials/sincro-mailchimp-admin-display.php');
 	}
- 
-	/**
-	 * Javascript for manage checkbox change event.
-	 *
-	 * @param 	 $user 		WP_User user object
-	 * @since    1.0.0
-	 */
-/*	private function esegui_iscrizione_javascript($user) { 
-
-	}
-*/
-	/**
-	 * Javascript for manage checkbox change event.
-	 *
-	 * @param 	 $user 		WP_User user object
-	 * @since    1.0.0
-	 */
-	private function TTTTTTesegui_iscrizione_javascript($user) { ?>
-		<script type="text/javascript" >
-		jQuery("#sm_result").hide();
-		jQuery("#mc_subscribe").change(function($) {
-			
-			jQuery("#spinner").show();
-			var checked = 0;
-
-			if(this.checked) {
-	        	checked = 1;
-	    	}
-
-			var data = {
-				'action': 'esegui_iscrizione',
-				'check_status': checked,
-				'user_email' : '<?php echo esc_js($user->user_email); ?>',
-				'user_role' : '<?php echo esc_js($user->roles[0]); ?>',
-				'_wpnonce' : '<?php  $nonce = wp_create_nonce( 'esegui_iscrizione' );
-									echo $nonce; ?>'
-			};
-
-			jQuery.post(ajaxurl, data, function(response) {
-				
-				if (response.success) {
-					jQuery("#spinner").hide();
-					jQuery("#chk_block").hide();
-					jQuery("#sm_result").fadeIn();
-					setTimeout(function(){
-	    				jQuery("#sm_result").hide();
-	    				jQuery("#chk_block").fadeIn();
-					}, 5000);
-				}
-				else {
-					jQuery("#spinner").hide();
-					alert(response.data);
-				}
-
-			});
-		});
-		</script> <?php
-	}
 
 	/**
 	 * In base ai parametri ricevuti via post esegue o meno l'iscrizione.
