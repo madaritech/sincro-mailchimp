@@ -137,7 +137,7 @@ class Sincro_Mailchimp_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-name-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sincro-mailchimp-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -160,7 +160,7 @@ class Sincro_Mailchimp_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/sincro-mailchimp-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 
@@ -195,8 +195,10 @@ class Sincro_Mailchimp_Admin {
 	 */
 	private function esegui_iscrizione_javascript($user) { ?>
 		<script type="text/javascript" >
+		jQuery("#sm_result").hide();
 		jQuery("#mc_subscribe").change(function($) {
-
+			
+			jQuery("#spinner").show();
 			var checked = 0;
 
 			if(this.checked) {
@@ -213,7 +215,15 @@ class Sincro_Mailchimp_Admin {
 			};
 
 			jQuery.post(ajaxurl, data, function(response) {
-				alert(response.data);
+				jQuery("#spinner").hide();
+				jQuery("#chk_block").hide();
+				jQuery("#sm_result").fadeIn();
+				setTimeout(function(){
+    				jQuery("#sm_result").hide();
+    				jQuery("#chk_block").fadeIn();
+				}, 5000);
+				
+				//alert(response.data);
 			});
 		});
 		</script> <?php

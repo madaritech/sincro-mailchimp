@@ -154,8 +154,8 @@ class Sincro_Mailchimp {
 		$this->loader->add_action( 'show_user_profile', $plugin_admin, 'form_field_iscrizione_mailing_list' );
 		$this->loader->add_action( 'edit_user_profile', $plugin_admin, 'form_field_iscrizione_mailing_list' );
 		$this->loader->add_action( 'wp_ajax_esegui_iscrizione', $plugin_admin, 'esegui_iscrizione' );
-		//$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		//$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 	}
 
