@@ -52,6 +52,7 @@ class Sincro_Mailchimp_Admin {
 	 * Richiama l'API get_lists dal Plugin MailChimp for WP.
 	 *
 	 * @since    1.0.0
+	 * @access   protected
 	 * @param    array    $args    Parametri per l'API MailChimp.
 	 */
 	protected function get_lists( $args ) {
@@ -63,6 +64,7 @@ class Sincro_Mailchimp_Admin {
 	 * Richiama l'API get_list_member dal Plugin MailChimp for WP.
 	 *
 	 * @since    1.0.0
+	 * @access   protected
 	 * @param    string    $list_id    	Id della Mailing List.
 	 * @param    string    $user_email  Email dell'utente.
 	 */
@@ -75,6 +77,7 @@ class Sincro_Mailchimp_Admin {
 	 * Richiama l'API add_list_member dal Plugin MailChimp for WP.
 	 *
 	 * @since    1.0.0
+	 * @access   protected
 	 * @param    string   $list_id    	Id della Mailing List.
 	 * @param    array    $args  		Parametri per l'API MailChimp.
 	 */
@@ -87,6 +90,7 @@ class Sincro_Mailchimp_Admin {
 	 * Richiama l'API delete_list_member dal Plugin MailChimp for WP.
 	 *
 	 * @since    1.0.0
+	 * @access   protected
 	 * @param    string   $list_id    	Id della Mailing List.
 	 * @param    string   $user_email  	Email dell'utente.
 	 */
@@ -99,6 +103,7 @@ class Sincro_Mailchimp_Admin {
 	 * Richiama la configurazione del plugin relativa ad un certo ruolo.
 	 *
 	 * @since    1.0.0
+	 * @access   protected
 	 * @param    string   $user_role    	Ruolo dell'utente.
 	 */
 	protected function get_config_role( $user_role ) {
@@ -110,8 +115,8 @@ class Sincro_Mailchimp_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param    string    $plugin_name       The name of this plugin.
-	 * @param    string    $version    The version of this plugin.
+	 * @param    string    $plugin_name 	The name of this plugin.
+	 * @param    string    $version    		The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name = $plugin_name;
@@ -167,8 +172,8 @@ class Sincro_Mailchimp_Admin {
 	/**
 	 * The field on the editing screens.
 	 *
-	 * @param $user WP_User user object
-	 * @since    1.0.0
+	 * @param 		$user 	WP_User user object
+	 * @since    	1.0.0
 	 */
 	public function form_field_iscrizione_mailing_list($user)
 	{
@@ -190,7 +195,7 @@ class Sincro_Mailchimp_Admin {
 	/**
 	 * Javascript for manage checkbox change event.
 	 *
-	 * @param $user WP_User user object
+	 * @param 	 $user 		WP_User user object
 	 * @since    1.0.0
 	 */
 	private function esegui_iscrizione_javascript($user) { ?>
@@ -256,6 +261,9 @@ class Sincro_Mailchimp_Admin {
 	/**
 	 * Implementa la logica del processo di sottoscrizione.
 	 *
+	 * @param    $subscription_status
+	 * @param    $user_email
+	 * @param    $user_role
 	 * @since    1.0.0
 	 */
 	public function subscribe_process($subscription_status, $user_email, $user_role) {	
@@ -303,6 +311,9 @@ class Sincro_Mailchimp_Admin {
 	/**
 	 * Implementa la logica del processo di cancellazione della sottoscrizione.
 	 *
+	 * @param    $subscription_status
+	 * @param    $user_email
+	 * @param    $user_role
 	 * @since    1.0.0
 	 */
 	public function unsubscribe_process($subscription_status, $user_email, $user_role) {
@@ -408,6 +419,8 @@ class Sincro_Mailchimp_Admin {
 	/**
 	 * Eseguo l'iscrizione dell'utente.
 	 *
+	 * @param    $user_email
+	 * @param    $smc
 	 * @since    1.0.0
 	 */
 	public function subscribe_user($user_email, $smc) {
@@ -425,6 +438,8 @@ class Sincro_Mailchimp_Admin {
 	/**
 	 * Elimino l'iscrizione basandomi sullo stato della configurazione locale.
 	 *
+	 * @param    $user_email
+	 * @param    $smc
 	 * @since    1.0.0
 	 */
 	public function unsubscribe_user_config($user_email, $smc) {
@@ -441,6 +456,7 @@ class Sincro_Mailchimp_Admin {
 	/**
 	 * Elimino l'iscrizione basandomi sullo stato di configurazione di mailchimp.
 	 *
+	 * @param    $user_email
 	 * @since    1.0.0
 	 */
 	public function unsubscribe_user_mailchimp($user_email) {
