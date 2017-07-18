@@ -187,9 +187,17 @@ class Sincro_Mailchimp_Admin {
 
 		if ($subscription_status == 2) $checked = 1;
 
-	    require_once('partials/sincro-mailchimp-admin-display.php');
+	    wp_enqueue_script( 'sm', plugin_dir_url( __FILE__ ).'js/sincro-mailchimp-admin-ajax.js', array('jquery'), $this->version, true);
 
-	    $this->esegui_iscrizione_javascript($user);
+	    $params = array(
+			'user_email' => esc_js($user->user_email),
+			'user_role' => esc_js($user->roles[0]),
+			'_wpnonce' => wp_create_nonce( 'esegui_iscrizione' )
+		);
+		
+		wp_localize_script( 'sm', 'sm', $params );
+
+		require_once('partials/sincro-mailchimp-admin-display.php');
 	}
  
 	/**
@@ -198,7 +206,17 @@ class Sincro_Mailchimp_Admin {
 	 * @param 	 $user 		WP_User user object
 	 * @since    1.0.0
 	 */
-	private function esegui_iscrizione_javascript($user) { ?>
+/*	private function esegui_iscrizione_javascript($user) { 
+
+	}
+*/
+	/**
+	 * Javascript for manage checkbox change event.
+	 *
+	 * @param 	 $user 		WP_User user object
+	 * @since    1.0.0
+	 */
+	private function TTTTTTesegui_iscrizione_javascript($user) { ?>
 		<script type="text/javascript" >
 		jQuery("#sm_result").hide();
 		jQuery("#mc_subscribe").change(function($) {
@@ -234,7 +252,7 @@ class Sincro_Mailchimp_Admin {
 					jQuery("#spinner").hide();
 					alert(response.data);
 				}
-				
+
 			});
 		});
 		</script> <?php
@@ -254,9 +272,7 @@ class Sincro_Mailchimp_Admin {
 		$user_role = strip_tags(strval( $_POST['user_role'] ));
 		$ut = isset($_POST['ut']) ?  intval($_POST['ut']) : 0;
 
-		$check_status =6;
-
-		if (!is_email($user_email) || $check_status < 0 || $check_status > 1) wp_send_json_error( 'Operazione fallita' );
+		if (!is_email($user_email) || $check_status < 0 || $check_status > 1) wp_send_json_error( $check_status );
 
 		if ($ut) wp_send_json_success( 'Verifica Unit Test' );
 			
@@ -264,6 +280,9 @@ class Sincro_Mailchimp_Admin {
 
 		//Elaborazione
 		$subscription_status = $this->check_subscription_status($user_email, $user_role);
+
+		if (!$subscription_status) wp_send_json_error( 'Configurazione assente, operazione fallita' );
+
 		if ($check_status) $this->subscribe_process($subscription_status, $user_email, $user_role);
 		else $this->unsubscribe_process($subscription_status, $user_email, $user_role);
 
