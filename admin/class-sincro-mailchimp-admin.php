@@ -218,17 +218,17 @@ class Sincro_Mailchimp_Admin {
 
 		if ($ut) wp_send_json_success( 'Verifica Unit Test' );
 			
-		if (!current_user_can('administrator')) wp_send_json_error( 'Permessi non sufficienti, operazione fallita' );
+		if (!current_user_can('administrator')) wp_send_json_error( __('Permessi non sufficienti, operazione fallita', 'sincro_mailchimp') );
 
 		//Elaborazione
 		$subscription_status = $this->check_subscription_status($user_email, $user_role);
 
-		if (!$subscription_status) wp_send_json_error( 'Configurazione assente, operazione fallita' );
+		if (!$subscription_status) wp_send_json_error( __('Configurazione assente, operazione fallita', 'sincro_mailchimp') );
 
 		if ($check_status) $this->subscribe_process($subscription_status, $user_email, $user_role);
 		else $this->unsubscribe_process($subscription_status, $user_email, $user_role);
 
-		wp_send_json_success( 'Operazione eseguita' );
+		wp_send_json_success( __('Operazione eseguita', 'sincro_mailchimp') );
 	}
 
 	/**
