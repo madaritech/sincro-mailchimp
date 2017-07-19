@@ -6,7 +6,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       
+ * @link
  * @since      1.0.0
  *
  * @package    Sincro_Mailchimp
@@ -35,7 +35,7 @@ class Sincro_Mailchimp {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Sincro_Mailchimp_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Sincro_Mailchimp_Loader $loader Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -44,7 +44,7 @@ class Sincro_Mailchimp {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $sincro_mailchimp    The string used to uniquely identify this plugin.
+	 * @var      string $sincro_mailchimp The string used to uniquely identify this plugin.
 	 */
 	protected $plugin_name;
 
@@ -53,7 +53,7 @@ class Sincro_Mailchimp {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @var      string $version The current version of the plugin.
 	 */
 	protected $version;
 
@@ -69,7 +69,7 @@ class Sincro_Mailchimp {
 	public function __construct() {
 
 		$this->plugin_name = 'sincro_mailchimp';
-		$this->version = '1.0.0';
+		$this->version     = '1.0.0';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -107,6 +107,11 @@ class Sincro_Mailchimp {
 		 * of the plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-i18n.php';
+
+		/**
+		 * Services.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-log-service.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
