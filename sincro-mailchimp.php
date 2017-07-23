@@ -68,11 +68,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-sincro-mailchimp.php';
  * @since    1.0.0
  */
 function run_sincro_mailchimp() {
-	/*** Logging_Service ***/
-	require plugin_dir_path( __FILE__ ) . 'includes/class-sincro-mailchimp-log-service.php';
-	global $sm_logger;
-	$sm_logger = Sincro_Mailchimp_Log_Service::get_instance()->info('start!');
-	
+
 	$plugin = new Sincro_Mailchimp();
 	$plugin->run();
 

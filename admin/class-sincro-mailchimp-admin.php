@@ -177,7 +177,6 @@ class Sincro_Mailchimp_Admin {
 	 */
 	public function form_field_iscrizione_mailing_list($user)
 	{
-
 		$checked = 0;
 
 		// Estrazione dati utente
@@ -207,6 +206,7 @@ class Sincro_Mailchimp_Admin {
 	 * @since    1.0.0
 	 */
 	public function esegui_iscrizione() {
+
 		check_admin_referer('esegui_iscrizione', '_wpnonce');
 
 		$check_status = intval( $_POST['check_status'] );
@@ -240,7 +240,7 @@ class Sincro_Mailchimp_Admin {
 	 * @since    1.0.0
 	 */
 	public function subscribe_process($subscription_status, $user_email, $user_role) {	
-		
+
 		$res = false;
 
 		switch ($subscription_status) {
