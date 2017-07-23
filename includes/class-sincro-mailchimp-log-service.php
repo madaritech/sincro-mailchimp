@@ -104,7 +104,7 @@ class Sincro_MailChimp_Log_Service {
 		$this->log( 'TRACE', $message );
 
 	}
-	
+
 	/**
 	 * Internal log function.
 	 *
