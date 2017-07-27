@@ -457,8 +457,11 @@ class Sincro_Mailchimp_Admin {
 		$args['email_address'] = $user_email;
 		$args['status']        = 'subscribed';
 
+		// Get the user.
+		$user = get_user_by( 'email', $user_email );
+
 		foreach ( $smc as $list_id => $interests ) {
-			$args['interests'] = $interests;
+			$args['interests'] = apply_filters( 'sm_user_list_interests', $interests, $user->ID, $list_id );
 
 			/**
 			 * Call the `sm_merge_fields` filter to allow 3rd parties to preprocess the `merge_fields` before the

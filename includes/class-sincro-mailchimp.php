@@ -161,7 +161,7 @@ class Sincro_Mailchimp {
 		$this->loader = new Sincro_Mailchimp_Loader();
 
 		/** Configuration. */
-		$configuration = defined( SINCRO_MAILCHIMP_CONFIG ) ? unserialize( SINCRO_MAILCHIMP_CONFIG ) : array();
+		$configuration = defined( 'SINCRO_MAILCHIMP_CONFIG' ) ? unserialize( SINCRO_MAILCHIMP_CONFIG ) : array();
 
 		/** Services. */
 		$this->configuration_service = new Sincro_Mailchimp_Configuration_Service( $configuration );
@@ -206,7 +206,7 @@ class Sincro_Mailchimp {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		// Hook to `sm_user_list_interests`.
-		$this->loader->add_action( 'sm_user_list_interests', $this->user_service_adapter, 'user_list_interests', 10, 3 );
+		$this->loader->add_filter( 'sm_user_list_interests', $this->user_service_adapter, 'user_list_interests', 10, 3 );
 
 	}
 
@@ -225,7 +225,7 @@ class Sincro_Mailchimp {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		// Hook to `sm_user_list_interests`.
-		$this->loader->add_action( 'sm_user_list_interests', $this->user_service_adapter, 'user_list_interests', 10, 3 );
+		$this->loader->add_filter( 'sm_user_list_interests', $this->user_service_adapter, 'user_list_interests', 10, 3 );
 
 	}
 

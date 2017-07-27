@@ -20,6 +20,15 @@
 class Sincro_Mailchimp_User_Service {
 
 	/**
+	 * A {@link Sincro_MailChimp_Log_Service} instance.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 * @var \Sincro_MailChimp_Log_Service $log A {@link Sincro_MailChimp_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
 	 * The {@link Sincro_Mailchimp_Configuration_Service} instance.
 	 *
 	 * @since 1.0.0
@@ -36,6 +45,8 @@ class Sincro_Mailchimp_User_Service {
 	 * @param \Sincro_Mailchimp_Configuration_Service $configuration_service The {@link Sincro_Mailchimp_Configuration_Service} instance.
 	 */
 	public function __construct( $configuration_service ) {
+
+		$this->log = Sincro_MailChimp_Log_Service::create( 'Sincro_Mailchimp_User_Service' );
 
 		$this->configuration_service = $configuration_service;
 
@@ -64,11 +75,20 @@ class Sincro_Mailchimp_User_Service {
 	 */
 	public function get_interests( $user_id, $list_id, $seed = array() ) {
 
+		if ( Sincro_MailChimp_Log_Service::is_enabled() ) {
+			$this->log->debug( "Getting the interests for user $user_id and list $list_id..." );
+		}
+
 		// Get the user.
 		$user = get_user_by( 'id', $user_id );
 
 		// Return an empty array if the user doesn't exist.
 		if ( null === $user ) {
+
+			if ( Sincro_MailChimp_Log_Service::is_enabled() ) {
+				$this->log->warn( "User $user_id not found." );
+			}
+
 			return $seed;
 		}
 
@@ -81,11 +101,19 @@ class Sincro_Mailchimp_User_Service {
 			// Get the interests for the specified role.
 			$role_interests = $this->configuration_service->get_by_role_and_list( $role, $list_id );
 
+			if ( Sincro_MailChimp_Log_Service::is_enabled() ) {
+				$this->log->trace( 'Got ' . count( $role_interests ) . " interest(s) for user $user_id, role $role, list $list_id." );
+			}
+
 			// Add the interest to the return array and combine it with the existing value if any.
 			foreach ( $role_interests as $key => $value ) {
 				$interests[ $key ] = ( isset( $interests[ $key ] ) ? $interests[ $key ] : false ) || $value;
 			}
 
+		}
+
+		if ( Sincro_MailChimp_Log_Service::is_enabled() ) {
+			$this->log->info( 'Found ' . count( $interests ) . " interest(s) for user $user_id and list $list_id: " . var_export( $interests, true ) );
 		}
 
 		return $interests;

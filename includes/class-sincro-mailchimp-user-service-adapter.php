@@ -19,6 +19,15 @@
 class Sincro_Mailchimp_User_Service_Adapter {
 
 	/**
+	 * A {@link Sincro_MailChimp_Log_Service} instance.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 * @var \Sincro_MailChimp_Log_Service $log A {@link Sincro_MailChimp_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
 	 * The {@link Sincro_Mailchimp_User_Service} instance.
 	 *
 	 * @since 1.0.0
@@ -35,6 +44,8 @@ class Sincro_Mailchimp_User_Service_Adapter {
 	 * @param \Sincro_Mailchimp_User_Service $user_service The {@link Sincro_Mailchimp_User_Service} instance.
 	 */
 	public function __construct( $user_service ) {
+
+		$this->log = Sincro_MailChimp_Log_Service::create( 'Sincro_Mailchimp_User_Service_Adapter' );
 
 		$this->user_service = $user_service;
 
@@ -66,6 +77,10 @@ class Sincro_Mailchimp_User_Service_Adapter {
 	 * }
 	 */
 	public function user_list_interests( $interests, $user_id, $list_id ) {
+
+		if ( Sincro_MailChimp_Log_Service::is_enabled() ) {
+			$this->log->debug( "Getting the interests for user $user_id and list $list_id..." );
+		}
 
 		return $this->user_service->get_interests( $user_id, $list_id, $interests );
 	}
