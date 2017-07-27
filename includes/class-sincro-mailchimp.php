@@ -58,6 +58,15 @@ class Sincro_Mailchimp {
 	protected $version;
 
 	/**
+	 * The {@link Sincro_Mailchimp_Configuration_Service} instance.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 * @var \Sincro_Mailchimp_Configuration_Service $configuration_service The {@link Sincro_Mailchimp_Configuration_Service} instance.
+	 */
+	protected $configuration_service;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -112,6 +121,8 @@ class Sincro_Mailchimp {
 		 * Services.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-log-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-configuration-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-user-service.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -126,6 +137,10 @@ class Sincro_Mailchimp {
 
 		$this->loader = new Sincro_Mailchimp_Loader();
 
+		/** Services. */
+		$configuration               = defined( SINCRO_MAILCHIMP_CONFIG ) ? unserialize( SINCRO_MAILCHIMP_CONFIG ) : array();
+		$this->configuration_service = new Sincro_Mailchimp_Configuration_Service( $configuration );
+		$this->user_service          = new Sincro_Mailchimp_User_Service( $configuration_service );
 	}
 
 	/**
