@@ -48,6 +48,12 @@ class Sincro_Mailchimp_User_Service {
 	 *
 	 * @param int    $user_id The {@link WP_User}'s id.
 	 * @param string $list_id MailChimp's list id.
+	 * @param array  $seed {
+	 * An initial array of interests.
+	 *
+	 * @type string  $key The interest id.
+	 * @type boolean $value True if the interest needs to be bound to the user, otherwise false.
+	 * }
 	 *
 	 * @return array {
 	 * An array of interests.
@@ -56,18 +62,18 @@ class Sincro_Mailchimp_User_Service {
 	 * @type boolean $value True if the interest needs to be bound to the user, otherwise false.
 	 * }
 	 */
-	public function get_interests( $user_id, $list_id ) {
+	public function get_interests( $user_id, $list_id, $seed = array() ) {
 
 		// Get the user.
 		$user = get_user_by( 'id', $user_id );
 
 		// Return an empty array if the user doesn't exist.
 		if ( null === $user ) {
-			return array();
+			return $seed;
 		}
 
 		// Initialize the return array.
-		$interests = array();
+		$interests = $seed;
 
 		// Cycle in the user's role.
 		foreach ( $user->roles as $role ) {

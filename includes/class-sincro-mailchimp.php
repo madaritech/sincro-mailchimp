@@ -67,6 +67,24 @@ class Sincro_Mailchimp {
 	protected $configuration_service;
 
 	/**
+	 * The {@link Sincro_Mailchimp_User_Service} instance.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 * @var \Sincro_Mailchimp_User_Service $user_service The {@link Sincro_Mailchimp_User_Service} instance.
+	 */
+	protected $user_service;
+
+	/**
+	 * The {@link Sincro_Mailchimp_User_Service_Adapter} instance.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 * @var \Sincro_Mailchimp_User_Service_Adapter $user_service The {@link Sincro_Mailchimp_User_Service_Adapter} instance.
+	 */
+	protected $user_service_adapter;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -125,6 +143,11 @@ class Sincro_Mailchimp {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-user-service.php';
 
 		/**
+		 * Adapters.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-user-service-adapter.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sincro-mailchimp-admin.php';
@@ -137,10 +160,15 @@ class Sincro_Mailchimp {
 
 		$this->loader = new Sincro_Mailchimp_Loader();
 
+		/** Configuration. */
+		$configuration = defined( SINCRO_MAILCHIMP_CONFIG ) ? unserialize( SINCRO_MAILCHIMP_CONFIG ) : array();
+
 		/** Services. */
-		$configuration               = defined( SINCRO_MAILCHIMP_CONFIG ) ? unserialize( SINCRO_MAILCHIMP_CONFIG ) : array();
 		$this->configuration_service = new Sincro_Mailchimp_Configuration_Service( $configuration );
-		$this->user_service          = new Sincro_Mailchimp_User_Service( $configuration_service );
+		$this->user_service          = new Sincro_Mailchimp_User_Service( $this->configuration_service );
+
+		/** Adapters. */
+		$this->user_service_adapter = new Sincro_Mailchimp_User_Service_Adapter( $this->user_service );
 	}
 
 	/**
@@ -177,6 +205,9 @@ class Sincro_Mailchimp {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		// Hook to `sm_user_list_interests`.
+		$this->loader->add_action( 'sm_user_list_interests', $this->user_service_adapter, 'user_list_interests', 10, 3 );
+
 	}
 
 	/**
@@ -192,6 +223,9 @@ class Sincro_Mailchimp {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+		// Hook to `sm_user_list_interests`.
+		$this->loader->add_action( 'sm_user_list_interests', $this->user_service_adapter, 'user_list_interests', 10, 3 );
 
 	}
 
