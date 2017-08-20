@@ -93,6 +93,19 @@ class Sincro_MailChimp_Log_Service {
 	}
 
 	/**
+	 * Warning log.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $message The message to log.
+	 */
+	public function warn( $message ) {
+
+		$this->log( 'WARN', $message );
+
+	}
+
+	/**
 	 * Trace log.
 	 *
 	 * @since 1.0.0
