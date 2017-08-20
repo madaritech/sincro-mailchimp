@@ -18,7 +18,7 @@
  *
  * @package    Sincro_Mailchimp
  * @subpackage Sincro_Mailchimp/admin
- * @author     Dario <dm@madaritech.com>
+ * @author     Madaritech <dm@madaritech.com>
  */
 class Sincro_Mailchimp_Admin {
 
@@ -44,9 +44,17 @@ class Sincro_Mailchimp_Admin {
 	 * Configurazione Plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   private
+	 * @access   protected
 	 */
 	private $smc;
+
+	/**
+	 * Api Mailchimp.
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 */
+	public $api;
 
 	/**
 	 * Richiama l'API get_lists dal Plugin MailChimp for WP.
@@ -135,6 +143,29 @@ class Sincro_Mailchimp_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+
+		$this->load_dependencies();
+
+		$this->api = new Sincro_Mailchimp_Admin_Api();
+	}
+
+	/**
+	 * Load the required dependencies for the admin area.
+	 *
+	 * Include the following files that make up the admin area:
+	 *
+	 * - Sincro_Mailchimp_Loader. Orchestrates the hooks of the plugin.
+	 * - ...
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function load_dependencies() {
+
+		/**
+		 * The class responsible for accessing the Mailchimp api
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/admin/class-sincro-mailchimp-admin-api.php';
 
 	}
 
@@ -449,6 +480,7 @@ class Sincro_Mailchimp_Admin {
 		$args['status']        = 'subscribed';
 
 		foreach ( $smc as $list_id => $interests ) {
+			//$args['interests'] = $interests;
 			$args['interests'] = $interests;
 
 			/**
@@ -467,7 +499,8 @@ class Sincro_Mailchimp_Admin {
 			 */
 			$args['merge_fields'] = apply_filters( 'sm_merge_fields', array(), $user_email, $list_id, $interests, $smc );
 			
-			$add_status = $this->add_list_member( $list_id, $args );
+			//$add_status = $this->add_list_member( $list_id, $args );
+			$add_status = $this->api->add_list_member( $list_id, $args );
 
 			if ( Sincro_MailChimp_Log_Service::is_enabled() ) {
 				$this->log->trace( "Call to `add_list_member` returned [ " . var_export( $add_status, true ) . " ]" );
