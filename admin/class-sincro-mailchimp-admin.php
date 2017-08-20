@@ -492,12 +492,10 @@ class Sincro_Mailchimp_Admin {
 		$user = get_user_by( 'email', $user_email );
 
 		foreach ( $smc as $list_id => $interests ) {
-<<<<<<< HEAD
+
 			//$args['interests'] = $interests;
-			$args['interests'] = $interests;
-=======
 			$args['interests'] = apply_filters( 'sm_user_list_interests', $interests, $user->ID, $list_id );
->>>>>>> d427239d6050dc42f2c789861e8d6c8049bcbc60
+
 
 			/**
 			 * Call the `sm_merge_fields` filter to allow 3rd parties to preprocess the `merge_fields` before the
@@ -514,14 +512,9 @@ class Sincro_Mailchimp_Admin {
 			 * @param array  $smc The Sincro_Mailchimp configuration's array.
 			 */
 			$args['merge_fields'] = apply_filters( 'sm_merge_fields', array(), $user_email, $list_id, $interests, $smc );
-<<<<<<< HEAD
 			
 			//$add_status = $this->add_list_member( $list_id, $args );
 			$add_status = $this->api->add_list_member( $list_id, $args );
-=======
-
-			$add_status = $this->add_list_member( $list_id, $args );
->>>>>>> d427239d6050dc42f2c789861e8d6c8049bcbc60
 
 			if ( Sincro_MailChimp_Log_Service::is_enabled() ) {
 				$this->log->trace( "Call to `add_list_member` returned [ " . var_export( $add_status, true ) . " ]" );
