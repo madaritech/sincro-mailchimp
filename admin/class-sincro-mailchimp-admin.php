@@ -49,6 +49,15 @@ class Sincro_Mailchimp_Admin {
 	private $smc;
 
 	/**
+	 * A {@link Sincro_MailChimp_Log_Service} instance.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 * @var \Sincro_MailChimp_Log_Service $log A {@link Sincro_MailChimp_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
 	 * Richiama l'API get_lists dal Plugin MailChimp for WP.
 	 *
 	 * @since    1.0.0
@@ -84,7 +93,7 @@ class Sincro_Mailchimp_Admin {
 	 * @access   protected
 	 *
 	 * @param    string $list_id Id della Mailing List.
-	 * @param    array $args Parametri per l'API MailChimp.
+	 * @param    array  $args Parametri per l'API MailChimp.
 	 */
 	protected function add_list_member( $list_id, $args ) {
 		global $mc4wp;
@@ -448,8 +457,11 @@ class Sincro_Mailchimp_Admin {
 		$args['email_address'] = $user_email;
 		$args['status']        = 'subscribed';
 
+		// Get the user.
+		$user = get_user_by( 'email', $user_email );
+
 		foreach ( $smc as $list_id => $interests ) {
-			$args['interests'] = $interests;
+			$args['interests'] = apply_filters( 'sm_user_list_interests', $interests, $user->ID, $list_id );
 
 			/**
 			 * Call the `sm_merge_fields` filter to allow 3rd parties to preprocess the `merge_fields` before the
@@ -459,14 +471,14 @@ class Sincro_Mailchimp_Admin {
 			 *
 			 * @api
 			 *
-			 * @param array array() An empty array of merge fields.
+			 * @param        array array() An empty array of merge fields.
 			 * @param string $user_email The user's e-mail address.
 			 * @param string $list_id The MailChimp list's id.
-			 * @param array $interests An array of interests' ids.
-			 * @param array $smc The Sincro_Mailchimp configuration's array.
+			 * @param array  $interests An array of interests' ids.
+			 * @param array  $smc The Sincro_Mailchimp configuration's array.
 			 */
 			$args['merge_fields'] = apply_filters( 'sm_merge_fields', array(), $user_email, $list_id, $interests, $smc );
-			
+
 			$add_status = $this->add_list_member( $list_id, $args );
 
 			if ( Sincro_MailChimp_Log_Service::is_enabled() ) {
