@@ -136,6 +136,11 @@ class Sincro_Mailchimp {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-i18n.php';
 
 		/**
+		 * Helpers.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-helpers.php';
+
+		/**
 		 * Services.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-log-service.php';
