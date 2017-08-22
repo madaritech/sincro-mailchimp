@@ -48,14 +48,6 @@ class Sincro_Mailchimp_Admin {
 	 */
 	private $smc;
 
-	/**
-	 * Api Mailchimp.
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 */
-	public $api;
-
 	/*
 	 * A {@link Sincro_MailChimp_Log_Service} instance.
 	 *
@@ -64,6 +56,22 @@ class Sincro_Mailchimp_Admin {
 	 * @var \Sincro_MailChimp_Log_Service $log A {@link Sincro_MailChimp_Log_Service} instance.
 	 */
 	private $log;
+
+	/**
+	 * Api Mailchimp.
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 */
+	public $api;
+
+	/**
+	 * Helpers.
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 */
+	public $helpers;
 
 	/**
 	 * Richiama l'API get_lists dal Plugin MailChimp for WP.
@@ -103,11 +111,11 @@ class Sincro_Mailchimp_Admin {
 	 * @param    string $list_id Id della Mailing List.
 	 * @param    array  $args Parametri per l'API MailChimp.
 	 */
-	protected function add_list_member( $list_id, $args ) {
+	/*protected function add_list_member( $list_id, $args ) {
 		global $mc4wp;
 
 		return ( $mc4wp['api']->add_list_member( $list_id, $args ) );
-	}
+	}*/
 
 	/**
 	 * Richiama l'API delete_list_member dal Plugin MailChimp for WP.
@@ -156,6 +164,8 @@ class Sincro_Mailchimp_Admin {
 		$this->load_dependencies();
 
 		$this->api = new Sincro_Mailchimp_Admin_Api();
+		$this->helpers = new Sincro_Mailchimp_Helpers();
+
 	}
 
 	/**
@@ -163,8 +173,8 @@ class Sincro_Mailchimp_Admin {
 	 *
 	 * Include the following files that make up the admin area:
 	 *
-	 * - Sincro_Mailchimp_Loader. Orchestrates the hooks of the plugin.
-	 * - ...
+	 * - Sincro_Mailchimp_Admin_API.
+	 * - Sincro_Mailchimp_Applyer.
 	 *
 	 * @since    1.0.0
 	 * @access   private
@@ -174,7 +184,7 @@ class Sincro_Mailchimp_Admin {
 		/**
 		 * The class responsible for accessing the Mailchimp api
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/admin/class-sincro-mailchimp-admin-api.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sincro-mailchimp-admin-api.php';
 
 	}
 
@@ -237,6 +247,7 @@ class Sincro_Mailchimp_Admin {
 		// Estrazione dati utente
 		$user_email = $user->user_email;
 		$user_role  = $user->roles[0];
+
 
 		$subscription_status = $this->check_subscription_status( $user_email, $user_role );
 
@@ -488,14 +499,15 @@ class Sincro_Mailchimp_Admin {
 		$args['email_address'] = $user_email;
 		$args['status']        = 'subscribed';
 
-		// Get the user.
-		$user = get_user_by( 'email', $user_email );
+		// Get the user id.
+		$user_id = $this->helpers->get_id_by_email($user_email);
 
 		foreach ( $smc as $list_id => $interests ) {
 
 			//$args['interests'] = $interests;
-			$args['interests'] = apply_filters( 'sm_user_list_interests', $interests, $user->ID, $list_id );
+			$args['interests'] = apply_filters( 'sm_user_list_interests', $interests, $user_id, $list_id );
 
+			//$args['interests'] = $this->sm_user_list_interests->run(array($interests, $user->ID, $list_id));
 
 			/**
 			 * Call the `sm_merge_fields` filter to allow 3rd parties to preprocess the `merge_fields` before the
@@ -505,13 +517,14 @@ class Sincro_Mailchimp_Admin {
 			 *
 			 * @api
 			 *
-			 * @param        array array() An empty array of merge fields.
+			 * @param array array() An empty array of merge fields.
 			 * @param string $user_email The user's e-mail address.
 			 * @param string $list_id The MailChimp list's id.
 			 * @param array  $interests An array of interests' ids.
 			 * @param array  $smc The Sincro_Mailchimp configuration's array.
 			 */
 			$args['merge_fields'] = apply_filters( 'sm_merge_fields', array(), $user_email, $list_id, $interests, $smc );
+			//$args['merge_fields'] = $this->sm_merge_fields->run(array(array(), $user_email, $list_id, $interests, $smc ) );
 			
 			//$add_status = $this->add_list_member( $list_id, $args );
 			$add_status = $this->api->add_list_member( $list_id, $args );
