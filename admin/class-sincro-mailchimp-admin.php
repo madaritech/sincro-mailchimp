@@ -144,7 +144,7 @@ class Sincro_Mailchimp_Admin {
 		$user_role  = $user->roles[0];
 
 
-		$subscription_status = $this->check_subscription_status( $user_email, $user_role );
+		$subscription_status = $this->subscription_service->check_subscription_status( $user_email, $user_role );
 
 		if ( $subscription_status == 2 ) {
 			$checked = 1;
@@ -190,7 +190,7 @@ class Sincro_Mailchimp_Admin {
 		}
 
 		//Elaborazione
-		$subscription_status = $this->check_subscription_status( $user_email, $user_role );
+		$subscription_status = $this->subscription_service->check_subscription_status( $user_email, $user_role );
 
 		if ( ! $subscription_status ) {
 			wp_send_json_error( __( 'Configurazione assente, operazione fallita', 'sincro_mailchimp' ) );
