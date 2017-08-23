@@ -66,35 +66,6 @@ class Sincro_Mailchimp_Admin {
 	public $api;
 
 	/**
-	 * Richiama l'API get_lists dal Plugin MailChimp for WP.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 *
-	 * @param    array $args Parametri per l'API MailChimp.
-	 */
-	/*protected function get_lists( $args ) {
-		global $mc4wp;
-
-		return ( $mc4wp['api']->get_lists( $args ) );
-	}*/
-
-	/**
-	 * Richiama l'API get_list_member dal Plugin MailChimp for WP.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 *
-	 * @param    string $list_id Id della Mailing List.
-	 * @param    string $user_email Email dell'utente.
-	 */
-	/*protected function get_list_member( $list_id, $user_email ) {
-		global $mc4wp;
-
-		return ( $mc4wp['api']->get_list_member( $list_id, $user_email ) );
-	}*/
-
-	/**
 	 * Richiama la configurazione del plugin relativa ad un certo ruolo.
 	 *
 	 * @since    1.0.0
@@ -123,29 +94,7 @@ class Sincro_Mailchimp_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 
-		$this->load_dependencies();
-
-		$this->api = new Sincro_Mailchimp_Admin_Api();
-
-	}
-
-	/**
-	 * Load the required dependencies for the admin area.
-	 *
-	 * Include the following files that make up the admin area:
-	 *
-	 * - Sincro_Mailchimp_Admin_API.
-	 * - Sincro_Mailchimp_Applyer.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function load_dependencies() {
-
-		/**
-		 * The class responsible for accessing the Mailchimp api
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sincro-mailchimp-admin-api.php';
+		$this->api = new Sincro_Mailchimp_Api_Service();
 
 	}
 

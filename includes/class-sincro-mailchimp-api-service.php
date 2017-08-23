@@ -1,26 +1,23 @@
 <?php
 
 /**
- * The admin-specific functionality of the plugin.
+ * The api functionality.
  *
  * @link
  * @since      1.0.0
  *
  * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/admin
+ * @subpackage Sincro_Mailchimp/includes
  */
 
 /**
  * The api functionality of the plugin from the MailChimp for WP plugin.
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
  * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/admin
+ * @subpackage Sincro_Mailchimp/includes
  * @author     Madaritech <dm@madaritech.com>
  */
-class Sincro_Mailchimp_Admin_Api {
+class Sincro_Mailchimp_Api_Service {
 
 	/**
 	 * Richiama l'API get_lists dal Plugin MailChimp for WP.
