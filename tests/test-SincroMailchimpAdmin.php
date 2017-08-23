@@ -102,8 +102,8 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
 
 		foreach ($this->emailRoleStack as $user) {
 			$smc = $this->config[$user->roles[0]];
-			
 			$res = $sma_obj->subscribe_user($user->user_email, $smc);
+			
 			$this->assertEquals( $res, true );
 		}
 	}
@@ -128,22 +128,24 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
 	/**
 	 * unsubscribe_user_config test.
 	 */
-/*	public function test_unsubscribe_user_config() {
+	public function test_unsubscribe_user_config() {
 
 		$sma_obj = new Sincro_Mailchimp_Admin('sincro_mailchimp','1.0.0');
 
-		$this->sma_stub->expects( $this->any() )
+		$this->dummy_api->expects( $this->any() )
                   ->method( 'delete_list_member' )
                   ->willReturn(true);
 
-		foreach ($this->emailRoleStack as $email => $role) {
-			$smc = $this->config[$role];
-			$res = $this->sma_stub->unsubscribe_user_config($email, $smc);
+        $sma_obj->api = $this->dummy_api;
+		
+		foreach ($this->emailRoleStack as $user) {
+			$smc = $this->config[$user->roles[0]];
+			$res = $sma_obj->unsubscribe_user_config($user->user_email, $smc);
 			
 			$this->assertEquals( $res, true );
 		}
 	}
-*/
+
 	/**
 	 * unsubscribe_user_config test.
 	 */
