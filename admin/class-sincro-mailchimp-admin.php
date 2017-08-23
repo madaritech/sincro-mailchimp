@@ -95,36 +95,6 @@ class Sincro_Mailchimp_Admin {
 	}
 
 	/**
-	 * Richiama l'API add_list_member dal Plugin MailChimp for WP.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 *
-	 * @param    string $list_id Id della Mailing List.
-	 * @param    array  $args Parametri per l'API MailChimp.
-	 */
-	/*protected function add_list_member( $list_id, $args ) {
-		global $mc4wp;
-
-		return ( $mc4wp['api']->add_list_member( $list_id, $args ) );
-	}*/
-
-	/**
-	 * Richiama l'API delete_list_member dal Plugin MailChimp for WP.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 *
-	 * @param    string $list_id Id della Mailing List.
-	 * @param    string $user_email Email dell'utente.
-	 */
-	/*protected function delete_list_member( $list_id, $user_email ) {
-		global $mc4wp;
-
-		return ( $mc4wp['api']->delete_list_member( $list_id, $user_email ) );
-	}*/
-
-	/**
 	 * Richiama la configurazione del plugin relativa ad un certo ruolo.
 	 *
 	 * @since    1.0.0
@@ -497,8 +467,6 @@ class Sincro_Mailchimp_Admin {
 
 			//$args['interests'] = $interests;
 			$args['interests'] = apply_filters( 'sm_user_list_interests', $interests, $user->ID, $list_id );
-
-			//$args['interests'] = $this->sm_user_list_interests->run(array($interests, $user->ID, $list_id));
 
 			/**
 			 * Call the `sm_merge_fields` filter to allow 3rd parties to preprocess the `merge_fields` before the
