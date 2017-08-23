@@ -73,11 +73,11 @@ class Sincro_Mailchimp_Admin {
 	 *
 	 * @param    array $args Parametri per l'API MailChimp.
 	 */
-	protected function get_lists( $args ) {
+	/*protected function get_lists( $args ) {
 		global $mc4wp;
 
 		return ( $mc4wp['api']->get_lists( $args ) );
-	}
+	}*/
 
 	/**
 	 * Richiama l'API get_list_member dal Plugin MailChimp for WP.
@@ -88,11 +88,11 @@ class Sincro_Mailchimp_Admin {
 	 * @param    string $list_id Id della Mailing List.
 	 * @param    string $user_email Email dell'utente.
 	 */
-	protected function get_list_member( $list_id, $user_email ) {
+	/*protected function get_list_member( $list_id, $user_email ) {
 		global $mc4wp;
 
 		return ( $mc4wp['api']->get_list_member( $list_id, $user_email ) );
-	}
+	}*/
 
 	/**
 	 * Richiama la configurazione del plugin relativa ad un certo ruolo.
@@ -395,7 +395,7 @@ class Sincro_Mailchimp_Admin {
 
 		// Estrazione List associate all'utente e verifica allineamento rispetto la configurazione
 		$args['email']  = $user_email;
-		$res_user_lists = $this->get_lists( $args );
+		$res_user_lists = $this->api->get_lists( $args );
 
 		$num_list_mailchimp = count( (array) $res_user_lists );
 		$num_list_config    = count( $smc );
@@ -419,7 +419,7 @@ class Sincro_Mailchimp_Admin {
 					if ( array_key_exists( $list->id, $smc ) ) {
 
 						//Estrazione interests da Mailchimp
-						$res_user_list_interests = $this->get_list_member( $list->id, $user_email );
+						$res_user_list_interests = $this->api->get_list_member( $list->id, $user_email );
 
 						$interest_ids = (array) $res_user_list_interests->interests;
 
@@ -527,10 +527,10 @@ class Sincro_Mailchimp_Admin {
 
 		// Reset iscrizione incompleta
 		$reset_args['email'] = $user_email;
-		$res_user_lists      = $this->get_lists( $reset_args );
+		$res_user_lists      = $this->api->get_lists( $reset_args );
 
 		foreach ( $res_user_lists as $list ) {
-			$reset_status = $this->delete_list_member( $list->id, $user_email );
+			$reset_status = $this->api->delete_list_member( $list->id, $user_email );
 		}
 
 		return ( true );
