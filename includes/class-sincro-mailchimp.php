@@ -142,6 +142,7 @@ class Sincro_Mailchimp {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-configuration-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-user-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-api-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-subscription-service.php';
 
 		/**
 		 * Adapters.
@@ -149,7 +150,7 @@ class Sincro_Mailchimp {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sincro-mailchimp-user-service-adapter.php';
 
 		/**
-		 * The class responsible for defining all actions that occur in the admin area.
+		 * The classes responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sincro-mailchimp-admin.php';
 

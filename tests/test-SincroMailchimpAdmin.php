@@ -68,8 +68,8 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
 		$this->lists = $lists;
 		$this->interests = $interests;
 
-	    $this->sma_stub = $this->getMockBuilder( 'Sincro_Mailchimp_Admin' )
-	                      ->setConstructorArgs( array( 'sincro_mailchimp','1.0.0') )
+	    $this->smss_stub = $this->getMockBuilder( 'Sincro_Mailchimp_Subscription_Service' )
+	                      ->setConstructorArgs( array() )
 	                      ->setMethods( array( 'get_config_role' ) )
 	                      ->getMock();
 
@@ -86,17 +86,17 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
 	 */
 	public function test_subscribe_user() {
 
-		$sma_obj = new Sincro_Mailchimp_Admin('sincro_mailchimp','1.0.0');
+		$smss_obj = new Sincro_Mailchimp_Subscription_Service();
 
 		$this->dummy_api->expects( $this->any() )
                   ->method( 'add_list_member' )
                   ->willReturn(true);
 
-        $sma_obj->api = $this->dummy_api;
+        $smss_obj->api = $this->dummy_api;
 
 		foreach ($this->emailRoleStack as $user) {
 			$smc = $this->config[$user->roles[0]];
-			$res = $sma_obj->subscribe_user($user->user_email, $smc);
+			$res = $smss_obj->subscribe_user($user->user_email, $smc);
 
 			$this->assertEquals( $res, true );
 		}
@@ -107,17 +107,17 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
 	 */
 	public function test_unsubscribe_user_config() {
 
-		$sma_obj = new Sincro_Mailchimp_Admin('sincro_mailchimp','1.0.0');
+		$smss_obj = new Sincro_Mailchimp_Subscription_Service();
 
 		$this->dummy_api->expects( $this->any() )
                   ->method( 'delete_list_member' )
                   ->willReturn(true);
 
-        $sma_obj->api = $this->dummy_api;
+        $smss_obj->api = $this->dummy_api;
 		
 		foreach ($this->emailRoleStack as $user) {
 			$smc = $this->config[$user->roles[0]];
-			$res = $sma_obj->unsubscribe_user_config($user->user_email, $smc);
+			$res = $smss_obj->unsubscribe_user_config($user->user_email, $smc);
 			
 			$this->assertEquals( $res, true );
 		}
@@ -128,7 +128,7 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
 	 */
 	public function test_unsubscribe_user_mailchimp() {
 
-		$sma_obj = new Sincro_Mailchimp_Admin('sincro_mailchimp','1.0.0');
+		$smss_obj = new Sincro_Mailchimp_Subscription_Service();
 
 		$this->dummy_api->expects( $this->any() )
                   ->method( 'delete_list_member' )
@@ -148,10 +148,10 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
                   ->method( 'get_lists' )
                   ->willReturn($stub_list);
 
-		$sma_obj->api = $this->dummy_api;
+		$smss_obj->api = $this->dummy_api;
 
 		$email = $this->emailRoleStack[0]->user_email;
-		$res = $sma_obj->unsubscribe_user_mailchimp($email);
+		$res = $smss_obj->unsubscribe_user_mailchimp($email);
 
 		$this->assertEquals( $res, true );
 
@@ -172,8 +172,6 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
 		$stub_interests->interests = array($this->interests['group1'] => true,
 											$this->interests['group2'] => false,
 											$this->interests['group3'] => true);
-		
-		$sma_obj = new Sincro_Mailchimp_Admin('sincro_mailchimp','1.0.0');
 
 		//Stub list restituita su mailchimp -> strutture associate al contributor
 		$this->dummy_api->expects( $this->any() )
@@ -185,13 +183,13 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
                   ->willReturn($stub_interests);
 
         //Stub ruolo utente in verifica
-		$this->sma_stub->expects( $this->any() )
+		$this->smss_stub->expects( $this->any() )
 	                  ->method( 'get_config_role' )
 	                  ->willReturn($this->config[$role]);
 
-		$this->sma_stub->api = $this->dummy_api;
+		$this->smss_stub->api = $this->dummy_api;
 
-		$res = $this->sma_stub->check_subscription_status($this->email_test, $role);
+		$res = $this->smss_stub->check_subscription_status($this->email_test, $role);
 
 		switch ($role) {
 			case 'administrator':
@@ -240,13 +238,13 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
                   ->willReturn(array());
 
 		//Stub ruolo utente in verifica
-		$this->sma_stub->expects( $this->any() )
+		$this->smss_stub->expects( $this->any() )
 	                  ->method( 'get_config_role' )
 	                  ->willReturn($this->config['editor']);
 
-	    $this->sma_stub->api = $this->dummy_api;
+	    $this->smss_stub->api = $this->dummy_api;
 
-	    $res = $this->sma_stub->check_subscription_status($this->email_test, 'editor');
+	    $res = $this->smss_stub->check_subscription_status($this->email_test, 'editor');
 
 		$this->assertEquals( $res, 1);
         
@@ -260,7 +258,7 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
 	public function test_unsubscribe_process($subscription_status, $user_email, $user_role, $res) {
 
 		//Stub ruolo utente
-		$this->sma_stub->expects( $this->any() )
+		$this->smss_stub->expects( $this->any() )
 	                  ->method( 'get_config_role' )
 	                  ->willReturn($this->config['subscriber']);
 
@@ -274,9 +272,9 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
                   ->method( 'get_lists' )
                   ->willReturn(array());
 
-        $this->sma_stub->api = $this->dummy_api;
+        $this->smss_stub->api = $this->dummy_api;
 
-	    $result = $this->sma_stub->unsubscribe_process($subscription_status, $user_email, $user_role);
+	    $result = $this->smss_stub->unsubscribe_process($subscription_status, $user_email, $user_role);
 	
 		$this->assertEquals($result, $res);
 	}
@@ -300,7 +298,7 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
 	public function test_subscribe_process($subscription_status, $user_email, $user_role, $res) {
 
 		//Stub ruolo utente
-		$this->sma_stub->expects( $this->any() )
+		$this->smss_stub->expects( $this->any() )
 	                  ->method( 'get_config_role' )
 	                  ->willReturn($this->config['subscriber']);
 
@@ -319,9 +317,9 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
                   ->method( 'add_list_member' )
                   ->willReturn(true);
 
-		$this->sma_stub->api = $this->dummy_api;
+		$this->smss_stub->api = $this->dummy_api;
 
-	    $result = $this->sma_stub->subscribe_process($subscription_status, $user_email, $user_role);
+	    $result = $this->smss_stub->subscribe_process($subscription_status, $user_email, $user_role);
 	
 		$this->assertEquals($result, $res);
 	}
