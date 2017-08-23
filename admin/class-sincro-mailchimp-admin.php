@@ -66,14 +66,6 @@ class Sincro_Mailchimp_Admin {
 	public $api;
 
 	/**
-	 * Helpers.
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 */
-	public $helpers;
-
-	/**
 	 * Richiama l'API get_lists dal Plugin MailChimp for WP.
 	 *
 	 * @since    1.0.0
@@ -126,11 +118,11 @@ class Sincro_Mailchimp_Admin {
 	 * @param    string $list_id Id della Mailing List.
 	 * @param    string $user_email Email dell'utente.
 	 */
-	protected function delete_list_member( $list_id, $user_email ) {
+	/*protected function delete_list_member( $list_id, $user_email ) {
 		global $mc4wp;
 
 		return ( $mc4wp['api']->delete_list_member( $list_id, $user_email ) );
-	}
+	}*/
 
 	/**
 	 * Richiama la configurazione del plugin relativa ad un certo ruolo.
@@ -164,7 +156,6 @@ class Sincro_Mailchimp_Admin {
 		$this->load_dependencies();
 
 		$this->api = new Sincro_Mailchimp_Admin_Api();
-		$this->helpers = new Sincro_Mailchimp_Helpers();
 
 	}
 
@@ -500,12 +491,12 @@ class Sincro_Mailchimp_Admin {
 		$args['status']        = 'subscribed';
 
 		// Get the user id.
-		$user_id = $this->helpers->get_id_by_email($user_email);
+		$user = get_user_by( 'email', $user_email );
 
 		foreach ( $smc as $list_id => $interests ) {
 
 			//$args['interests'] = $interests;
-			$args['interests'] = apply_filters( 'sm_user_list_interests', $interests, $user_id, $list_id );
+			$args['interests'] = apply_filters( 'sm_user_list_interests', $interests, $user->ID, $list_id );
 
 			//$args['interests'] = $this->sm_user_list_interests->run(array($interests, $user->ID, $list_id));
 
@@ -551,7 +542,7 @@ class Sincro_Mailchimp_Admin {
 		$reset_args['email'] = $user_email;
 
 		foreach ( $smc as $list_id => $interests ) {
-			$reset_status = $this->delete_list_member( $list_id, $user_email );
+			$reset_status = $this->api->delete_list_member( $list_id, $user_email );
 		}
 
 		return ( true );

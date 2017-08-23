@@ -79,11 +79,6 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
 	                      ->setMethods( array( 'get_lists', 'get_list_member', 'add_list_member', 'delete_list_member', 'get_config_role' ) )
 	                      ->getMock();*/
 
-	    $this->dummy_helpers = $this->getMockBuilder( 'Sincro_Mailchimp_Helpers' )
-	                      ->disableOriginalConstructor()
-	                      ->setMethods( array( 'get_id_by_email' ) )
-	                      ->getMock();
-
 	    $this->dummy_api = $this->getMockBuilder( 'Sincro_Mailchimp_Admin_Api' )
 	                      ->setConstructorArgs(array())
 	                      ->setMethods( array( 'get_lists', 'get_list_member', 'add_list_member', 'delete_list_member' ) )
@@ -99,12 +94,6 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
 
 		$sma_obj = new Sincro_Mailchimp_Admin('sincro_mailchimp','1.0.0');
 
-		$this->dummy_helpers->expects( $this->any() )
-                  ->method( 'get_id_by_email' )
-                  ->willReturn(1);
-
-        $sma_obj->helpers = $this->dummy_helpers;
-
 		$this->dummy_api->expects( $this->any() )
                   ->method( 'add_list_member' )
                   ->willReturn(true);
@@ -113,6 +102,7 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
 
 		foreach ($this->emailRoleStack as $user) {
 			$smc = $this->config[$user->roles[0]];
+			
 			$res = $sma_obj->subscribe_user($user->user_email, $smc);
 			$this->assertEquals( $res, true );
 		}
@@ -135,6 +125,25 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase {
 		}
 	}*/
 
+	/**
+	 * unsubscribe_user_config test.
+	 */
+/*	public function test_unsubscribe_user_config() {
+
+		$sma_obj = new Sincro_Mailchimp_Admin('sincro_mailchimp','1.0.0');
+
+		$this->sma_stub->expects( $this->any() )
+                  ->method( 'delete_list_member' )
+                  ->willReturn(true);
+
+		foreach ($this->emailRoleStack as $email => $role) {
+			$smc = $this->config[$role];
+			$res = $this->sma_stub->unsubscribe_user_config($email, $smc);
+			
+			$this->assertEquals( $res, true );
+		}
+	}
+*/
 	/**
 	 * unsubscribe_user_config test.
 	 */
