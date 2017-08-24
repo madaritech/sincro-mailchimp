@@ -85,6 +85,14 @@ class Sincro_Mailchimp
      */
     protected $user_service_adapter;
 
+     /**
+     * The {@link Sincro_Mailchimp_Admin_Requirements_Service} instance.
+     *
+     * @since  1.0.0
+     * @access protected
+     */
+    protected $requirements_service;
+
     /**
      * Define the core functionality of the plugin.
      *
@@ -146,6 +154,7 @@ class Sincro_Mailchimp
         include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-sincro-mailchimp-user-service.php';
         include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-sincro-mailchimp-api-service.php';
         include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-sincro-mailchimp-subscription-service.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-sincro-mailchimp-requirements-service.php';
 
         /**
          * Adapters.
@@ -166,19 +175,19 @@ class Sincro_Mailchimp
         $this->loader = new Sincro_Mailchimp_Loader();
 
         /**
- * Configuration. 
-*/
+ 		* Configuration. 
+		*/
         $configuration = defined('SINCRO_MAILCHIMP_CONFIG') ? unserialize(SINCRO_MAILCHIMP_CONFIG) : array();
 
         /**
- * Services. 
-*/
+ 		* Services. 
+		*/
         $this->configuration_service = new Sincro_Mailchimp_Configuration_Service($configuration);
         $this->user_service          = new Sincro_Mailchimp_User_Service($this->configuration_service);
-
+		$this->requirements_service  = new Sincro_Mailchimp_Requirements_Service();
         /**
- * Adapters. 
-*/
+ 		* Adapters. 
+		*/
         $this->user_service_adapter = new Sincro_Mailchimp_User_Service_Adapter($this->user_service);
     }
 
@@ -213,10 +222,10 @@ class Sincro_Mailchimp
         $plugin_admin = new Sincro_Mailchimp_Admin($this->get_plugin_name(), $this->get_version());
 
         // is_plugin_active is only available from within the admin pages. If you want to use this function you will need to manually require plugin.php
-        include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+        //include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
-        if ( !is_plugin_active( 'mailchimp-for-wp/mailchimp-for-wp.php' ) ) 
-        	$this->loader->add_action('admin_notices', $plugin_admin, 'mfw_missing_admin_notice');
+        //if ( !is_plugin_active( 'mailchimp-for-wp/mailchimp-for-wp.php' ) ) 
+        	$this->loader->add_action('admin_notices', $this->requirements_service, 'mfw_missing_admin_notice');
         
         $this->loader->add_action('show_user_profile', $plugin_admin, 'form_field_iscrizione_mailing_list');
         $this->loader->add_action('edit_user_profile', $plugin_admin, 'form_field_iscrizione_mailing_list');

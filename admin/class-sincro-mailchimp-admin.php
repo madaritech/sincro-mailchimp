@@ -67,6 +67,14 @@ class Sincro_Mailchimp_Admin
     private $subscription_service;
 
     /**
+     * Requirements Service.
+     *
+     * @since  1.0.0
+     * @access private
+     */
+    private $requirements_service;
+
+    /**
      * Initialize the class and set its properties.
      *
      * @since 1.0.0
@@ -79,6 +87,7 @@ class Sincro_Mailchimp_Admin
 
         $this->log = Sincro_MailChimp_Log_Service::create('Sincro_Mailchimp_Admin');
         $this->subscription_service = new Sincro_MailChimp_Subscription_Service();
+        $this->requirements_service = new Sincro_MailChimp_Requirements_Service();
 
         $this->plugin_name = $plugin_name;
         $this->version     = $version;
@@ -142,7 +151,7 @@ class Sincro_Mailchimp_Admin
      */
     public function form_field_iscrizione_mailing_list( $user ) 
     {
-    	if ( is_plugin_active( 'mailchimp-for-wp/mailchimp-for-wp.php' ) ) {
+    	if ( $this->requirements_service->mfw_is_missing() ) {
 	        $checked = 0;
 
 	        // Estrazione dati utente
@@ -213,12 +222,4 @@ class Sincro_Mailchimp_Admin
 
         wp_send_json_success(__('Operazione eseguita', 'sincro_mailchimp'));
     }
-
-    public function mfw_missing_admin_notice() {
-    ?>
-    <div class="notice error is-dismissible" >
-        <p><?php _e( 'Sincro MailChimp per funzionare richiede che il plugin MailChimp per WordPress sia installato ed attivo. Installalo ora!', 'sincro_mailchimp' ); ?></p>
-    </div>
-    <?php
-	}
 }
