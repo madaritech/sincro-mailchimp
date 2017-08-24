@@ -4,7 +4,7 @@
  * Fired during plugin deactivation
  *
  * @link       
- * @since      1.0.0
+ * @since 1.0.0
  *
  * @package    Sincro_Mailchimp
  * @subpackage Sincro_Mailchimp/includes
@@ -20,17 +20,19 @@
  * @subpackage Sincro_Mailchimp/includes
  * @author     Dario <dm@madaritech.com>
  */
-class Sincro_Mailchimp_Deactivator {
+class Sincro_Mailchimp_Deactivator
+{
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function deactivate() {
+    /**
+     * Short Description. (use period)
+     *
+     * Long Description.
+     *
+     * @since 1.0.0
+     */
+    public static function deactivate() 
+    {
 
-	}
+    }
 
 }

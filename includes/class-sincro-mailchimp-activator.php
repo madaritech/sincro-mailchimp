@@ -4,7 +4,7 @@
  * Fired during plugin activation
  *
  * @link       
- * @since      1.0.0
+ * @since 1.0.0
  *
  * @package    Sincro_Mailchimp
  * @subpackage Plugin_Name/includes
@@ -20,17 +20,19 @@
  * @subpackage Sincro_Mailchimp/includes
  * @author     Dario <dm@madaritech.com>
  */
-class Sincro_Mailchimp_Activator {
+class Sincro_Mailchimp_Activator
+{
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function activate() {
+    /**
+     * Short Description. (use period)
+     *
+     * Long Description.
+     *
+     * @since 1.0.0
+     */
+    public static function activate() 
+    {
 
-	}
+    }
 
 }
