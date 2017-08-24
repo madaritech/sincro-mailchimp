@@ -142,30 +142,33 @@ class Sincro_Mailchimp_Admin
      */
     public function form_field_iscrizione_mailing_list( $user ) 
     {
-        $checked = 0;
+    	if ( is_plugin_active( 'mailchimp-for-wp/mailchimp-for-wp.php' ) ) {
+	        $checked = 0;
 
-        // Estrazione dati utente
-        $user_email = $user->user_email;
-        $user_role  = $user->roles[0];
+	        // Estrazione dati utente
+	        $user_email = $user->user_email;
+	        $user_role  = $user->roles[0];
 
 
-        $subscription_status = $this->subscription_service->check_subscription_status($user_email, $user_role);
+	        $subscription_status = $this->subscription_service->check_subscription_status($user_email, $user_role);
 
-        if ($subscription_status == 2 ) {
-            $checked = 1;
-        }
+	        if ($subscription_status == 2 ) {
+	            $checked = 1;
+	        }
 
-        wp_enqueue_script('sm', plugin_dir_url(__FILE__) . 'js/sincro-mailchimp-admin-ajax.js', array( 'jquery' ), $this->version, true);
+	        wp_enqueue_script('sm', plugin_dir_url(__FILE__) . 'js/sincro-mailchimp-admin-ajax.js', array( 'jquery' ), $this->version, true);
 
-        $params = array(
-        'user_email' => esc_js($user->user_email),
-        'user_role'  => esc_js($user->roles[0]),
-        '_wpnonce'   => wp_create_nonce('esegui_iscrizione')
-        );
+	        $params = array(
+	        'user_email' => esc_js($user->user_email),
+	        'user_role'  => esc_js($user->roles[0]),
+	        '_wpnonce'   => wp_create_nonce('esegui_iscrizione')
+	        );
 
-        wp_localize_script('sm', 'sm', $params);
+	        wp_localize_script('sm', 'sm', $params);
 
-        include_once 'partials/sincro-mailchimp-admin-display.php';
+			include_once 'partials/sincro-mailchimp-admin-display.php';
+		}
+        
     }
 
     /**
@@ -211,4 +214,11 @@ class Sincro_Mailchimp_Admin
         wp_send_json_success(__('Operazione eseguita', 'sincro_mailchimp'));
     }
 
+    public function mfw_missing_admin_notice() {
+    ?>
+    <div class="notice error is-dismissible" >
+        <p><?php _e( 'Sincro MailChimp per funzionare richiede che il plugin MailChimp per WordPress sia installato ed attivo. Installalo ora!', 'sincro_mailchimp' ); ?></p>
+    </div>
+    <?php
+	}
 }

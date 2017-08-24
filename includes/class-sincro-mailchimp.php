@@ -212,6 +212,12 @@ class Sincro_Mailchimp
 
         $plugin_admin = new Sincro_Mailchimp_Admin($this->get_plugin_name(), $this->get_version());
 
+        // is_plugin_active is only available from within the admin pages. If you want to use this function you will need to manually require plugin.php
+        include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+        if ( !is_plugin_active( 'mailchimp-for-wp/mailchimp-for-wp.php' ) ) 
+        	$this->loader->add_action('admin_notices', $plugin_admin, 'mfw_missing_admin_notice');
+        
         $this->loader->add_action('show_user_profile', $plugin_admin, 'form_field_iscrizione_mailing_list');
         $this->loader->add_action('edit_user_profile', $plugin_admin, 'form_field_iscrizione_mailing_list');
         $this->loader->add_action('wp_ajax_esegui_iscrizione', $plugin_admin, 'esegui_iscrizione');
