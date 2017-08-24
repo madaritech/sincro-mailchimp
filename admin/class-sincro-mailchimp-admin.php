@@ -18,7 +18,7 @@
  *
  * @package    Sincro_Mailchimp
  * @subpackage Sincro_Mailchimp/admin
- * @author     Madaritech <dm@madaritech.com>
+ * @author     Madaritech <freelance@madaritech.com>
  */
 class Sincro_Mailchimp_Admin
 {

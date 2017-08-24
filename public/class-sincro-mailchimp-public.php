@@ -18,7 +18,7 @@
  *
  * @package    Sincro_Mailchimp
  * @subpackage Sincro_Mailchimp/public
- * @author     Dario <email@example.com>
+ * @author     Madaritech <freelance@madaritech.com>
  */
 class Sincro_Mailchimp_Public
 {

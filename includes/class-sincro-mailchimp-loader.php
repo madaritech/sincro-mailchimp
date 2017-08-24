@@ -19,7 +19,7 @@
  *
  * @package    Sincro_Mailchimp
  * @subpackage Sincro_Mailchimp/includes
- * @author     Dario <dm@madaritech.com>
+ * @author     Madaritech <freelance@madaritech.com>
  */
 class Sincro_Mailchimp_Loader
 {

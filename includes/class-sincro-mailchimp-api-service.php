@@ -15,7 +15,7 @@
  *
  * @package    Sincro_Mailchimp
  * @subpackage Sincro_Mailchimp/includes
- * @author     Madaritech <dm@madaritech.com>
+ * @author     Madaritech <freelance@madaritech.com>
  */
 class Sincro_Mailchimp_Api_Service
 {

@@ -14,12 +14,11 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Sincro Mailchimp
- * Plugin URI:        
- * Description:       Il plugin permette di registrare/eliminare la registrazione di un utente dalla Mailing List MailChimp tramite un'opzione dalla     
- *                      pagina WordPress di modifica profilo utente
+ * Plugin URI:        http://www.madaritech.com
+ * Description:       Il plugin permette di registrare/eliminare la registrazione di un utente dalla Mailing List MailChimp tramite un'opzione dalla pagina WordPress di modifica profilo utente
  * Version:           1.0.0
- * Author:            Dario Morbidi
- * Author URI:        
+ * Author:            Madaritech
+ * Author URI:        http://www.madaritech.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       sincro-mailchimp
