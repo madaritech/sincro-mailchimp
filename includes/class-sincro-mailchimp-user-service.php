@@ -86,7 +86,7 @@ class Sincro_Mailchimp_User_Service
         $user = get_user_by('id', $user_id);
 
         // Return an empty array if the user doesn't exist.
-        if (null === $user ) {
+        if (false === $user ) {
 
             if (Sincro_MailChimp_Log_Service::is_enabled() ) {
                 $this->log->warn("User $user_id not found.");
@@ -108,9 +108,9 @@ class Sincro_Mailchimp_User_Service
                 $this->log->trace('Got ' . count($role_interests) . " interest(s) for user $user_id, role $role, list $list_id.");
             }
 
-            // Add the interest to the return array and combine it with the existing value if any.
+            // Add the interest to the return array and combine it with the existing value if any: the seed is not changed, only new keys are added with their values
             foreach ( $role_interests as $key => $value ) {
-                $interests[ $key ] = ( isset($interests[ $key ]) ? $interests[ $key ] : false ) || $value;
+                $interests[ $key ] = ( isset($interests[ $key ]) ? $interests[ $key ] : $value );
             }
 
         }
