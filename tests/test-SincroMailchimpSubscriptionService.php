@@ -298,6 +298,16 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
     }
 
 
+    public function subscribeProcessDataProvider()
+    {
+        return [ 
+        [3, $this->factory->user->create_and_get(array( 'role' => 'administrator' ))->user_email, 'administrator', true],
+        [1, $this->factory->user->create_and_get(array( 'role' => 'editor' ))->user_email, 'editor', true],
+        [0, $this->factory->user->create_and_get(array( 'role' => 'author' ))->user_email, 'author', false],
+        [3, $this->factory->user->create_and_get(array( 'role' => 'contributor' ))->user_email, 'contributor', true],
+        [2, $this->factory->user->create_and_get(array( 'role' => 'subscriber' ))->user_email, 'subscriber', false]
+        ];
+    }
 
     /**
      *    subscribe_process test
@@ -334,14 +344,4 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
         $this->assertEquals($result, $res);
     }
 
-    public function subscribeProcessDataProvider()
-    {
-        return [ 
-        [3, $this->factory->user->create_and_get(array( 'role' => 'administrator' ))->user_email, 'administrator', true],
-        [1, $this->factory->user->create_and_get(array( 'role' => 'editor' ))->user_email, 'editor', true],
-        [0, $this->factory->user->create_and_get(array( 'role' => 'author' ))->user_email, 'author', false],
-        [3, $this->factory->user->create_and_get(array( 'role' => 'contributor' ))->user_email, 'contributor', true],
-        [2, $this->factory->user->create_and_get(array( 'role' => 'subscriber' ))->user_email, 'subscriber', false]
-        ];
-    }
 }

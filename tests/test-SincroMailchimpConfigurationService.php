@@ -61,16 +61,6 @@ class SincroMailchimpConfigurationServiceTest extends WP_UnitTestCase
 
         $this->lists = $lists;
         $this->interests = $interests;
-        /*
-        $this->smss_stub = $this->getMockBuilder('Sincro_Mailchimp_Subscription_Service')
-            ->setConstructorArgs(array())
-            ->setMethods(array( 'get_config_role' ))
-            ->getMock();
-
-        $this->dummy_api = $this->getMockBuilder('Sincro_Mailchimp_Admin_Api')
-            ->setConstructorArgs(array())
-            ->setMethods(array( 'get_lists', 'get_list_member', 'add_list_member', 'delete_list_member' ))
-            ->getMock();*/
     }
 
     /**
