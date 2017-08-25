@@ -75,7 +75,7 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
             ->getMock();
 
         $this->dummy_api = $this->getMockBuilder('Sincro_Mailchimp_Api_Service')
-            ->setConstructorArgs(array())
+            ->disableOriginalConstructor()
             ->setMethods(array( 'get_lists', 'get_list_member', 'add_list_member', 'delete_list_member' ))
             ->getMock();
 
@@ -297,51 +297,50 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
         $this->assertEquals($result, $res);
     }
 
-
-    public function subscribeProcessDataProvider()
-    {
-        return [ 
-        [3, $this->factory->user->create_and_get(array( 'role' => 'administrator' ))->user_email, 'administrator', true],
-        [1, $this->factory->user->create_and_get(array( 'role' => 'editor' ))->user_email, 'editor', true],
-        [0, $this->factory->user->create_and_get(array( 'role' => 'author' ))->user_email, 'author', false],
-        [3, $this->factory->user->create_and_get(array( 'role' => 'contributor' ))->user_email, 'contributor', true],
-        [2, $this->factory->user->create_and_get(array( 'role' => 'subscriber' ))->user_email, 'subscriber', false]
-        ];
-    }
-
     /**
      *    subscribe_process test
-     *
-     *  @dataProvider subscribeProcessDataProvider
      */
-    public function test_subscribe_process($subscription_status, $user_email, $user_role, $res) 
+    public function test_subscribe_process() 
     {
+        $provider = array([3, $this->factory->user->create_and_get(array( 'role' => 'administrator' ))->user_email, 'administrator', true],
+                        [1, $this->factory->user->create_and_get(array( 'role' => 'editor' ))->user_email, 'editor', true],
+                        [0, $this->factory->user->create_and_get(array( 'role' => 'author' ))->user_email, 'author', false],
+                        [3, $this->factory->user->create_and_get(array( 'role' => 'contributor' ))->user_email, 'contributor', true],
+                        [2, $this->factory->user->create_and_get(array( 'role' => 'subscriber' ))->user_email, 'subscriber', false]);
 
-        //Stub ruolo utente
-        $this->smss_stub->expects($this->any())
-            ->method('get_config_role')
-            ->willReturn($this->config['subscriber']);
+        foreach($provider as $test_data) {
 
-        //Stub eliminazione utente dalle liste mailchimp
-        $this->dummy_api->expects($this->any())
-            ->method('delete_list_member')
-            ->willReturn(true);
+            $subscription_status = $test_data[0]; 
+            $user_email = $test_data[1]; 
+            $user_role = $test_data[2]; 
+            $res = $test_data[3];
+            
+            //Stub ruolo utente
+            $this->smss_stub->expects($this->any())
+                ->method('get_config_role')
+                ->willReturn($this->config['subscriber']);
 
-        //Stub list di mailchimp
-        $this->dummy_api->expects($this->any())
-            ->method('get_lists')
-            ->willReturn(array());
+            //Stub eliminazione utente dalle liste mailchimp
+            $this->dummy_api->expects($this->any())
+                ->method('delete_list_member')
+                ->willReturn(true);
 
-        //Stub inserimento utente nella  mailing list
-        $this->dummy_api->expects($this->any())
-            ->method('add_list_member')
-            ->willReturn(true);
+            //Stub list di mailchimp
+            $this->dummy_api->expects($this->any())
+                ->method('get_lists')
+                ->willReturn(array());
 
-        $this->smss_stub->api = $this->dummy_api;
+            //Stub inserimento utente nella  mailing list
+            $this->dummy_api->expects($this->any())
+                ->method('add_list_member')
+                ->willReturn(true);
 
-        $result = $this->smss_stub->subscribe_process($subscription_status, $user_email, $user_role);
-    
-        $this->assertEquals($result, $res);
+            $this->smss_stub->api = $this->dummy_api;
+
+            $result = $this->smss_stub->subscribe_process($subscription_status, $user_email, $user_role);
+        
+            $this->assertEquals($result, $res);
+        }
     }
 
 }
