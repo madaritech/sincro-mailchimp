@@ -54,7 +54,6 @@ class Sincro_Mailchimp_Configuration_Service
      */
     public function get_by_role( $role ) 
     {
-
         return isset($this->configuration[ $role ]) ? $this->configuration[ $role ] : array();
     }
 

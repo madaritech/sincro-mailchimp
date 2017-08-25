@@ -290,8 +290,7 @@ class Sincro_Mailchimp_Subscription_Service
              */
             $args['merge_fields'] = apply_filters('sm_merge_fields', array(), $user_email, $list_id, $interests, $smc);
             //$args['merge_fields'] = $this->sm_merge_fields->run(array(array(), $user_email, $list_id, $interests, $smc ) );
-            
-            //$add_status = $this->add_list_member( $list_id, $args );
+
             $add_status = $this->api->add_list_member($list_id, $args);
 
             if (Sincro_MailChimp_Log_Service::is_enabled() ) {
