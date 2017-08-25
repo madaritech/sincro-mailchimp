@@ -1,14 +1,14 @@
 <?php
 /**
- * Class SincroMailchimpUserServiceTest
+ * Class SincroMailchimpConfigurationServiceAdapterTest
  *
  * @package Sincro_Mailchimp
  */
 
 /**
- * Sincro_Mailchimp_User_Service Class test case.
+ * Sincro_Mailchimp_User_Service_Adapter Class test case.
  */
-class SincroMailchimpUserServiceTest extends WP_UnitTestCase
+class SincroMailchimpUserServiceAdapterTest extends WP_UnitTestCase
 {
     private $config;
     private $lists;
@@ -63,9 +63,9 @@ class SincroMailchimpUserServiceTest extends WP_UnitTestCase
     }
 
     /**
-     * get_interests test.
+     * user_list_interests test.
      */
-    public function test_get_interests() 
+    public function test_user_list_interests() 
     {
         $lists = $this->lists;
         $interests = $this->interests;
@@ -73,23 +73,27 @@ class SincroMailchimpUserServiceTest extends WP_UnitTestCase
         $configuration = $this->config;
         $cs_obj = new Sincro_Mailchimp_Configuration_Service($configuration);
         $us_obj = new Sincro_Mailchimp_User_Service($cs_obj);
+        $usa_obj = new Sincro_Mailchimp_User_Service_Adapter($us_obj);
 
-        $res_editor = $us_obj->get_interests($this->users['editor']->ID, $lists['acme']);
+        $res_editor = $usa_obj->user_list_interests(array(), $this->users['editor']->ID, $lists['acme']);
         $this->assertEquals([$interests['acme-group1'] => true, 
                              $interests['acme-group2'] => false, 
                              $interests['acme-group3'] => true, 
                              $interests['acme-group4'] => false], $res_editor);
 
-        $res_subscriber = $us_obj->get_interests($this->users['subscriber']->ID, $lists['acme'], array($interests['acme-group1'] => false));
+        $res_subscriber = $usa_obj->user_list_interests(array($interests['acme-group1'] => false), $this->users['subscriber']->ID, $lists['acme'] );
         $this->assertEquals([$interests['acme-group1'] => false, 
                              $interests['acme-group2'] => false, 
                              $interests['acme-group3'] => true, 
                              $interests['acme-group4'] => true], $res_subscriber);
 
-        $res_administrator = $us_obj->get_interests($this->users['administrator']->ID, $lists['acme']);
+        $res_administrator = $usa_obj->user_list_interests(array(), $this->users['administrator']->ID, $lists['acme']);
         $this->assertEquals(array(), $res_administrator);
 
-        $res = $us_obj->get_interests(100, $lists['acme']);
+        $res_administrator = $usa_obj->user_list_interests(array($interests['acme-group1'] => false), $this->users['administrator']->ID, $lists['acme']);
+        $this->assertEquals(array($interests['acme-group1'] => false), $res_administrator);
+
+        $res = $usa_obj->user_list_interests(array(), 100, $lists['acme']);
         $this->assertEquals(array(), $res);
     }
 
