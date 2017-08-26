@@ -200,6 +200,7 @@ class Sincro_Mailchimp_Subscription_Service
 
         // Estrazione List associate all'utente e verifica allineamento rispetto la configurazione
         $args['email']  = $user_email;
+
         $res_user_lists = $this->api->get_lists($args);
 
         $num_list_mailchimp = count((array) $res_user_lists);
@@ -258,7 +259,6 @@ class Sincro_Mailchimp_Subscription_Service
      */
     public function subscribe_user( $user_email, $smc ) 
     {
-
         if (Sincro_MailChimp_Log_Service::is_enabled() ) {
             $this->log->debug("Subscribing user [ user e-mail :: $user_email ]...");
         }

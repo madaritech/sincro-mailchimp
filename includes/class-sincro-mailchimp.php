@@ -29,7 +29,6 @@
  */
 class Sincro_Mailchimp
 {
-
     /**
      * The loader that's responsible for maintaining and registering all hooks that power
      * the plugin.
@@ -189,6 +188,7 @@ class Sincro_Mailchimp
  		* Adapters. 
 		*/
         $this->user_service_adapter = new Sincro_Mailchimp_User_Service_Adapter($this->user_service);
+
     }
 
     /**
