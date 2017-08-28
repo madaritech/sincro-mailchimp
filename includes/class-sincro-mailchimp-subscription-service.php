@@ -194,59 +194,110 @@ class Sincro_Mailchimp_Subscription_Service
      */
     public function check_subscription_status( $user_email, $user_role ) 
     {
-
+        
         // Estrazione parametri configurazione
         $smc = $this->get_config_role($user_role);
 
         // Estrazione List associate all'utente e verifica allineamento rispetto la configurazione
         $args['email']  = $user_email;
 
-        $res_user_lists = $this->api->get_lists($args);
+        try {
 
-        $num_list_mailchimp = count((array) $res_user_lists);
-        $num_list_config    = count($smc);
+            $res_user_lists = $this->api->get_lists($args);
 
-        if ($num_list_config != 0 && $num_list_mailchimp == 0 ) {
-            return ( 1 );
-        } //unchecked
+            $num_list_mailchimp = count((array) $res_user_lists);
+            $num_list_config    = count($smc);
 
-        if ($num_list_config == 0 ) {
-            return ( 0 );
-        } //unchecked
+            if ($num_list_config != 0 && $num_list_mailchimp == 0 ) {
+                return ( 1 );
+            } //unchecked
 
-        if ($num_list_config != 0 && $num_list_mailchimp != 0 ) {
+            if ($num_list_config == 0 ) {
+                return ( 0 );
+            } //unchecked
 
-            //Controllo se il numero di liste associate in configurazione e su Mailchimp è uguale
-            if ($num_list_config == $num_list_mailchimp ) {
+            if ($num_list_config != 0 && $num_list_mailchimp != 0 ) {
 
-                foreach ( $res_user_lists as $list ) {
+                //Controllo se il numero di liste associate in configurazione e su Mailchimp è uguale
+                if ($num_list_config == $num_list_mailchimp ) {
 
-                    //Verifico che gli id lista coincidano con la configurazione
-                    if (array_key_exists($list->id, $smc) ) {
+                    foreach ( $res_user_lists as $list ) {
 
-                        //Estrazione interests da Mailchimp
-                        $res_user_list_interests = $this->api->get_list_member($list->id, $user_email);
+                        //Verifico che gli id lista coincidano con la configurazione
+                        if (array_key_exists($list->id, $smc) ) {
 
-                        $interest_ids = (array) $res_user_list_interests->interests;
+                            //Estrazione interests da Mailchimp
+                            $res_user_list_interests = $this->api->get_list_member($list->id, $user_email);
 
-                        foreach ( $interest_ids as $key => $value ) {
-                            if ($smc[ $list->id ][ $key ] !== $value ) {
-                                return ( 3 );
+                            $interest_ids = (array) $res_user_list_interests->interests;
+
+                            foreach ( $interest_ids as $key => $value ) {
+                                if ($smc[ $list->id ][ $key ] !== $value ) {
+                                    return ( 3 );
+                                }
                             }
+
+                        } else {
+
+                            return ( 3 );
                         }
-
-                    } else {
-
-                        return ( 3 );
                     }
+
+                } else {
+                    return ( 3 );
                 }
 
-            } else {
-                return ( 3 );
+                return ( 2 );
             }
 
-            return ( 2 );
-        }
+        } catch (MC4WP_API_Connection_Exception $e) {
+
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+                    
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Check Subscription Status: MC4WP_API_Connection_Exception [ message :: $message ] [ code :: $code]");
+                
+                }
+                throw new Exception(__("Problema di connessione. $message",'sincro_mailchimp'));
+            
+            }
+            catch (MC4WP_API_Resource_Not_Found_Exception $e) {
+            
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+                    
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Check Subscription Status: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]");
+                
+                }
+                throw new Exception(__('Risorsa non trovata.','sincro_mailchimp'));
+            
+            }
+            catch (MC4WP_API_Exception $e) {
+            
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Check Subscription Status: MC4WP_API_Exception [ message :: $message ] [ code :: $code]");
+                
+                }
+                throw new Exception(__('Errore nelle API di connessione.','sincro_mailchimp'));
+            
+            }
+            catch (Exception $e) {
+            
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Check Subscription Status: Exception [ message :: $message ] [ code :: $code]");
+
+                }
+                throw new Exception(__('Errore generico.','sincro_mailchimp'));
+            
+            }
     }
 
     /**
@@ -289,10 +340,61 @@ class Sincro_Mailchimp_Subscription_Service
              * @param array  $smc The Sincro_Mailchimp configuration's array.
              */
             $args['merge_fields'] = apply_filters('sm_merge_fields', array(), $user_email, $list_id, $interests, $smc);
-            //$args['merge_fields'] = $this->sm_merge_fields->run(array(array(), $user_email, $list_id, $interests, $smc ) );
 
-            $add_status = $this->api->add_list_member($list_id, $args);
+            try  {
+            
+                $add_status = $this->api->add_list_member($list_id, $args);
+            
+            } catch (MC4WP_API_Connection_Exception $e) {
 
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+                    
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Subscribing user: MC4WP_API_Connection_Exception [ message :: $message ] [ code :: $code]");
+                
+                }
+                throw new Exception(__("Problema di connessione. $message",'sincro_mailchimp'));
+            
+            }
+            catch (MC4WP_API_Resource_Not_Found_Exception $e) {
+            
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+                    
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Subscribing user: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]");
+                
+                }
+                throw new Exception(__('Risorsa non trovata.','sincro_mailchimp'));
+            
+            }
+            catch (MC4WP_API_Exception $e) {
+            
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Subscribing user: MC4WP_API_Exception [ message :: $message ] [ code :: $code]");
+                
+                }
+                throw new Exception(__('Errore nelle API di connessione.','sincro_mailchimp'));
+            
+            }
+            catch (Exception $e) {
+            
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Subscribing user: Exception [ message :: $message ] [ code :: $code]");
+
+                }
+                throw new Exception(__('Errore generico.','sincro_mailchimp'));
+            
+            }
+
+            
             if (Sincro_MailChimp_Log_Service::is_enabled() ) {
                 $this->log->trace("Call to `add_list_member` returned [ " . var_export($add_status, true) . " ]");
             }
@@ -316,7 +418,60 @@ class Sincro_Mailchimp_Subscription_Service
         $reset_args['email'] = $user_email;
 
         foreach ( $smc as $list_id => $interests ) {
-            $reset_status = $this->api->delete_list_member($list_id, $user_email);
+            
+            try {
+
+                $reset_status = $this->api->delete_list_member($list_id, $user_email);
+            
+            } catch (MC4WP_API_Connection_Exception $e) {
+
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+                    
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Unsubscribe User Config: MC4WP_API_Connection_Exception [ message :: $message ] [ code :: $code]");
+                
+                }
+                throw new Exception(__("Problema di connessione. $message",'sincro_mailchimp'));
+            
+            }
+            catch (MC4WP_API_Resource_Not_Found_Exception $e) {
+            
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+                    
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Unsubscribe User Config: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]");
+                
+                }
+                throw new Exception(__('Risorsa not trovata.','sincro_mailchimp'));
+            
+            }
+            catch (MC4WP_API_Exception $e) {
+            
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Unsubscribe User Config: MC4WP_API_Exception [ message :: $message ] [ code :: $code]");
+                
+                }
+                throw new Exception(__('Errore nelle API di connessione.','sincro_mailchimp'));
+            
+            }
+            catch (Exception $e) {
+            
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Unsubscribe User Config: Exception [ message :: $message ] [ code :: $code]");
+
+                }
+                throw new Exception(__('Errore generico.','sincro_mailchimp'));
+            
+            }
+
         }
 
         return ( true );
@@ -334,11 +489,63 @@ class Sincro_Mailchimp_Subscription_Service
 
         // Reset iscrizione incompleta
         $reset_args['email'] = $user_email;
-        $res_user_lists      = $this->api->get_lists($reset_args);
 
-        foreach ( $res_user_lists as $list ) {
-            $reset_status = $this->api->delete_list_member($list->id, $user_email);
-        }
+        try {
+            
+            $res_user_lists      = $this->api->get_lists($reset_args);
+
+            foreach ( $res_user_lists as $list ) {
+                $reset_status = $this->api->delete_list_member($list->id, $user_email);
+            }
+
+        } catch (MC4WP_API_Connection_Exception $e) {
+
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+                    
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Unsubscribe User MailChimp: MC4WP_API_Connection_Exception [ message :: $message ] [ code :: $code]");
+                
+                }
+                throw new Exception(__("Problema di connessione. $message",'sincro_mailchimp'));
+            
+            }
+            catch (MC4WP_API_Resource_Not_Found_Exception $e) {
+            
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+                    
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Unsubscribe User MailChimp: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]");
+                
+                }
+                throw new Exception(__('Risorsa not trovata.','sincro_mailchimp'));
+            
+            }
+            catch (MC4WP_API_Exception $e) {
+            
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Unsubscribe User MailChimp: MC4WP_API_Exception [ message :: $message ] [ code :: $code]");
+                
+                }
+                throw new Exception(__('Errore nelle API di connessione.','sincro_mailchimp'));
+            
+            }
+            catch (Exception $e) {
+            
+                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    $this->log->debug("Unsubscribe User MailChimp: Exception [ message :: $message ] [ code :: $code]");
+
+                }
+                throw new Exception(__('Errore generico.','sincro_mailchimp'));
+            
+            }
 
         return ( true );
     }

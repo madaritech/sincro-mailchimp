@@ -187,7 +187,6 @@ class Sincro_Mailchimp_Admin
      */
     public function esegui_iscrizione() 
     {
-
         check_admin_referer('esegui_iscrizione', '_wpnonce');
 
         $check_status = intval($_POST['check_status']);
@@ -208,16 +207,33 @@ class Sincro_Mailchimp_Admin
         }
 
         //Elaborazione
-        $subscription_status = $this->subscription_service->check_subscription_status($user_email, $user_role);
+        try {
+            $subscription_status = $this->subscription_service->check_subscription_status($user_email, $user_role);
+        } catch (Exception $e) {
+            $error_message = __("Verifica stato sottoscrizione fallita. ", 'sincro_mailchimp');
+            wp_send_json_error($error_message.$e->getMessage());
+        }
 
         if (! $subscription_status ) {
             wp_send_json_error(__('Configurazione assente, operazione fallita', 'sincro_mailchimp'));
         }
 
         if ($check_status ) {
-            $this->subscription_service->subscribe_process($subscription_status, $user_email, $user_role);
+            try {
+                $this->subscription_service->subscribe_process($subscription_status, $user_email, $user_role);
+            }
+            catch (Exception $e) {
+                $error_message = __("Processo di sottoscrizione fallito. ", 'sincro_mailchimp');
+                wp_send_json_error($error_message.$e->getMessage());
+            }
         } else {
-            $this->subscription_service->unsubscribe_process($subscription_status, $user_email, $user_role);
+            try {            
+                $this->subscription_service->unsubscribe_process($subscription_status, $user_email, $user_role);
+            }
+            catch (Exception $e) {
+                $error_message = __("Processo di cancellazione della sottoscrizione fallito. ", 'sincro_mailchimp');
+                wp_send_json_error($error_message.$e->getMessage());
+            }
         }
 
         wp_send_json_success(__('Operazione eseguita', 'sincro_mailchimp'));
