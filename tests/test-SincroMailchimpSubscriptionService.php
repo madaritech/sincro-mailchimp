@@ -97,8 +97,9 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
         $smss_obj->api = $this->dummy_api;
 
         foreach ($this->emailRoleStack as $user) {
-            $smc = $this->config[$user->roles[0]];
-            $res = $smss_obj->subscribe_user($user->user_email, $smc);
+            //$smc = $this->config[$user->roles[0]];
+            //$res = $smss_obj->subscribe_user($user->user_email, $smc);
+            $res = $smss_obj->subscribe_user($user->user_email);
 
             $this->assertEquals($res, true);
         }
@@ -119,8 +120,8 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
         $smss_obj->api = $this->dummy_api;
         
         foreach ($this->emailRoleStack as $user) {
-            $smc = $this->config[$user->roles[0]];
-            $res = $smss_obj->unsubscribe_user_config($user->user_email, $smc);
+            //$smc = $this->config[$user->roles[0]];
+            $res = $smss_obj->unsubscribe_user_config($user->user_email);
             
             $this->assertEquals($res, true);
         }
@@ -256,29 +257,17 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
         
     }
 
-    public function unsubscribeProcessDataProvider()
-    {
-        return [
-        [3, $this->factory->user->create_and_get(array( 'role' => 'administrator' ))->user_email, 'administrator', true],
-        [1, $this->factory->user->create_and_get(array( 'role' => 'editor' ))->user_email, 'editor', false],
-        [0, $this->factory->user->create_and_get(array( 'role' => 'author' ))->user_email, 'author', false],
-        [3, $this->factory->user->create_and_get(array( 'role' => 'contributor' ))->user_email, 'contributor', true],
-        [2, $this->factory->user->create_and_get(array( 'role' => 'subscriber' ))->user_email, 'subscriber', true]
-        ];
-    }
-
     /**
      *  unsubscribe_process test
-     *
-     *  @dataProvider unsubscribeProcessDataProvider
      */
-    public function test_unsubscribe_process($subscription_status, $user_email, $user_role, $res) 
+    public function test_unsubscribe_process() 
     {
 
-        //Stub ruolo utente
-        $this->smss_stub->expects($this->any())
-            ->method('get_config_role')
-            ->willReturn($this->config['subscriber']);
+        $provider = array([3, $this->factory->user->create_and_get(array( 'role' => 'administrator' ))->user_email, 'administrator', true],
+                            [1, $this->factory->user->create_and_get(array( 'role' => 'editor' ))->user_email, 'editor', false],
+                            [0, $this->factory->user->create_and_get(array( 'role' => 'author' ))->user_email, 'author', false],
+                            [3, $this->factory->user->create_and_get(array( 'role' => 'contributor' ))->user_email, 'contributor', true],
+                            [2, $this->factory->user->create_and_get(array( 'role' => 'subscriber' ))->user_email, 'subscriber', true]);
 
         //Stub eliminazione utente dalle liste mailchimp 
         $this->dummy_api->expects($this->any())
@@ -292,9 +281,17 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
 
         $this->smss_stub->api = $this->dummy_api;
 
-        $result = $this->smss_stub->unsubscribe_process($subscription_status, $user_email, $user_role);
+        foreach($provider as $test_data) {
+
+            $subscription_status = $test_data[0]; 
+            $user_email = $test_data[1]; 
+            $user_role = $test_data[2]; 
+            $res = $test_data[3];
+        
+            $result = $this->smss_stub->unsubscribe_process($subscription_status, $user_email, $user_role);
     
-        $this->assertEquals($result, $res);
+            $this->assertEquals($result, $res);
+        }
     }
 
     /**
@@ -314,11 +311,6 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
             $user_email = $test_data[1]; 
             $user_role = $test_data[2]; 
             $res = $test_data[3];
-            
-            //Stub ruolo utente
-            $this->smss_stub->expects($this->any())
-                ->method('get_config_role')
-                ->willReturn($this->config['subscriber']);
 
             //Stub eliminazione utente dalle liste mailchimp
             $this->dummy_api->expects($this->any())

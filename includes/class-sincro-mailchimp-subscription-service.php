@@ -59,21 +59,6 @@ class Sincro_Mailchimp_Subscription_Service
     }
 
     /**
-     * Richiama la configurazione del plugin relativa ad un certo ruolo.
-     *
-     * @since  1.0.0
-     * @access protected
-     *
-     * @param string $user_role Ruolo dell'utente.
-     */
-    protected function get_config_role( $user_role ) 
-    {
-        $this->smc = unserialize(SINCRO_MAILCHIMP_CONFIG);
-
-        return ( $this->smc[ $user_role ] );
-    }
-
-    /**
      * Implementa la logica del processo di sottoscrizione.
      *
      * @param $subscription_status
@@ -97,11 +82,7 @@ class Sincro_Mailchimp_Subscription_Service
             break;
         case 1:
             // Procedo con l'iscrizione
-
-            // Estrazione parametri configurazione
-            $smc = $this->get_config_role($user_role);
-
-            $res = $this->subscribe_user($user_email, $smc);
+            $res = $this->subscribe_user($user_email);
 
             break;
         case 2:
@@ -109,14 +90,11 @@ class Sincro_Mailchimp_Subscription_Service
             break;
         case 3:
             // Utente iscritto parzialmente o in modo diverso rispetto la configurazione
-
-            // Estrazione parametri configurazione
-            $smc = $this->get_config_role($user_role);
-
+            
             //Reset iscrizione parziale
             if ($this->unsubscribe_user_mailchimp($user_email) ) {
                 // Procedo con iscrizione da configurazione
-                $res = $this->subscribe_user($user_email, $smc);
+                $res = $this->subscribe_user($user_email);
             }
 
             break;
@@ -156,19 +134,11 @@ class Sincro_Mailchimp_Subscription_Service
             break;
         case 2:
             // Utente iscritto secondo configurazione
-
-            // Estrazione parametri configurazione
-            $smc = $this->get_config_role($user_role);
-
-            $res = $this->unsubscribe_user_config($user_email, $smc);
+            $res = $this->unsubscribe_user_config($user_email);
 
             break;
         case 3:
             // Utente iscritto parzialmente o in modo diverso rispetto la configurazione
-
-            // Estrazione parametri configurazione
-            $smc = $this->get_config_role($user_role);
-
             $res = $this->unsubscribe_user_mailchimp($user_email);
 
             break;
@@ -196,7 +166,10 @@ class Sincro_Mailchimp_Subscription_Service
     {
         
         // Estrazione parametri configurazione
-        $smc = $this->get_config_role($user_role);
+        //$smc = $this->get_config_role($user_role);
+        $configuration = defined('SINCRO_MAILCHIMP_CONFIG') ? unserialize(SINCRO_MAILCHIMP_CONFIG) : array();
+        $configuration_service = new Sincro_Mailchimp_Configuration_Service($configuration);
+        $smc = $configuration_service->get_by_role($user_role);
 
         // Estrazione List associate all'utente e verifica allineamento rispetto la configurazione
         $args['email']  = $user_email;
@@ -308,7 +281,7 @@ class Sincro_Mailchimp_Subscription_Service
      *
      * @since 1.0.0
      */
-    public function subscribe_user( $user_email, $smc ) 
+    public function subscribe_user( $user_email ) 
     {
         if (Sincro_MailChimp_Log_Service::is_enabled() ) {
             $this->log->debug("Subscribing user [ user e-mail :: $user_email ]...");
@@ -320,7 +293,10 @@ class Sincro_Mailchimp_Subscription_Service
         // Get the user id.
         $user = get_user_by('email', $user_email);
 
-        foreach ( $smc as $list_id => $interests ) {
+        $lists = array();
+        $lists = apply_filters('sm_user_list', $lists, $user->ID);
+
+        foreach ( $lists as $list_id => $interests ) {
 
             //$args['interests'] = $interests;
             $args['interests'] = apply_filters('sm_user_list_interests', $interests, $user->ID, $list_id);
@@ -412,12 +388,18 @@ class Sincro_Mailchimp_Subscription_Service
      *
      * @since 1.0.0
      */
-    public function unsubscribe_user_config( $user_email, $smc ) 
+    public function unsubscribe_user_config( $user_email ) 
     {
+
+        // Get the user id.
+        $user = get_user_by('email', $user_email);
+
+        $lists = array();
+        $lists = apply_filters('sm_user_list', $lists, $user->ID);
 
         $reset_args['email'] = $user_email;
 
-        foreach ( $smc as $list_id => $interests ) {
+        foreach ( $lists as $list_id => $interests ) {
             
             try {
 

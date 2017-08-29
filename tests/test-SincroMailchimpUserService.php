@@ -63,6 +63,40 @@ class SincroMailchimpUserServiceTest extends WP_UnitTestCase
     }
 
     /**
+     * get_lists test.
+     */
+    public function test_get_lists() 
+    {
+        $lists = $this->lists;
+        $interests = $this->interests;
+
+        $configuration = $this->config;
+        $cs_obj = new Sincro_Mailchimp_Configuration_Service($configuration);
+        $us_obj = new Sincro_Mailchimp_User_Service($cs_obj);
+
+        $res_editor = $us_obj->get_lists(array(), $this->users['editor']->ID);
+        $this->assertEquals([$lists['acme'] => array($interests['acme-group1'] => true, 
+                                                     $interests['acme-group2'] => false, 
+                                                     $interests['acme-group3'] => true, 
+                                                     $interests['acme-group4'] => false)], $res_editor);
+
+        $res_subscriber = $us_obj->get_lists(array(), $this->users['subscriber']->ID);
+        $this->assertEquals([$lists['acme'] => array($interests['acme-group1'] => true, 
+                                                 $interests['acme-group2'] => false, 
+                                                 $interests['acme-group3'] => true, 
+                                                 $interests['acme-group4'] => true), 
+                            $lists['test'] => array($interests['group1'] => false,
+                                                   $interests['group2'] => true,
+                                                   $interests['group3'] => false)], $res_subscriber);
+
+        $res_administrator = $us_obj->get_lists(array(), $this->users['administrator']->ID);
+        $this->assertEquals([$lists['test'] => array($interests['group1'] => false,
+                                                   $interests['group2'] => true,
+                                                   $interests['group3'] => true)], $res_administrator);
+    }
+
+
+    /**
      * get_interests test.
      */
     public function test_get_interests() 

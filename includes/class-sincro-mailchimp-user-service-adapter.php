@@ -54,6 +54,42 @@ class Sincro_Mailchimp_User_Service_Adapter
     }
 
     /**
+     * Called by the `sm_user_lists`, processes the lists with the relative interests for a {@link WP_User}
+     *
+     * @since 1.0.0
+     *
+     * @uses Sincro_Mailchimp_User_Service::get_lists() to get the interests.
+     *
+     * @param array  $interests {
+     * The precomputed array of interests.
+     *
+     * @type string  $key The interest id.
+     * @type boolean $value True if the interest needs to be bound to the user, otherwise false.
+     * }
+     *
+     * @param int    $user_id   The {@link WP_User}'s id.
+     *
+     * @return array {
+     * An array of lists of interests.
+     *
+     * @type string  $key The list id.
+     * @type array {
+     *      @type int $key the interest id.
+     *      @type boolean $value True if the interest needs to be bound to the user, otherwise false.
+     *    } 
+     * }
+     */
+    public function user_lists($lists, $user_id) 
+    {
+
+        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            $this->log->debug("Getting the lists and interests for user $user_id");
+        }
+
+        return $this->user_service->get_lists($lists, $user_id);
+    }
+
+    /**
      * Called by the `sm_user_list_interests`, processes the interests for a {@link WP_User}/list
      * combination.
      *

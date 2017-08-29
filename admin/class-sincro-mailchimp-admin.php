@@ -158,7 +158,6 @@ class Sincro_Mailchimp_Admin
 	        $user_email = $user->user_email;
 	        $user_role  = $user->roles[0];
 
-
 	        $subscription_status = $this->subscription_service->check_subscription_status($user_email, $user_role);
 
 	        if ($subscription_status == 2 ) {
@@ -209,6 +208,9 @@ class Sincro_Mailchimp_Admin
         //Elaborazione
         try {
             $subscription_status = $this->subscription_service->check_subscription_status($user_email, $user_role);
+            if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            $this->log->debug("Checking subscrition status [ subscription status :: $subscription_status ][ user e-mail :: $user_email ][ user role :: $user_role ]");
+            }
         } catch (Exception $e) {
             $error_message = __("Verifica stato sottoscrizione fallita. ", 'sincro_mailchimp');
             wp_send_json_error($error_message.$e->getMessage());
@@ -216,6 +218,10 @@ class Sincro_Mailchimp_Admin
 
         if (! $subscription_status ) {
             wp_send_json_error(__('Configurazione assente, operazione fallita', 'sincro_mailchimp'));
+        }
+
+        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            $this->log->debug("Checkbox status received [ check status :: $check_status ]");
         }
 
         if ($check_status ) {

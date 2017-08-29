@@ -55,6 +55,68 @@ class Sincro_Mailchimp_User_Service
     }
 
     /**
+     * Get the MailChimp lists and relative interests for a {@link WP_User}.
+     *
+     * @since 1.0.0
+     *
+     * @param int    $user_id The {@link WP_User}'s id.
+     *
+     * @return array {
+     * An array of lists of interests.
+     *
+     * @type string  $key The list id.
+     * @type array {
+     *      @type int $key the interest id.
+     *      @type boolean $value True if the interest needs to be bound to the user, otherwise false.
+     *    } 
+     * }
+     */
+    public function get_lists( $lists, $user_id ) 
+    {
+
+        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            $this->log->debug("Getting the lists for user $user_id");
+        }
+
+        // Get the user.
+        $user = get_user_by('id', $user_id);
+
+        // Return an empty array if the user doesn't exist.
+        if (false === $user ) {
+
+            if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+                $this->log->warn("User $user_id not found.");
+            }
+
+            return $lists;
+        }
+
+        // Cycle in the user's role.
+        foreach ( $user->roles as $role ) {
+
+            // Get the lists for the specified role.
+            $role_lists = $this->configuration_service->get_by_role($role);
+
+            if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+                $this->log->trace('Got ' . count($role_lists) . " list(s) for user $user_id, role $role.");
+            }
+
+            // Add the list to the return array and combine it with the existing value if any
+            foreach ( $role_lists as $list_id => $interests ) {
+                $lists[ $list_id ] = ( isset($lists[ $list_id ]) ? $lists[ $list_id ] : $interests );
+            }
+
+        }
+
+        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            $this->log->info('Found ' . count($lists) . " list(s) for user $user_id: " . var_export($lists, true));
+        }
+
+        return $lists;
+    }
+
+
+    /**
      * Get the list of interests for a {@link WP_User} and MailChimp list.
      *
      * @since 1.0.0

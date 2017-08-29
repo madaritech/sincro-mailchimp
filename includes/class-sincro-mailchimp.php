@@ -229,9 +229,11 @@ class Sincro_Mailchimp
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 
+        // Hook to `sm_user_list`.
+        $this->loader->add_filter('sm_user_list', $this->user_service_adapter, 'user_lists', 10, 3);
+
         // Hook to `sm_user_list_interests`.
         $this->loader->add_filter('sm_user_list_interests', $this->user_service_adapter, 'user_list_interests', 10, 3);
-
     }
 
     /**

@@ -80,7 +80,7 @@
                         $("#mc_subscribe").prop('checked', true);
                     else
                         $("#mc_subscribe").prop('checked', false);
-                    alert(response.data);
+                    alert(data);
                 }
             });
         }

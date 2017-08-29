@@ -63,6 +63,43 @@ class SincroMailchimpUserServiceAdapterTest extends WP_UnitTestCase
     }
 
     /**
+     * user_lists test.
+     */
+    public function test_user_lists() 
+    {
+        $lists = $this->lists;
+        $interests = $this->interests;
+
+        $configuration = $this->config;
+        $cs_obj = new Sincro_Mailchimp_Configuration_Service($configuration);
+        $us_obj = new Sincro_Mailchimp_User_Service($cs_obj);
+        $usa_obj = new Sincro_Mailchimp_User_Service_Adapter($us_obj);
+
+        $res_editor = $usa_obj->user_lists(array(), $this->users['editor']->ID);
+        $this->assertEquals([$lists['acme'] => array($interests['acme-group1'] => true, 
+                                                     $interests['acme-group2'] => false, 
+                                                     $interests['acme-group3'] => true, 
+                                                     $interests['acme-group4'] => false)], $res_editor);
+
+        $res_subscriber = $usa_obj->user_lists(array(), $this->users['subscriber']->ID );
+        $this->assertEquals([$lists['acme'] => array($interests['acme-group1'] => true, 
+                                                 $interests['acme-group2'] => false, 
+                                                 $interests['acme-group3'] => true, 
+                                                 $interests['acme-group4'] => true), 
+                            $lists['test'] => array($interests['group1'] => false,
+                                                   $interests['group2'] => true,
+                                                   $interests['group3'] => false)], $res_subscriber);
+
+        $res_administrator = $usa_obj->user_lists(array(), $this->users['administrator']->ID);
+        $this->assertEquals([$lists['test'] => array($interests['group1'] => false,
+                                                   $interests['group2'] => true,
+                                                   $interests['group3'] => true)], $res_administrator);
+
+        $res = $usa_obj->user_lists(array(), 100);
+        $this->assertEquals(array(), $res);
+    }
+
+    /**
      * user_list_interests test.
      */
     public function test_user_list_interests() 
