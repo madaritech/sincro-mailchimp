@@ -69,10 +69,15 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
         $this->lists = $lists;
         $this->interests = $interests;
 
-        $this->smss_stub = $this->getMockBuilder('Sincro_Mailchimp_Subscription_Service')
-            ->setConstructorArgs(array())
-            ->setMethods(array( 'get_config_role' ))
+        $this->smcs_stub = $this->getMockBuilder('Sincro_Mailchimp_Configuration_Service')
+            ->disableOriginalConstructor()
+            ->setMethods(array( 'get_by_role' ))
             ->getMock();
+
+        /*$this->smss_stub = $this->getMockBuilder('Sincro_Mailchimp_Subscription_Service')
+            ->disableOriginalConstructor()
+            ->setMethods(array())
+            ->getMock();*/
 
         $this->dummy_api = $this->getMockBuilder('Sincro_Mailchimp_Api_Service')
             ->disableOriginalConstructor()
@@ -161,15 +166,29 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
         $this->assertEquals($res, true);
 
     }
+    
+    /**
+     *    rolesProvider
+     */
+    public function rolesProvider() {
+
+        return [['administrator'], 
+                ['editor'], 
+                ['author'], 
+                ['contributor'], 
+                ['subscriber']];
+
+    }
 
     /**
      *    check_subscription_status
      *
-     *  @dataProvider roleProvider
+     *    @dataProvider rolesProvider
      */
     public function test_check_subscription_status($role) 
     {
-
+        $smss_obj = new Sincro_Mailchimp_Subscription_Service();
+        
         $obj0 = new stdClass();
         $obj0->id = $this->lists['test'];
 
@@ -188,47 +207,37 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
             ->method('get_list_member')
             ->willReturn($stub_interests);
 
+        $smss_obj->api = $this->dummy_api;
+        
         //Stub ruolo utente in verifica
-        $this->smss_stub->expects($this->any())
-            ->method('get_config_role')
+        $this->smcs_stub->expects($this->any())
+            ->method('get_by_role')
             ->willReturn($this->config[$role]);
 
-        $this->smss_stub->api = $this->dummy_api;
+        $smss_obj->configuration = $this->smcs_stub;
 
-        $res = $this->smss_stub->check_subscription_status($this->email_test, $role);
+        $res = $smss_obj->check_subscription_status($this->email_test, $role);
 
         switch ($role) {
-        case 'administrator':
-            $this->assertEquals($res, 3);
-            break;
-        case 'editor':
-            $this->assertEquals($res, 3);
-            break;
-        case 'author':
-            $this->assertEquals($res, 0);
-            break;
-        case 'contributor':
-            $this->assertEquals($res, 2);
-            break;
-        case 'subscriber':
-            $this->assertEquals($res, 3);
-            break;
-        default:
-            // code...
-            break;
+            case 'administrator':
+                $this->assertEquals($res, 3);
+                break;
+            case 'editor':
+                $this->assertEquals($res, 3);
+                break;
+            case 'author':
+                $this->assertEquals($res, 0);
+                break;
+            case 'contributor':
+                $this->assertEquals($res, 2);
+                break;
+            case 'subscriber':
+                $this->assertEquals($res, 3);
+                break;
+            default:
+                // code...
+                break;
         }
-
-    }
-
-    public function roleProvider()
-    {
-        return [ 
-        ['administrator'],
-        ['editor'],
-        ['author'],
-        ['contributor'],
-        ['subscriber']
-        ];
     }
 
     /**
@@ -238,6 +247,7 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
      */
     public function test_check_subscription_status_not_empty() 
     {        
+        $smss_obj = new Sincro_Mailchimp_Subscription_Service();
 
         //Stub list restituita su mailchimp -> vuota
         $this->dummy_api->expects($this->any())
@@ -245,13 +255,14 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
             ->willReturn(array());
 
         //Stub ruolo utente in verifica
-        $this->smss_stub->expects($this->any())
-            ->method('get_config_role')
+        $this->smcs_stub->expects($this->any())
+            ->method('get_by_role')
             ->willReturn($this->config['editor']);
 
-        $this->smss_stub->api = $this->dummy_api;
+        $smss_obj->api = $this->dummy_api;
+        $smss_obj->configuration = $this->smcs_stub;
 
-        $res = $this->smss_stub->check_subscription_status($this->email_test, 'editor');
+        $res = $smss_obj->check_subscription_status($this->email_test, 'editor');
 
         $this->assertEquals($res, 1);
         
@@ -269,6 +280,8 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
                             [3, $this->factory->user->create_and_get(array( 'role' => 'contributor' ))->user_email, 'contributor', true],
                             [2, $this->factory->user->create_and_get(array( 'role' => 'subscriber' ))->user_email, 'subscriber', true]);
 
+        $smss_obj = new Sincro_Mailchimp_Subscription_Service();
+
         //Stub eliminazione utente dalle liste mailchimp 
         $this->dummy_api->expects($this->any())
             ->method('delete_list_member')
@@ -279,7 +292,7 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
             ->method('get_lists')
             ->willReturn(array());
 
-        $this->smss_stub->api = $this->dummy_api;
+        $smss_obj->api = $this->dummy_api;
 
         foreach($provider as $test_data) {
 
@@ -288,7 +301,7 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
             $user_role = $test_data[2]; 
             $res = $test_data[3];
         
-            $result = $this->smss_stub->unsubscribe_process($subscription_status, $user_email, $user_role);
+            $result = $smss_obj->unsubscribe_process($subscription_status, $user_email, $user_role);
     
             $this->assertEquals($result, $res);
         }
@@ -304,6 +317,8 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
                         [0, $this->factory->user->create_and_get(array( 'role' => 'author' ))->user_email, 'author', false],
                         [3, $this->factory->user->create_and_get(array( 'role' => 'contributor' ))->user_email, 'contributor', true],
                         [2, $this->factory->user->create_and_get(array( 'role' => 'subscriber' ))->user_email, 'subscriber', false]);
+
+        $smss_obj = new Sincro_Mailchimp_Subscription_Service();
 
         foreach($provider as $test_data) {
 
@@ -327,9 +342,9 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
                 ->method('add_list_member')
                 ->willReturn(true);
 
-            $this->smss_stub->api = $this->dummy_api;
+            $smss_obj->api = $this->dummy_api;
 
-            $result = $this->smss_stub->subscribe_process($subscription_status, $user_email, $user_role);
+            $result = $smss_obj->subscribe_process($subscription_status, $user_email, $user_role);
         
             $this->assertEquals($result, $res);
         }
