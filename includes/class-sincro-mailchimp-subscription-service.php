@@ -43,7 +43,7 @@ class Sincro_Mailchimp_Subscription_Service
      * @since  1.0.0
      * @access protected
      */
-    private $smc;
+    public $configuration;
 
     /**
      * Initialize the class and set its properties.
@@ -55,6 +55,8 @@ class Sincro_Mailchimp_Subscription_Service
 
         $this->log = Sincro_MailChimp_Log_Service::create('Sincro_Mailchimp_Subscription_Service');
         $this->api = new Sincro_Mailchimp_Api_Service();
+        $configuration = defined('SINCRO_MAILCHIMP_CONFIG') ? unserialize(SINCRO_MAILCHIMP_CONFIG) : array();
+        $this->configuration = new Sincro_Mailchimp_Configuration_Service($configuration);
 
     }
 
@@ -164,12 +166,17 @@ class Sincro_Mailchimp_Subscription_Service
      */
     public function check_subscription_status( $user_email, $user_role ) 
     {
+        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            $this->log->debug("Checking subscription status [ user e-mail :: $user_email ][ user role :: $user_role ]...");
+        }
         
         // Estrazione parametri configurazione
-        //$smc = $this->get_config_role($user_role);
-        $configuration = defined('SINCRO_MAILCHIMP_CONFIG') ? unserialize(SINCRO_MAILCHIMP_CONFIG) : array();
-        $configuration_service = new Sincro_Mailchimp_Configuration_Service($configuration);
-        $smc = $configuration_service->get_by_role($user_role);
+        $smc = $this->configuration->get_by_role($user_role);
+
+        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+                $c = count($smc);
+                $this->log->debug("Checking configuration [ count smc :: $c ][ user role :: $user_role ]");
+        } 
 
         // Estrazione List associate all'utente e verifica allineamento rispetto la configurazione
         $args['email']  = $user_email;
@@ -223,7 +230,8 @@ class Sincro_Mailchimp_Subscription_Service
                 return ( 2 );
             }
 
-        } catch (MC4WP_API_Connection_Exception $e) {
+        } 
+        catch (MC4WP_API_Connection_Exception $e) {
 
                 if (Sincro_MailChimp_Log_Service::is_enabled() ) {
                     
@@ -234,50 +242,48 @@ class Sincro_Mailchimp_Subscription_Service
                 }
                 throw new Exception(__("Problema di connessione. $message",'sincro_mailchimp'));
             
-            }
-            catch (MC4WP_API_Resource_Not_Found_Exception $e) {
-            
-                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
-                    
-                    $message = $e->getMessage();
-                    $code = $e->getCode();
-                    $this->log->debug("Check Subscription Status: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]");
+        }
+        catch (MC4WP_API_Resource_Not_Found_Exception $e) {
+        
+            if (Sincro_MailChimp_Log_Service::is_enabled() ) {
                 
-                }
-                throw new Exception(__('Risorsa non trovata.','sincro_mailchimp'));
+                $message = $e->getMessage();
+                $code = $e->getCode();
+                $this->log->debug("Check Subscription Status: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]");
             
             }
-            catch (MC4WP_API_Exception $e) {
-            
-                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            throw new Exception(__('Risorsa non trovata.','sincro_mailchimp'));
+        
+        }
+        catch (MC4WP_API_Exception $e) {
+        
+            if (Sincro_MailChimp_Log_Service::is_enabled() ) {
 
-                    $message = $e->getMessage();
-                    $code = $e->getCode();
-                    $this->log->debug("Check Subscription Status: MC4WP_API_Exception [ message :: $message ] [ code :: $code]");
-                
-                }
-                throw new Exception(__('Errore nelle API di connessione.','sincro_mailchimp'));
+                $message = $e->getMessage();
+                $code = $e->getCode();
+                $this->log->debug("Check Subscription Status: MC4WP_API_Exception [ message :: $message ] [ code :: $code]");
             
             }
-            catch (Exception $e) {
-            
-                if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            throw new Exception(__('Errore nelle API di connessione.','sincro_mailchimp'));
+        
+        }
+        catch (Exception $e) {
+        
+            if (Sincro_MailChimp_Log_Service::is_enabled() ) {
 
-                    $message = $e->getMessage();
-                    $code = $e->getCode();
-                    $this->log->debug("Check Subscription Status: Exception [ message :: $message ] [ code :: $code]");
+                $message = $e->getMessage();
+                $code = $e->getCode();
+                $this->log->debug("Check Subscription Status: Exception [ message :: $message ] [ code :: $code]");
 
-                }
-                throw new Exception(__('Errore generico.','sincro_mailchimp'));
-            
             }
+            throw new Exception(__('Errore generico.','sincro_mailchimp'));
+        }
     }
 
     /**
      * Eseguo l'iscrizione dell'utente.
      *
      * @param $user_email
-     * @param $smc
      *
      * @since 1.0.0
      */
@@ -313,9 +319,9 @@ class Sincro_Mailchimp_Subscription_Service
              * @param string $user_email The user's e-mail address.
              * @param string $list_id The MailChimp list's id.
              * @param array  $interests An array of interests' ids.
-             * @param array  $smc The Sincro_Mailchimp configuration's array.
+             * @param array  $configuration The Sincro_Mailchimp configuration's array.
              */
-            $args['merge_fields'] = apply_filters('sm_merge_fields', array(), $user_email, $list_id, $interests, $smc);
+            $args['merge_fields'] = apply_filters('sm_merge_fields', array(), $user_email, $list_id, $interests, $configuration);
 
             try  {
             
@@ -384,18 +390,26 @@ class Sincro_Mailchimp_Subscription_Service
      * Elimino l'iscrizione basandomi sullo stato della configurazione locale.
      *
      * @param $user_email
-     * @param $smc
      *
      * @since 1.0.0
      */
     public function unsubscribe_user_config( $user_email ) 
     {
 
+        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            $this->log->debug("Unsubscribing user config [ user e-mail :: $user_email ]");
+        }
+
         // Get the user id.
         $user = get_user_by('email', $user_email);
 
         $lists = array();
         $lists = apply_filters('sm_user_list', $lists, $user->ID);
+
+        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            $c = count($lists);
+            $this->log->debug("Unsubscribing user config [ lists after apply filter :: $c ]");
+        }
 
         $reset_args['email'] = $user_email;
 
