@@ -1,25 +1,19 @@
 <?php
 
 /**
- * The plugin bootstrap file
  *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
- * @link    http://example.com
+ * @link    http://www.madaritech.com
  * @since   1.0.0
  * @package Sincro_Mailchimp
  *
  * @wordpress-plugin
  * Plugin Name:       Sincro Mailchimp
  * Plugin URI:        http://www.madaritech.com
- * Description:       Il plugin permette di registrare/eliminare la registrazione di un utente dalla Mailing List MailChimp tramite un'opzione dalla pagina WordPress di modifica profilo utente
+ * Description:       The plugin permits administrators to subscribe/unsubscribe WordPress users to MailChimp by a checkbox on the users	*                    page. Every user, depending on their roles and the template defined in wp-config file, can be associated to MailChimp *                    lists and interests. The plugin requires MailChimp for WordPress plugin.
  * Version:           1.0.0
  * Author:            Madaritech
  * Author URI:        http://www.madaritech.com
- * License:           GPL-2.0+
+ * License:           GPLv2 or later.
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       sincro-mailchimp
  * Domain Path:       /languages
