@@ -184,6 +184,7 @@ class Sincro_Mailchimp
         $this->configuration_service = new Sincro_Mailchimp_Configuration_Service($configuration);
         $this->user_service          = new Sincro_Mailchimp_User_Service($this->configuration_service);
 		$this->requirements_service  = new Sincro_Mailchimp_Requirements_Service();
+        
         /**
  		* Adapters. 
 		*/
@@ -222,7 +223,8 @@ class Sincro_Mailchimp
         $plugin_admin = new Sincro_Mailchimp_Admin($this->get_plugin_name(), $this->get_version());
 
         $this->loader->add_action('admin_notices', $this->requirements_service, 'mfw_missing_admin_notice');
-        
+
+        $this->loader->add_action('admin_menu', $plugin_admin, 'sincro_mailchimp_admin_menu');
         $this->loader->add_action('show_user_profile', $plugin_admin, 'form_field_iscrizione_mailing_list');
         $this->loader->add_action('edit_user_profile', $plugin_admin, 'form_field_iscrizione_mailing_list');
         $this->loader->add_action('wp_ajax_esegui_iscrizione', $plugin_admin, 'esegui_iscrizione');

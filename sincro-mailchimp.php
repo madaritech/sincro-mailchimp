@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name:       Sincro Mailchimp
  * Plugin URI:        http://www.madaritech.com
- * Description:       The plugin permits administrators to subscribe/unsubscribe WordPress users to MailChimp by a checkbox on the users	*                    page. Every user, depending on their roles and the template defined in wp-config file, can be associated to MailChimp *                    lists and interests. The plugin requires MailChimp for WordPress plugin.
+ * Description:       The plugin permits administrators to subscribe/unsubscribe WordPress users to MailChimp by a checkbox on the user page. Every user, depending on their roles and the template defined in wp-config file, can be associated to MailChimp                     lists and interests. The plugin requires MailChimp for WordPress plugin.
  * Version:           1.0.0
  * Author:            Madaritech
  * Author URI:        http://www.madaritech.com

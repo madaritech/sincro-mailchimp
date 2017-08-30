@@ -21,7 +21,7 @@ class Sincro_Mailchimp_Api_Service
 {
 
     /**
-     * Richiama l'API get_lists dal Plugin MailChimp for WP.
+     * Calls get_lists API from MailChimp for WP Plugin.
      *
      * @since  1.0.0
      * @access public
@@ -36,7 +36,39 @@ class Sincro_Mailchimp_Api_Service
     }
 
     /**
-     * Richiama l'API get_list_member dal Plugin MailChimp for WP.
+     * Calls get_list_interest_categories API from MailChimp for WP Plugin.
+     *
+     * @since  1.0.0
+     * @access public
+     *
+     * @param int $list_id the list id
+     * @param array $args MailChimp API parameters
+     */
+    public function get_list_interest_categories( $list_id, array $args = array() ) 
+    {
+        global $mc4wp;
+
+        return ( $mc4wp['api']->get_list_interest_categories($list_id, $args) );
+    }
+
+    /**
+     * Calls get_list_interest_category_interests API from MailChimp for WP Plugin.
+     *
+     * @since  1.0.0
+     * @access public
+     *
+     * @param int $list_id the list id
+     * @param array $args MailChimp API parameters
+     */
+    public function get_list_interest_category_interests( $list_id, $interest_category_id, array $args = array() )
+    {
+        global $mc4wp;
+
+        return ( $mc4wp['api']->get_list_interest_category_interests($list_id, $interest_category_id, $args) );
+    }
+
+    /**
+     * Calls get_list_member API from MailChimp for WP Plugin.
      *
      * @since  1.0.0
      * @access public
@@ -52,7 +84,7 @@ class Sincro_Mailchimp_Api_Service
     }
 
     /**
-     * Richiama l'API add_list_member dal Plugin MailChimp for WP.
+     * Calls add_list_member API from MailChimp for WP Plugin.
      *
      * @since  1.0.0
      * @access public
@@ -68,7 +100,7 @@ class Sincro_Mailchimp_Api_Service
     }
 
     /**
-     * Richiama l'API delete_list_member dal Plugin MailChimp for WP.
+     * Calls delete_list_member API from MailChimp for WP Plugin.
      *
      * @since  1.0.0
      * @access public

@@ -41,14 +41,6 @@ class Sincro_Mailchimp_Admin
      */
     private $version;
 
-    /**
-     * Configurazione Plugin.
-     *
-     * @since  1.0.0
-     * @access protected
-     */
-    private $smc;
-
     /*
     * A {@link Sincro_MailChimp_Log_Service} instance.
     *
@@ -57,6 +49,14 @@ class Sincro_Mailchimp_Admin
     * @var \Sincro_MailChimp_Log_Service $log A {@link Sincro_MailChimp_Log_Service} instance.
     */
     private $log;
+
+    /**
+     * Api Mailchimp.
+     *
+     * @since  1.0.0
+     * @access public
+     */
+    public $api;
 
     /**
      * Subscription Service.
@@ -88,6 +88,7 @@ class Sincro_Mailchimp_Admin
         $this->log = Sincro_MailChimp_Log_Service::create('Sincro_Mailchimp_Admin');
         $this->subscription_service = new Sincro_MailChimp_Subscription_Service();
         $this->requirements_service = new Sincro_MailChimp_Requirements_Service();
+        $this->api = new Sincro_Mailchimp_Api_Service();
 
         $this->plugin_name = $plugin_name;
         $this->version     = $version;
@@ -143,6 +144,170 @@ class Sincro_Mailchimp_Admin
     }
 
     /**
+     * The Admin Menu for the plugin.
+     *
+     * @since 1.0.0
+     */
+    public function sincro_mailchimp_admin_menu( ) 
+    {
+        add_menu_page(
+            'Sincro MailChimp Plugin',
+            'Sincro MailChimp',
+            'manage_options',
+            'sincro-mailchimp',
+            array(&$this, 'sincro_mailchimp_settings_page')
+        );   
+    }
+
+    /**
+     * Create the Settings Page for the admin area.
+     *
+     * @since    1.0.0
+     */
+    public function sincro_mailchimp_settings_page() {
+
+        if( !current_user_can( 'manage_options' ) ) {
+            wp_die( __('You do not have sufficient permissions to access this page.', 'sincro_mailchimp') );
+        }
+
+        $configuration_options = array();
+
+        //ESTRAZIONE DI TUTTE LE LISTE E RELATIVI INTEREST DA MAILCHIMP
+        $mailchimp_lists = array();                   //['list_id' => ['name' => 'list_name', 'checked' => false] ]
+        $mailchimp_interest_categories = array();     //['list_id' => ['category_id' => 'category_name'] ]
+        $mailchimp_interests = array();               //['category_id' => ['interest_id' => ['name' => 'interest_name', 'checked' => false]]]
+
+        $lists_obj = $this->api->get_lists(array());
+        $list_arr = json_decode(json_encode($lists_obj), true);
+
+        foreach ($list_arr as $list) {
+
+            $mailchimp_lists[$list['id']] = [ 'name' => $list['name'], 'checked' => false ];
+
+            $interest_categories_obj = $this->api->get_list_interest_categories( $list['id'] );
+            $interest_categories_arr = json_decode(json_encode($interest_categories_obj), true);
+
+            foreach ($interest_categories_arr as $interest_category) {
+                
+                $mailchimp_interest_categories[$list['id']][$interest_category['id']] = $interest_category['title'];
+                
+                $interests_obj = $this->api->get_list_interest_category_interests( $list['id'], $interest_category['id'] );
+                $interests_arr = json_decode(json_encode($interests_obj), true);
+
+                foreach ($interests_arr as $interest) {
+                    $mailchimp_interests[$interest_category['id']][$interest['id']] = [ 'name' => $interest['name'], 'checked' => false ];
+                }
+            }    
+        }
+
+
+
+        global $wp_roles;
+        $all_roles = $wp_roles->roles;
+
+
+        if (isset($_POST['form_submitted'])) {
+            $hidden_field = esc_html( $_POST['form_submitted'] );
+
+            if ($hidden_field == 'Y') {
+
+                foreach ($all_roles as $role => $role_name) {
+
+                    $configuration_options[$role] = array();
+
+                    foreach ($mailchimp_lists as $list_id => $list_array) {
+
+                        if ( isset($_POST[$role.'-list-'.$list_id]) && esc_html($_POST[$role.'-list-'.$list_id]) == $list_id )  {
+                            
+                            $configuration_options[$role][$list_id] = array();
+
+                            foreach ( $mailchimp_interest_categories[$list_id] as $category_id => $category_name) {
+                                
+                                foreach ( $mailchimp_interests[$category_id] as $interest_id => $interest_array) {
+
+                                    if ( isset($_POST[$role.'-list-'.$list_id.'-interest-'.$interest_id]) && esc_html($_POST[$role.'-list-'.$list_id.'-interest-'.$interest_id]) == $interest_id ) {
+
+                                        $configuration_options[$role][$list_id][$interest_id] = true;
+
+                                    }
+                                    else {
+                                        $configuration_options[$role][$list_id][$interest_id] = false;
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+                update_option('sincro_mailchimp_options', serialize($configuration_options));
+            }
+        }
+
+        $sincro_mailchimp_options = get_option('sincro_mailchimp_options');
+        $configuration = unserialize($sincro_mailchimp_options);
+        //$configuration = unserialize(SINCRO_MAILCHIMP_CONFIG);        
+
+        $settings_lists;
+        $settings_interest_categories;
+        $settings_interests;
+
+        foreach ($all_roles as $role => $role_name) {
+            //Initializing mailchimp lists and interests for the role for the settings page
+            $settings_lists[$role] = $mailchimp_lists;
+            $settings_interest_categories[$role] = $mailchimp_interest_categories;
+            $settings_interests[$role] = $mailchimp_interests;
+        }
+
+
+
+
+
+        //AGGIORNAMENTO PROPRIETA' 'CHECKED' IN BASE ALLA CONFIGURAZIONE E ASSEGNAZIONE AL RELATIVO RUOLO
+        foreach ($all_roles as $role => $role_name) {
+            //$role='contributor';
+            //Initializing mailchimp lists and interests for the role for the settings page
+            $settings_lists[$role] = $mailchimp_lists;
+            $settings_interest_categories[$role] = $mailchimp_interest_categories;
+            $settings_interests[$role] = $mailchimp_interests;
+
+            foreach ($configuration[$role] as $configuration_list_id => $configuration_interest_array) {
+
+                foreach ($settings_lists[$role] as $mailchimp_list_id => $mailchimp_list_array) {
+                        
+                    if ( $mailchimp_list_id == $configuration_list_id ) {
+
+                        //Checked sulla lista
+                        $settings_lists[$role][$mailchimp_list_id]['checked'] = true;
+                    
+                    }
+
+                    if ($settings_lists[$role][$mailchimp_list_id]['checked']) {
+                        foreach ($settings_interest_categories[$role][$mailchimp_list_id] as $mailchimp_category_id => $mailchimp_category_name) {
+                            
+                            foreach ($settings_interests[$role][$mailchimp_category_id] as $mailchimp_interest_id => $mailchimp_interest_bool) {
+                            
+                                if (array_key_exists($mailchimp_interest_id, $configuration_interest_array)) {
+
+                                    $settings_interests[$role][$mailchimp_category_id][$mailchimp_interest_id]['checked'] = $configuration_interest_array[$mailchimp_interest_id];
+                            
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+                
+            }
+
+        }
+
+        require_once('partials/sincro-mailchimp-admin-display.php');
+    }
+
+    /**
      * The field on the editing screens.
      *
      * @param $user    WP_User user object
@@ -174,7 +339,7 @@ class Sincro_Mailchimp_Admin
 
 	        wp_localize_script('sm', 'sm', $params);
 
-			include_once 'partials/sincro-mailchimp-admin-display.php';
+			include_once 'partials/sincro-mailchimp-users-admin-display.php';
 		}
         
     }
@@ -244,4 +409,5 @@ class Sincro_Mailchimp_Admin
 
         wp_send_json_success(__('Operazione eseguita', 'sincro_mailchimp'));
     }
+
 }
