@@ -16,14 +16,6 @@ class SincroMailchimpConfigurationServiceTest extends WP_UnitTestCase
  
     public function setUp()
     {
-        /*$this->emailRoleStack = array(
-                                         $this->factory->user->create_and_get(array( 'role' => 'administrator' )),
-                                         $this->factory->user->create_and_get(array( 'role' => 'editor' )),
-                                         $this->factory->user->create_and_get(array( 'role' => 'author' )),
-                                         $this->factory->user->create_and_get(array( 'role' => 'contributor' )),
-                                         $this->factory->user->create_and_get(array( 'role' => 'subscriber' )),
-                                     );*/
-
         $lists['acme'] = 'e87b1536bb';
         $lists['test'] = '060a231f4f';
         $interests['group1']         = 'dafaf73c29';
@@ -61,6 +53,11 @@ class SincroMailchimpConfigurationServiceTest extends WP_UnitTestCase
 
         $this->lists = $lists;
         $this->interests = $interests;
+
+        $this->smcs_mock = $this->getMockBuilder('Sincro_Mailchimp_Configuration_Service')
+                                ->disableOriginalConstructor()
+                                ->setMethods(null)
+                                ->getMock();
     }
 
     /**
@@ -71,8 +68,9 @@ class SincroMailchimpConfigurationServiceTest extends WP_UnitTestCase
         $lists = $this->lists;
         $interests = $this->interests;
 
-        $configuration = $this->config;
-        $cs_obj = new Sincro_Mailchimp_Configuration_Service($configuration);
+        $cs_obj = $this->smcs_mock;
+        $cs_obj->set_configuration($this->config);
+
 
         $res_administrator = $cs_obj->get_by_role('administrator');
         $res_editor = $cs_obj->get_by_role('editor');
@@ -103,8 +101,8 @@ class SincroMailchimpConfigurationServiceTest extends WP_UnitTestCase
         $lists = $this->lists;
         $interests = $this->interests;
 
-        $configuration = $this->config;
-        $cs_obj = new Sincro_Mailchimp_Configuration_Service($configuration);
+        $cs_obj = $this->smcs_mock;
+        $cs_obj->set_configuration($this->config);
 
         $res_administrator = $cs_obj->get_by_role_and_list('administrator', $lists['acme']);
         $res_editor = $cs_obj->get_by_role_and_list('editor', $lists['acme']);

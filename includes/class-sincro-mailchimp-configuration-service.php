@@ -34,13 +34,26 @@ class Sincro_Mailchimp_Configuration_Service
      *
      * @since 1.0.0
      *
-     * @param array $configuration The configuration array.
      */
-    public function __construct( $configuration ) 
+    public function __construct() 
     {
 
-        $this->configuration = $configuration;
+        $this->configuration = isset($sincro_mailchimp_options) ? unserialize($sincro_mailchimp_options) : array();
 
+    }
+
+    /**
+     * Get the configuration given a role name.
+     *
+     * @since 1.0.0
+     *
+     * @param string $role The role name.
+     *
+     * @return array The configuration array for the specified role, or an empty array if not found.
+     */
+    public function set_configuration($configuration) 
+    {
+        $this->configuration = $configuration;
     }
 
     /**

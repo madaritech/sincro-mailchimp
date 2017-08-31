@@ -246,8 +246,7 @@ class Sincro_Mailchimp_Admin
         }
 
         $sincro_mailchimp_options = get_option('sincro_mailchimp_options');
-        $configuration = unserialize($sincro_mailchimp_options);
-        //$configuration = unserialize(SINCRO_MAILCHIMP_CONFIG);        
+        $configuration = unserialize($sincro_mailchimp_options);        
 
         $settings_lists;
         $settings_interest_categories;
@@ -266,7 +265,7 @@ class Sincro_Mailchimp_Admin
 
         //AGGIORNAMENTO PROPRIETA' 'CHECKED' IN BASE ALLA CONFIGURAZIONE E ASSEGNAZIONE AL RELATIVO RUOLO
         foreach ($all_roles as $role => $role_name) {
-            //$role='contributor';
+
             //Initializing mailchimp lists and interests for the role for the settings page
             $settings_lists[$role] = $mailchimp_lists;
             $settings_interest_categories[$role] = $mailchimp_interest_categories;

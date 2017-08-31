@@ -90,7 +90,7 @@ class Sincro_Mailchimp
      * @since  1.0.0
      * @access protected
      */
-    protected $requirements_service;
+    //protected $requirements_service;
 
     /**
      * Define the core functionality of the plugin.
@@ -174,17 +174,11 @@ class Sincro_Mailchimp
         $this->loader = new Sincro_Mailchimp_Loader();
 
         /**
- 		* Configuration. 
-		*/
-        $configuration = defined('SINCRO_MAILCHIMP_CONFIG') ? unserialize(SINCRO_MAILCHIMP_CONFIG) : array();
-
-        /**
  		* Services. 
 		*/
-        $this->configuration_service = new Sincro_Mailchimp_Configuration_Service($configuration);
+        $this->configuration_service = new Sincro_Mailchimp_Configuration_Service();
         $this->user_service          = new Sincro_Mailchimp_User_Service($this->configuration_service);
-		$this->requirements_service  = new Sincro_Mailchimp_Requirements_Service();
-        
+
         /**
  		* Adapters. 
 		*/
@@ -220,9 +214,10 @@ class Sincro_Mailchimp
     private function define_admin_hooks() 
     {
 
-        $plugin_admin = new Sincro_Mailchimp_Admin($this->get_plugin_name(), $this->get_version());
+        $plugin_admin           = new Sincro_Mailchimp_Admin($this->get_plugin_name(), $this->get_version());
+        $plugin_requirements    = new Sincro_Mailchimp_Requirements_Service();
 
-        $this->loader->add_action('admin_notices', $this->requirements_service, 'mfw_missing_admin_notice');
+        $this->loader->add_action('admin_notices', $plugin_requirements, 'mfw_missing_admin_notice');
 
         $this->loader->add_action('admin_menu', $plugin_admin, 'sincro_mailchimp_admin_menu');
         $this->loader->add_action('show_user_profile', $plugin_admin, 'form_field_iscrizione_mailing_list');

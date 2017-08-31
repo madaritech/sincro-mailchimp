@@ -41,9 +41,9 @@ class Sincro_Mailchimp_Subscription_Service
      * Configurazione Plugin.
      *
      * @since  1.0.0
-     * @access protected
+     * @access private
      */
-    public $configuration;
+    private $configuration;
 
     /**
      * Initialize the class and set its properties.
@@ -55,9 +55,20 @@ class Sincro_Mailchimp_Subscription_Service
 
         $this->log = Sincro_MailChimp_Log_Service::create('Sincro_Mailchimp_Subscription_Service');
         $this->api = new Sincro_Mailchimp_Api_Service();
-        $configuration = defined('SINCRO_MAILCHIMP_CONFIG') ? unserialize(SINCRO_MAILCHIMP_CONFIG) : array();
-        $this->configuration = new Sincro_Mailchimp_Configuration_Service($configuration);
+        //$configuration = defined('SINCRO_MAILCHIMP_CONFIG') ? unserialize(SINCRO_MAILCHIMP_CONFIG) : array();
+        //$this->configuration = new Sincro_Mailchimp_Configuration_Service($configuration);
+        $this->configuration = new Sincro_Mailchimp_Configuration_Service();
 
+    }
+
+    /**
+     * Configuration set method.
+     *
+     * @since 1.0.0
+     */
+    public function set_configuration($configuration) 
+    {
+        $this->configuration = $configuration;
     }
 
     /**

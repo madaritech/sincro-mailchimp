@@ -60,6 +60,11 @@ class SincroMailchimpUserServiceTest extends WP_UnitTestCase
 
         $this->lists = $lists;
         $this->interests = $interests;
+
+        $this->smcs_mock = $this->getMockBuilder('Sincro_Mailchimp_Configuration_Service')
+                        ->disableOriginalConstructor()
+                        ->setMethods(null)
+                        ->getMock();
     }
 
     /**
@@ -70,8 +75,8 @@ class SincroMailchimpUserServiceTest extends WP_UnitTestCase
         $lists = $this->lists;
         $interests = $this->interests;
 
-        $configuration = $this->config;
-        $cs_obj = new Sincro_Mailchimp_Configuration_Service($configuration);
+        $cs_obj = $this->smcs_mock;
+        $cs_obj->set_configuration($this->config);
         $us_obj = new Sincro_Mailchimp_User_Service($cs_obj);
 
         $res_editor = $us_obj->get_lists(array(), $this->users['editor']->ID);
@@ -104,8 +109,8 @@ class SincroMailchimpUserServiceTest extends WP_UnitTestCase
         $lists = $this->lists;
         $interests = $this->interests;
 
-        $configuration = $this->config;
-        $cs_obj = new Sincro_Mailchimp_Configuration_Service($configuration);
+        $cs_obj = $this->smcs_mock;
+        $cs_obj->set_configuration($this->config);
         $us_obj = new Sincro_Mailchimp_User_Service($cs_obj);
 
         $res_editor = $us_obj->get_interests($this->users['editor']->ID, $lists['acme']);
