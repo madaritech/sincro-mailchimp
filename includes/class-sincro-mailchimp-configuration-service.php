@@ -29,6 +29,15 @@ class Sincro_Mailchimp_Configuration_Service
      */
     private $configuration;
 
+    /*
+    * A {@link Sincro_MailChimp_Log_Service} instance.
+    *
+    * @since 1.0.0
+    * @access private
+    * @var \Sincro_MailChimp_Log_Service $log A {@link Sincro_MailChimp_Log_Service} instance.
+    */
+    private $log;
+
     /**
      * Create a {@link Sincro_Mailchimp_Configuration_Service} instance.
      *
@@ -37,9 +46,8 @@ class Sincro_Mailchimp_Configuration_Service
      */
     public function __construct() 
     {
-
+        $sincro_mailchimp_options = get_option('sincro_mailchimp_options');
         $this->configuration = isset($sincro_mailchimp_options) ? unserialize($sincro_mailchimp_options) : array();
-
     }
 
     /**
