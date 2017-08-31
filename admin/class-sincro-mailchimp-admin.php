@@ -144,38 +144,16 @@ class Sincro_Mailchimp_Admin
     }
 
     /**
-     * The Admin Menu for the plugin.
+     * Extract all the lists, categories and interests schema related to the MailChimp Key registered.
      *
-     * @since 1.0.0
-     */
-    public function sincro_mailchimp_admin_menu( ) 
-    {
-        add_menu_page(
-            'Sincro MailChimp Plugin',
-            'Sincro MailChimp',
-            'manage_options',
-            'sincro-mailchimp',
-            array(&$this, 'sincro_mailchimp_settings_page')
-        );   
-    }
-
-    /**
-     * Create the Settings Page for the admin area.
+     * @param array $mailchimp_lists Mailchimp lists: ['list_id' => ['name' => 'list_name', 'checked' => false] ]
+     * @param array  $mailchimp_interest_categories Mailchimp categories and interests: ['list_id' => ['category_id' => 'category_name'] ]
+     * @param array  $mailchimp_interests Mailchimp categories and interests: ['category_id' => ['interest_id' => ['name' => 'interest_name', 'checked' => false]]]
      *
      * @since    1.0.0
+     * @access public
      */
-    public function sincro_mailchimp_settings_page() {
-
-        if( !current_user_can( 'manage_options' ) ) {
-            wp_die( __('You do not have sufficient permissions to access this page.', 'sincro_mailchimp') );
-        }
-
-        $configuration_options = array();
-
-        //ESTRAZIONE DI TUTTE LE LISTE E RELATIVI INTEREST DA MAILCHIMP
-        $mailchimp_lists = array();                   //['list_id' => ['name' => 'list_name', 'checked' => false] ]
-        $mailchimp_interest_categories = array();     //['list_id' => ['category_id' => 'category_name'] ]
-        $mailchimp_interests = array();               //['category_id' => ['interest_id' => ['name' => 'interest_name', 'checked' => false]]]
+    public function read_mailchimp_schema(&$mailchimp_lists, &$mailchimp_interest_categories, &$mailchimp_interests) {
 
         $lists_obj = $this->api->get_lists(array());
         $list_arr = json_decode(json_encode($lists_obj), true);
@@ -183,14 +161,12 @@ class Sincro_Mailchimp_Admin
         foreach ($list_arr as $list) {
 
             $mailchimp_lists[$list['id']] = [ 'name' => $list['name'], 'checked' => false ];
-
             $interest_categories_obj = $this->api->get_list_interest_categories( $list['id'] );
             $interest_categories_arr = json_decode(json_encode($interest_categories_obj), true);
 
             foreach ($interest_categories_arr as $interest_category) {
                 
                 $mailchimp_interest_categories[$list['id']][$interest_category['id']] = $interest_category['title'];
-                
                 $interests_obj = $this->api->get_list_interest_category_interests( $list['id'], $interest_category['id'] );
                 $interests_arr = json_decode(json_encode($interests_obj), true);
 
@@ -199,19 +175,27 @@ class Sincro_Mailchimp_Admin
                 }
             }    
         }
+    }
 
-
+    /**
+     * Using the MailChimp Schema, with the actual configuration configured by the user sent via form, updates the configuration option with the actual role, lists and interests that have to be associated on subscription process to the particular user.
+     *
+     * @param array $configuration_options Array for the configuration of the lists and interests values actually associated to role for every subscribed user 
+     * @param array $mailchimp_lists Mailchimp lists: ['list_id' => ['name' => 'list_name', 'checked' => false] ]
+     * @param array  $mailchimp_interest_categories Mailchimp categories and interests: ['list_id' => ['category_id' => 'category_name'] ]
+     * @param array  $mailchimp_interests Mailchimp categories and interests: ['category_id' => ['interest_id' => ['name' => 'interest_name', 'checked' => false]]]
+     *
+     * @return array $configuration_options Array for the configuration of the lists and interests values actually associated to role for every subscribed user 
+     *
+     * @since    1.0.0
+     * @access public
+     */
+    public function build_configuration_option($configuration_options, $mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests) {
 
         global $wp_roles;
         $all_roles = $wp_roles->roles;
 
-
-        if (isset($_POST['form_submitted'])) {
-            $hidden_field = esc_html( $_POST['form_submitted'] );
-
-            if ($hidden_field == 'Y') {
-
-                foreach ($all_roles as $role => $role_name) {
+        foreach ($all_roles as $role => $role_name) {
 
                     $configuration_options[$role] = array();
 
@@ -241,36 +225,25 @@ class Sincro_Mailchimp_Admin
 
                 }
 
-                update_option('sincro_mailchimp_options', serialize($configuration_options));
-            }
-        }
+        return($configuration_options);
+    }
 
-        $sincro_mailchimp_options = get_option('sincro_mailchimp_options');
-        $configuration = unserialize($sincro_mailchimp_options);        
+    /**
+     * Using the actual configuration option, updates the MailChimp schemas of every roles indicating the checked lists and checked interests.
+     *
+     * @param array $configuration Array for the configuration of the lists and interests values actually associated to role for every subscribed user 
+     * @param array $settings_lists Mailchimp lists to update with checked tags: ['list_id' => ['name' => 'list_name', 'checked' => false] ]
+     * @param array  $settings_interest_categories Mailchimp categories and interests to update with checked tags: ['list_id' => ['category_id' => 'category_name'] ]
+     * @param array  $settings_interests Mailchimp categories and interests to update with checked tags: ['category_id' => ['interest_id' => ['name' => 'interest_name', 'checked' => false]]] 
+     *
+     * @since    1.0.0
+     * @access public
+     */
+    public function build_setting_form($all_roles, $configuration, &$settings_lists, &$settings_interest_categories, &$settings_interests) {
 
-        $settings_lists;
-        $settings_interest_categories;
-        $settings_interests;
-
+        //Update 'checked' property using configuration, and assignment to the proper wp role
         foreach ($all_roles as $role => $role_name) {
-            //Initializing mailchimp lists and interests for the role for the settings page
-            $settings_lists[$role] = $mailchimp_lists;
-            $settings_interest_categories[$role] = $mailchimp_interest_categories;
-            $settings_interests[$role] = $mailchimp_interests;
-        }
-
-
-
-
-
-        //AGGIORNAMENTO PROPRIETA' 'CHECKED' IN BASE ALLA CONFIGURAZIONE E ASSEGNAZIONE AL RELATIVO RUOLO
-        foreach ($all_roles as $role => $role_name) {
-
-            //Initializing mailchimp lists and interests for the role for the settings page
-            $settings_lists[$role] = $mailchimp_lists;
-            $settings_interest_categories[$role] = $mailchimp_interest_categories;
-            $settings_interests[$role] = $mailchimp_interests;
-
+            
             foreach ($configuration[$role] as $configuration_list_id => $configuration_interest_array) {
 
                 foreach ($settings_lists[$role] as $mailchimp_list_id => $mailchimp_list_array) {
@@ -292,16 +265,78 @@ class Sincro_Mailchimp_Admin
                                     $settings_interests[$role][$mailchimp_category_id][$mailchimp_interest_id]['checked'] = $configuration_interest_array[$mailchimp_interest_id];
                             
                                 }
-
                             }
                         }
                     }
-
                 }
-                
             }
-
         }
+    }
+
+    /**
+     * The Admin Menu for the plugin.
+     *
+     * @since 1.0.0
+     */
+    public function sincro_mailchimp_admin_menu( ) 
+    {
+        add_menu_page(
+            'Sincro MailChimp Plugin',
+            'Sincro MailChimp',
+            'manage_options',
+            'sincro-mailchimp',
+            array(&$this, 'sincro_mailchimp_settings_page')
+        );   
+    }
+
+    /**
+     * Create the Settings Page for the admin area.
+     *
+     * @since    1.0.0
+     */
+    public function sincro_mailchimp_settings_page() {
+
+        if( !current_user_can( 'manage_options' ) ) {
+            wp_die( __('You do not have sufficient permissions to access this page.', 'sincro_mailchimp') );
+        }
+
+        $configuration_options = array();
+        $mailchimp_lists = array();                //['list_id' => ['name' => 'list_name', 'checked' => false] ]
+        $mailchimp_interest_categories = array();  //['list_id' => ['category_id' => 'category_name'] ]
+        $mailchimp_interests = array();            //['category_id' => ['interest_id' => ['name' => 'interest_name', 'checked' => false]]]
+
+        $this->read_mailchimp_schema($mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests);
+
+        if (isset($_POST['form_submitted'])) {
+
+            $hidden_field = esc_html( $_POST['form_submitted'] );
+
+            if ($hidden_field == 'Y') {
+
+                $configuration_options = $this->build_configuration_option($configuration_options, $mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests);
+
+                update_option('sincro_mailchimp_options', serialize($configuration_options));
+            }
+        }
+
+        $sincro_mailchimp_options = get_option('sincro_mailchimp_options');
+        $configuration = unserialize($sincro_mailchimp_options);        
+
+        $settings_lists;
+        $settings_interest_categories;
+        $settings_interests;
+        
+        global $wp_roles;
+        $all_roles = $wp_roles->roles;
+
+        foreach ($all_roles as $role => $role_name) {
+            //Initializing mailchimp lists and interests for the role for the settings page
+            $settings_lists[$role] = $mailchimp_lists;
+            $settings_interest_categories[$role] = $mailchimp_interest_categories;
+            $settings_interests[$role] = $mailchimp_interests;
+        }
+
+        $this->build_setting_form($all_roles, $configuration, $settings_lists, $settings_interest_categories, $settings_interests);
 
         require_once('partials/sincro-mailchimp-admin-display.php');
     }

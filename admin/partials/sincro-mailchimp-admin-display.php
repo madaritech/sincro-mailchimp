@@ -40,8 +40,6 @@
                                 <table class="widefat">
 <?php 
 
-
-
 foreach ($all_roles as $role => $role_val) {
     $schema_name = $role . '_subscription_schema';
     $name = $role_val['name'];
