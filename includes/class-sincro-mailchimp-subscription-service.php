@@ -90,30 +90,30 @@ class Sincro_Mailchimp_Subscription_Service
         $res = false;
 
         switch ( $subscription_status ) {
-        case 0:
-            // Configurazione vuota: non eseguo nulla
-            break;
-        case 1:
-            // Procedo con l'iscrizione
-            $res = $this->subscribe_user($user_email);
-
-            break;
-        case 2:
-            // Utente già iscritto correttamente
-            break;
-        case 3:
-            // Utente iscritto parzialmente o in modo diverso rispetto la configurazione
-            
-            //Reset iscrizione parziale
-            if ($this->unsubscribe_user_mailchimp($user_email) ) {
-                // Procedo con iscrizione da configurazione
+            case 0:
+                // Configurazione vuota: non eseguo nulla
+                break;
+            case 1:
+                // Procedo con l'iscrizione
                 $res = $this->subscribe_user($user_email);
-            }
 
-            break;
+                break;
+            case 2:
+                // Utente già iscritto correttamente
+                break;
+            case 3:
+                // Utente iscritto parzialmente o in modo diverso rispetto la configurazione
+                
+                //Reset iscrizione parziale
+                if ($this->unsubscribe_user_mailchimp($user_email) ) {
+                    // Procedo con iscrizione da configurazione
+                    $res = $this->subscribe_user($user_email);
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
 
         if (Sincro_MailChimp_Log_Service::is_enabled() ) {
