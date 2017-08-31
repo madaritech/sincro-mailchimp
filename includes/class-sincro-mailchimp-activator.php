@@ -32,7 +32,16 @@ class Sincro_Mailchimp_Activator
      */
     public static function activate() 
     {
+        global $wp_roles;
+        $all_roles = $wp_roles->roles;
 
+        $options = array();
+        
+        foreach ($all_roles as $role => $name) {
+            $options[$role] = array();
+        }
+        
+        update_option( 'sincro_mailchimp_options', serialize($options) );
     }
 
 }
