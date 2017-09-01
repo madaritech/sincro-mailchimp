@@ -1,14 +1,14 @@
 <?php
 /**
- * Class SincroMailchimpConfigurationServiceTest
+ * Class SynchroMailchimpConfigurationServiceTest
  *
- * @package Sincro_Mailchimp
+ * @package Synchro_Mailchimp
  */
 
 /**
- * Sincro_Mailchimp_configuration_Service Class test case.
+ * Synchro_Mailchimp_configuration_Service Class test case.
  */
-class SincroMailchimpAdminTest extends WP_UnitTestCase
+class SynchroMailchimpAdminTest extends WP_UnitTestCase
 {
     private $config;
     private $lists;
@@ -94,12 +94,12 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase
                                     'contributor' => $settings_interests_role,
                                     'subscriber' => $settings_interests_role);  
 
-        $this->mock_configuration_service = $this->getMockBuilder('Sincro_Mailchimp_Configuration_Service')
+        $this->mock_configuration_service = $this->getMockBuilder('Synchro_Mailchimp_Configuration_Service')
                                                 ->disableOriginalConstructor()
                                                 ->setMethods(null)
                                                 ->getMock();
 
-        $this->mock_api = $this->getMockBuilder('Sincro_Mailchimp_Api_Service')
+        $this->mock_api = $this->getMockBuilder('Synchro_Mailchimp_Api_Service')
             ->disableOriginalConstructor()
             ->setMethods(array( 'get_lists', 'get_list_interest_categories', 'get_list_interest_category_interests' ))
             ->getMock();
@@ -112,7 +112,7 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase
      */
     public function test_read_mailchimp_schema() 
     {
-        $sm_admin_obj = new Sincro_Mailchimp_Admin('Sincro MailChimp','1.0.0');
+        $sm_admin_obj = new Synchro_Mailchimp_Admin('Synchro MailChimp','1.0.0');
 
         $obj1 = new stdClass();
         $obj1->id = $this->lists['test'];
@@ -183,7 +183,7 @@ class SincroMailchimpAdminTest extends WP_UnitTestCase
     public function test_build_setting_form() 
     {
         $lists = $this->lists;
-        $sm_admin_obj = new Sincro_Mailchimp_Admin('Sincro MailChimp','1.0.0');
+        $sm_admin_obj = new Synchro_Mailchimp_Admin('Synchro MailChimp','1.0.0');
 
         $sm_admin_obj->build_setting_form($this->all_roles, $this->config, $this->settings_lists, $this->settings_interest_categories, $this->settings_interests);
 

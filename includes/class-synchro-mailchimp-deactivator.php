@@ -6,8 +6,8 @@
  * @link       
  * @since 1.0.0
  *
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/includes
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * This class defines all code necessary to run during the plugin's deactivation.
  *
  * @since      1.0.0
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/includes
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/includes
  * @author     Madaritech <freelance@madaritech.com>
  */
-class Sincro_Mailchimp_Deactivator
+class Synchro_Mailchimp_Deactivator
 {
 
     /**

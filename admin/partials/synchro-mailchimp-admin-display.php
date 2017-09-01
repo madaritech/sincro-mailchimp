@@ -15,13 +15,23 @@
 
 <form method="POST">
 <input type="hidden" name="form_submitted" value="Y">
-
-<h1><span><img src="http://greenlightup.com/wp-content/uploads/2014/06/mailchimp_logo.png" alt="Mia Immagine" height="80px"></span><?php esc_attr_e( 'Synchro MailChimp Plugin', 'sincro_mailchimp' ); ?></h1>
+<br>
+<table>
+    <tr>
+        <td>
+            <img src="<?php echo plugins_url( '../images/logo_synchro_mailchimp.png', __FILE__ ); ?>" alt="Synchro MailChimp" height="120px">
+        </td>
+        <td>
+            <div style="font-size: 30px; font-weight: bold; margin-bottom: 10px; color: black;">&nbsp;<?php esc_attr_e( 'Synchro MailChimp Plugin', 'synchro_mailchimp' ); ?></div>
+            <div style="font-size: 14px; font-weight: bold;">&nbsp;&nbsp;by <a href="http://www.madaritech.com" target="_blank">Madaritech</a></div>
+        </td>
+    </tr>
+</table>
 
 <div class="wrap">
 
     <div id="icon-options-general" class="icon32"></div>
-    <!--h1><?php esc_attr_e( 'Settings  ', 'sincro_mailchimp' ); ?></h1-->
+    <!--h1><?php esc_attr_e( 'Settings  ', 'synchro_mailchimp' ); ?></h1-->
 
     <div id="poststuff">
 
@@ -41,7 +51,7 @@ foreach ($all_roles as $role => $role_val) {
 
                     <div class="postbox">
 
-                        <h3 class="hndle"><span style="font-size: 16px; font-weight: bold;"><?php esc_attr_e( $name, 'sincro_mailchimp' ); ?></span></h3>
+                        <h3 class="hndle"><span style="font-size: 16px; font-weight: bold;"><?php esc_attr_e( $name, 'synchro_mailchimp' ); ?></span></h3>
 
                         <div class="inside">
                             <table style="width: 80%;text-align: center;border: 0 none" align="center">
@@ -51,7 +61,7 @@ foreach ($all_roles as $role => $role_val) {
                                     <tr>
                                         <td style="border: 0px solid #0073aa; padding: 2em 0">
                                             <input name="<?php echo $role.'-list-'.$list_id; ?>" type="checkbox" id="" value="<?php echo $list_id; ?>"  <?php if ($list_array['checked']) echo " checked"; ?>/>
-                                            <span style="font-size: 20px; font-weight: bold;"><?php esc_attr_e( $list_array['name'], 'sincro_mailchimp' ); ?></span>
+                                            <span style="font-size: 20px; font-weight: bold;"><?php esc_attr_e( $list_array['name'], 'synchro_mailchimp' ); ?></span>
                                         </td>
                                         <td style="border: 1px solid #82878c;padding: 2em 0">
 
@@ -63,7 +73,7 @@ foreach ($all_roles as $role => $role_val) {
 ?>
 
                                             <input style="margin-left: 30px" name="<?php echo $role.'-list-'.$list_id.'-interest-'.$interest_id; ?>" type="checkbox" id="" value="<?php echo $interest_id; ?>" <?php if ($interest_array['checked']) echo " checked"; ?>/>
-                                            <span style="font-size: 14px" ><?php esc_attr_e( $interest_array['name'], 'sincro_mailchimp' ); ?></span>
+                                            <span style="font-size: 14px" ><?php esc_attr_e( $interest_array['name'], 'synchro_mailchimp' ); ?></span>
 
 <?php
             }
@@ -75,7 +85,7 @@ foreach ($all_roles as $role => $role_val) {
                                     </tr>
                                 </tbody>
                             </table>
-                            <p align="right"><input class="button-primary" type="submit" name="salva" id="<?php echo $name; ?>-submit-button" value="<?php esc_attr_e( 'Save Settings', 'sincro_mailchimp' ); ?>" /></p>
+                            <p align="right"><input class="button-primary" type="submit" name="salva" id="<?php echo $name; ?>-submit-button" value="<?php esc_attr_e( 'Save Settings', 'synchro_mailchimp' ); ?>" /></p>
                         </div>
                         <!-- .inside -->
 
@@ -97,13 +107,13 @@ foreach ($all_roles as $role => $role_val) {
                     <div class="postbox">
 
                         <h2 class="hndle"><span><?php esc_attr_e(
-                                    'Instructions', 'sincro_mailchimp'
+                                    'Instructions', 'synchro_mailchimp'
                                 ); ?></span></h2>
 
                         <div class="inside">
-                            <p><?php esc_attr_e( 'This plugin let you synchronize the subscription of the WordPress users to MailChimp list upon the selections made on this page for every role. This selection set the desired match. Then, to apply your choose to a particular user, go on the WordPress user setting page and check the Sincro MailChimp select box.', 'sincro_mailchimp' ); ?></p>
+                            <p><?php esc_attr_e( 'This plugin let you synchronize the subscription of the WordPress users to MailChimp lists upon the selections made on this page for every role. This selection set the desired match. Then, to apply your choose to a particular user, go on the WordPress user setting page and check the Synchro MailChimp select box.', 'synchro_mailchimp' ); ?></p>
                             <p><?php esc_attr_e( 'Important: is not possibile to select interests without select the corresponding list. In this case the selection will be lost.' ); ?></p>
-                            <p><?php esc_attr_e( 'Important: is possible to switch users between the lists, but is not possible to unsubscribe the user from all the MailChimp lists. In this case you need to go on MailChimp and manually delete the user. This will be addressed in next release.', 'sincro_mailchimp' ); ?></p>
+                            <p><?php esc_attr_e( 'Important: is possible to switch users between the lists, but is not possible to unsubscribe the user from all the MailChimp lists. In this case you need to go on MailChimp and manually delete the user. This will be addressed in next release.', 'synchro_mailchimp' ); ?></p>
                         </div>
                         <!-- .inside -->
 
@@ -113,11 +123,11 @@ foreach ($all_roles as $role => $role_val) {
                     <div class="postbox">
 
                         <h2 class="hndle"><span><?php esc_attr_e(
-                                    'Want to contribute?', 'sincro_mailchimp'
+                                    'Want to contribute?', 'synchro_mailchimp'
                                 ); ?></span></h2>
 
                         <div class="inside">
-                            <p><?php esc_attr_e( 'This plugin is completely free. Help me to improve it and release new updated version. If you have suggestion or request for features or bug fixing leave a message: ', 'sincro_mailchimp' ); ?><a href="http://www.madaritech.com/#menu-contact" target="_blank">Madaritech contact form</a></p>
+                            <p><?php esc_attr_e( 'This plugin is completely free. Help me to improve it and release new updated versions. If you have requests for features or bug fixing leave a message: ', 'synchro_mailchimp' ); ?><a href="http://www.madaritech.com/#menu-contact" target="_blank">Madaritech contact form</a></p>
 
                             <div align="center">
                                 <p>

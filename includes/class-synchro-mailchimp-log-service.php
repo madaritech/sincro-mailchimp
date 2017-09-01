@@ -5,18 +5,18 @@
  * A service which provides functions for logging.
  *
  * @since      1.0.0
- * @package    Sincro_MailChimp
- * @subpackage Sincro_MailChimp/includes
+ * @package    Synchro_MailChimp
+ * @subpackage Synchro_MailChimp/includes
  */
 
 /**
- * Define the {@link Sincro_MailChimp_Log_Service} class.
+ * Define the {@link Synchro_MailChimp_Log_Service} class.
  *
  * @since      1.0.0
- * @package    Sincro_MailChimp
- * @subpackage Sincro_MailChimp/includes
+ * @package    Synchro_MailChimp
+ * @subpackage Synchro_MailChimp/includes
  */
-class Sincro_MailChimp_Log_Service
+class Synchro_MailChimp_Log_Service
 {
 
     /**
@@ -29,7 +29,7 @@ class Sincro_MailChimp_Log_Service
     private $class_name;
 
     /**
-     * Create a {@link Sincro_MailChimp_Log_Service} instance.
+     * Create a {@link Synchro_MailChimp_Log_Service} instance.
      *
      * @since 1.0.0
      *
@@ -56,18 +56,18 @@ class Sincro_MailChimp_Log_Service
     }
 
     /**
-     * Create a {@link Sincro_MailChimp_Log_Service} instance with the provided class name.
+     * Create a {@link Synchro_MailChimp_Log_Service} instance with the provided class name.
      *
      * @since 1.0.0
      *
      * @param string $class_name The class name source of logging events.
      *
-     * @return \Sincro_MailChimp_Log_Service A {@link Sincro_MailChimp_Log_Service} instance.
+     * @return \Synchro_MailChimp_Log_Service A {@link Synchro_MailChimp_Log_Service} instance.
      */
     public static function create( $class_name ) 
     {
 
-        return new Sincro_MailChimp_Log_Service($class_name);
+        return new Synchro_MailChimp_Log_Service($class_name);
     }
 
     /**

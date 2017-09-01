@@ -6,8 +6,8 @@
  * @link
  * @since 1.0.0
  *
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/admin
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/admin
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/admin
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/admin
  * @author     Madaritech <freelance@madaritech.com>
  */
-class Sincro_Mailchimp_Admin
+class Synchro_Mailchimp_Admin
 {
 
     /**
@@ -42,11 +42,11 @@ class Sincro_Mailchimp_Admin
     private $version;
 
     /*
-    * A {@link Sincro_MailChimp_Log_Service} instance.
+    * A {@link Synchro_MailChimp_Log_Service} instance.
     *
     * @since 1.0.0
     * @access private
-    * @var \Sincro_MailChimp_Log_Service $log A {@link Sincro_MailChimp_Log_Service} instance.
+    * @var \Synchro_MailChimp_Log_Service $log A {@link Synchro_MailChimp_Log_Service} instance.
     */
     private $log;
 
@@ -85,10 +85,10 @@ class Sincro_Mailchimp_Admin
     public function __construct( $plugin_name, $version ) 
     {
 
-        $this->log = Sincro_MailChimp_Log_Service::create('Sincro_Mailchimp_Admin');
-        $this->subscription_service = new Sincro_MailChimp_Subscription_Service();
-        $this->requirements_service = new Sincro_MailChimp_Requirements_Service();
-        $this->api = new Sincro_Mailchimp_Api_Service();
+        $this->log = Synchro_MailChimp_Log_Service::create('Synchro_Mailchimp_Admin');
+        $this->subscription_service = new Synchro_MailChimp_Subscription_Service();
+        $this->requirements_service = new Synchro_MailChimp_Requirements_Service();
+        $this->api = new Synchro_Mailchimp_Api_Service();
 
         $this->plugin_name = $plugin_name;
         $this->version     = $version;
@@ -115,7 +115,7 @@ class Sincro_Mailchimp_Admin
          * class.
          */
 
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/sincro-mailchimp-admin.css', array(), $this->version, 'all');
+        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/synchro-mailchimp-admin.css', array(), $this->version, 'all');
 
     }
 
@@ -139,7 +139,7 @@ class Sincro_Mailchimp_Admin
          * class.
          */
 
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/sincro-mailchimp-admin.js', array( 'jquery' ), $this->version, false);
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/synchro-mailchimp-admin.js', array( 'jquery' ), $this->version, false);
 
     }
 
@@ -278,14 +278,15 @@ class Sincro_Mailchimp_Admin
      *
      * @since 1.0.0
      */
-    public function sincro_mailchimp_admin_menu( ) 
+    public function synchro_mailchimp_admin_menu( ) 
     {
         add_menu_page(
-            'Sincro MailChimp Plugin',
-            'Sincro MailChimp',
+            'Synchro MailChimp Plugin',
+            'Synchro MC',
             'manage_options',
-            'sincro-mailchimp',
-            array(&$this, 'sincro_mailchimp_settings_page')
+            'synchro-mailchimp',
+            array(&$this, 'synchro_mailchimp_settings_page'),
+            plugins_url( '/images/madaritech_logo.png', __FILE__ )
         );   
     }
 
@@ -294,10 +295,10 @@ class Sincro_Mailchimp_Admin
      *
      * @since    1.0.0
      */
-    public function sincro_mailchimp_settings_page() {
+    public function synchro_mailchimp_settings_page() {
 
         if( !current_user_can( 'manage_options' ) ) {
-            wp_die( __('You do not have sufficient permissions to access this page.', 'sincro_mailchimp') );
+            wp_die( __('You do not have sufficient permissions to access this page.', 'synchro_mailchimp') );
         }
 
         $configuration_options = array();
@@ -315,12 +316,12 @@ class Sincro_Mailchimp_Admin
 
                 $configuration_options = $this->build_configuration_option($configuration_options, $mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests);
 
-                update_option('sincro_mailchimp_options', serialize($configuration_options));
+                update_option('synchro_mailchimp_options', serialize($configuration_options));
             }
         }
 
-        $sincro_mailchimp_options = get_option('sincro_mailchimp_options');
-        $configuration = unserialize($sincro_mailchimp_options);        
+        $synchro_mailchimp_options = get_option('synchro_mailchimp_options');
+        $configuration = unserialize($synchro_mailchimp_options);        
 
         $settings_lists;
         $settings_interest_categories;
@@ -338,7 +339,7 @@ class Sincro_Mailchimp_Admin
 
         $this->build_setting_form($all_roles, $configuration, $settings_lists, $settings_interest_categories, $settings_interests);
 
-        require_once('partials/sincro-mailchimp-admin-display.php');
+        require_once('partials/synchro-mailchimp-admin-display.php');
     }
 
     /**
@@ -363,7 +364,7 @@ class Sincro_Mailchimp_Admin
 	            $checked = 1;
 	        }
 
-	        wp_enqueue_script('sm', plugin_dir_url(__FILE__) . 'js/sincro-mailchimp-admin-ajax.js', array( 'jquery' ), $this->version, true);
+	        wp_enqueue_script('sm', plugin_dir_url(__FILE__) . 'js/synchro-mailchimp-admin-ajax.js', array( 'jquery' ), $this->version, true);
 
 	        $params = array(
 	        'user_email' => esc_js($user->user_email),
@@ -373,7 +374,7 @@ class Sincro_Mailchimp_Admin
 
 	        wp_localize_script('sm', 'sm', $params);
 
-			include_once 'partials/sincro-mailchimp-users-admin-display.php';
+			include_once 'partials/synchro-mailchimp-users-admin-display.php';
 		}
         
     }
@@ -401,25 +402,25 @@ class Sincro_Mailchimp_Admin
         }
 
         if (! current_user_can('administrator') ) {
-            wp_send_json_error(__('Permessi non sufficienti, operazione fallita', 'sincro_mailchimp'));
+            wp_send_json_error(__('Permessi non sufficienti, operazione fallita', 'synchro_mailchimp'));
         }
 
         //Elaborazione
         try {
             $subscription_status = $this->subscription_service->check_subscription_status($user_email, $user_role);
-            if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            if (Synchro_MailChimp_Log_Service::is_enabled() ) {
             $this->log->debug("Checking subscrition status [ subscription status :: $subscription_status ][ user e-mail :: $user_email ][ user role :: $user_role ]");
             }
         } catch (Exception $e) {
-            $error_message = __("Verifica stato sottoscrizione fallita. ", 'sincro_mailchimp');
+            $error_message = __("Verifica stato sottoscrizione fallita. ", 'synchro_mailchimp');
             wp_send_json_error($error_message.$e->getMessage());
         }
 
         if (! $subscription_status ) {
-            wp_send_json_error(__('Configurazione assente, operazione fallita', 'sincro_mailchimp'));
+            wp_send_json_error(__('Configurazione assente, operazione fallita', 'synchro_mailchimp'));
         }
 
-        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+        if (Synchro_MailChimp_Log_Service::is_enabled() ) {
             $this->log->debug("Checkbox status received [ check status :: $check_status ]");
         }
 
@@ -428,7 +429,7 @@ class Sincro_Mailchimp_Admin
                 $this->subscription_service->subscribe_process($subscription_status, $user_email, $user_role);
             }
             catch (Exception $e) {
-                $error_message = __("Processo di sottoscrizione fallito. ", 'sincro_mailchimp');
+                $error_message = __("Processo di sottoscrizione fallito. ", 'synchro_mailchimp');
                 wp_send_json_error($error_message.$e->getMessage());
             }
         } else {
@@ -436,12 +437,12 @@ class Sincro_Mailchimp_Admin
                 $this->subscription_service->unsubscribe_process($subscription_status, $user_email, $user_role);
             }
             catch (Exception $e) {
-                $error_message = __("Processo di cancellazione della sottoscrizione fallito. ", 'sincro_mailchimp');
+                $error_message = __("Processo di cancellazione della sottoscrizione fallito. ", 'synchro_mailchimp');
                 wp_send_json_error($error_message.$e->getMessage());
             }
         }
 
-        wp_send_json_success(__('Operazione eseguita', 'sincro_mailchimp'));
+        wp_send_json_success(__('Operazione eseguita', 'synchro_mailchimp'));
     }
 
 }

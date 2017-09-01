@@ -6,8 +6,8 @@
  * @link       
  * @since 1.0.0
  *
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/public
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/public
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/public
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/public
  * @author     Madaritech <freelance@madaritech.com>
  */
-class Sincro_Mailchimp_Public
+class Synchro_Mailchimp_Public
 {
 
     /**

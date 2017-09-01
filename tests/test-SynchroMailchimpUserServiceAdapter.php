@@ -1,14 +1,14 @@
 <?php
 /**
- * Class SincroMailchimpConfigurationServiceAdapterTest
+ * Class SynchroMailchimpConfigurationServiceAdapterTest
  *
- * @package Sincro_Mailchimp
+ * @package Synchro_Mailchimp
  */
 
 /**
- * Sincro_Mailchimp_User_Service_Adapter Class test case.
+ * Synchro_Mailchimp_User_Service_Adapter Class test case.
  */
-class SincroMailchimpUserServiceAdapterTest extends WP_UnitTestCase
+class SynchroMailchimpUserServiceAdapterTest extends WP_UnitTestCase
 {
     private $config;
     private $lists;
@@ -61,7 +61,7 @@ class SincroMailchimpUserServiceAdapterTest extends WP_UnitTestCase
         $this->lists = $lists;
         $this->interests = $interests;
 
-        $this->smcs_mock = $this->getMockBuilder('Sincro_Mailchimp_Configuration_Service')
+        $this->smcs_mock = $this->getMockBuilder('Synchro_Mailchimp_Configuration_Service')
                         ->disableOriginalConstructor()
                         ->setMethods(null)
                         ->getMock();
@@ -77,8 +77,8 @@ class SincroMailchimpUserServiceAdapterTest extends WP_UnitTestCase
 
         $cs_obj = $this->smcs_mock;
         $cs_obj->set_configuration($this->config);
-        $us_obj = new Sincro_Mailchimp_User_Service($cs_obj);
-        $usa_obj = new Sincro_Mailchimp_User_Service_Adapter($us_obj);
+        $us_obj = new Synchro_Mailchimp_User_Service($cs_obj);
+        $usa_obj = new Synchro_Mailchimp_User_Service_Adapter($us_obj);
 
         $res_editor = $usa_obj->user_lists(array(), $this->users['editor']->ID);
         $this->assertEquals([$lists['acme'] => array($interests['acme-group1'] => true, 
@@ -114,8 +114,8 @@ class SincroMailchimpUserServiceAdapterTest extends WP_UnitTestCase
 
         $cs_obj = $this->smcs_mock;
         $cs_obj->set_configuration($this->config);
-        $us_obj = new Sincro_Mailchimp_User_Service($cs_obj);
-        $usa_obj = new Sincro_Mailchimp_User_Service_Adapter($us_obj);
+        $us_obj = new Synchro_Mailchimp_User_Service($cs_obj);
+        $usa_obj = new Synchro_Mailchimp_User_Service_Adapter($us_obj);
 
         $res_editor = $usa_obj->user_list_interests(array(), $this->users['editor']->ID, $lists['acme']);
         $this->assertEquals([$interests['acme-group1'] => true, 

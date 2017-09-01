@@ -9,8 +9,8 @@
  * @link
  * @since 1.0.0
  *
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/includes
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/includes
  */
 
 /**
@@ -23,11 +23,11 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/includes
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/includes
  * @author     Madaritech <freelance@madaritech.com>
  */
-class Sincro_Mailchimp
+class Synchro_Mailchimp
 {
     /**
      * The loader that's responsible for maintaining and registering all hooks that power
@@ -35,7 +35,7 @@ class Sincro_Mailchimp
      *
      * @since  1.0.0
      * @access protected
-     * @var    Sincro_Mailchimp_Loader $loader Maintains and registers all hooks for the plugin.
+     * @var    Synchro_Mailchimp_Loader $loader Maintains and registers all hooks for the plugin.
      */
     protected $loader;
 
@@ -44,7 +44,7 @@ class Sincro_Mailchimp
      *
      * @since  1.0.0
      * @access protected
-     * @var    string $sincro_mailchimp The string used to uniquely identify this plugin.
+     * @var    string $synchro_mailchimp The string used to uniquely identify this plugin.
      */
     protected $plugin_name;
 
@@ -58,34 +58,34 @@ class Sincro_Mailchimp
     protected $version;
 
     /**
-     * The {@link Sincro_Mailchimp_Configuration_Service} instance.
+     * The {@link Synchro_Mailchimp_Configuration_Service} instance.
      *
      * @since  1.0.0
      * @access protected
-     * @var    \Sincro_Mailchimp_Configuration_Service $configuration_service The {@link Sincro_Mailchimp_Configuration_Service} instance.
+     * @var    \Synchro_Mailchimp_Configuration_Service $configuration_service The {@link Synchro_Mailchimp_Configuration_Service} instance.
      */
     protected $configuration_service;
 
     /**
-     * The {@link Sincro_Mailchimp_User_Service} instance.
+     * The {@link Synchro_Mailchimp_User_Service} instance.
      *
      * @since  1.0.0
      * @access protected
-     * @var    \Sincro_Mailchimp_User_Service $user_service The {@link Sincro_Mailchimp_User_Service} instance.
+     * @var    \Synchro_Mailchimp_User_Service $user_service The {@link Synchro_Mailchimp_User_Service} instance.
      */
     protected $user_service;
 
     /**
-     * The {@link Sincro_Mailchimp_User_Service_Adapter} instance.
+     * The {@link Synchro_Mailchimp_User_Service_Adapter} instance.
      *
      * @since  1.0.0
      * @access protected
-     * @var    \Sincro_Mailchimp_User_Service_Adapter $user_service The {@link Sincro_Mailchimp_User_Service_Adapter} instance.
+     * @var    \Synchro_Mailchimp_User_Service_Adapter $user_service The {@link Synchro_Mailchimp_User_Service_Adapter} instance.
      */
     protected $user_service_adapter;
 
      /**
-     * The {@link Sincro_Mailchimp_Admin_Requirements_Service} instance.
+     * The {@link Synchro_Mailchimp_Admin_Requirements_Service} instance.
      *
      * @since  1.0.0
      * @access protected
@@ -104,7 +104,7 @@ class Sincro_Mailchimp
     public function __construct() 
     {
 
-        $this->plugin_name = 'sincro_mailchimp';
+        $this->plugin_name = 'synchro_mailchimp';
         $this->version     = '1.0.0';
 
         $this->load_dependencies();
@@ -119,10 +119,10 @@ class Sincro_Mailchimp
      *
      * Include the following files that make up the plugin:
      *
-     * - Sincro_Mailchimp_Loader. Orchestrates the hooks of the plugin.
-     * - Sincro_Mailchimp_i18n. Defines internationalization functionality.
-     * - Sincro_Mailchimp_Admin. Defines all hooks for the admin area.
-     * - Sincro_Mailchimp_Public. Defines all hooks for the public side of the site.
+     * - Synchro_Mailchimp_Loader. Orchestrates the hooks of the plugin.
+     * - Synchro_Mailchimp_i18n. Defines internationalization functionality.
+     * - Synchro_Mailchimp_Admin. Defines all hooks for the admin area.
+     * - Synchro_Mailchimp_Public. Defines all hooks for the public side of the site.
      *
      * Create an instance of the loader which will be used to register the hooks
      * with WordPress.
@@ -137,59 +137,59 @@ class Sincro_Mailchimp
          * The class responsible for orchestrating the actions and filters of the
          * core plugin.
          */
-        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-sincro-mailchimp-loader.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-synchro-mailchimp-loader.php';
 
         /**
          * The class responsible for defining internationalization functionality
          * of the plugin.
          */
-        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-sincro-mailchimp-i18n.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-synchro-mailchimp-i18n.php';
 
         /**
          * Services.
          */
-        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-sincro-mailchimp-log-service.php';
-        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-sincro-mailchimp-configuration-service.php';
-        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-sincro-mailchimp-user-service.php';
-        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-sincro-mailchimp-api-service.php';
-        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-sincro-mailchimp-subscription-service.php';
-        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-sincro-mailchimp-requirements-service.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-synchro-mailchimp-log-service.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-synchro-mailchimp-configuration-service.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-synchro-mailchimp-user-service.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-synchro-mailchimp-api-service.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-synchro-mailchimp-subscription-service.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-synchro-mailchimp-requirements-service.php';
 
         /**
          * Adapters.
          */
-        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-sincro-mailchimp-user-service-adapter.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-synchro-mailchimp-user-service-adapter.php';
 
         /**
          * The classes responsible for defining all actions that occur in the admin area.
          */
-        include_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-sincro-mailchimp-admin.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-synchro-mailchimp-admin.php';
 
         /**
          * The class responsible for defining all actions that occur in the public-facing
          * side of the site.
          */
-        include_once plugin_dir_path(dirname(__FILE__)) . 'public/class-sincro-mailchimp-public.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'public/class-synchro-mailchimp-public.php';
 
-        $this->loader = new Sincro_Mailchimp_Loader();
+        $this->loader = new Synchro_Mailchimp_Loader();
 
         /**
  		* Services. 
 		*/
-        $this->configuration_service = new Sincro_Mailchimp_Configuration_Service();
-        $this->user_service          = new Sincro_Mailchimp_User_Service($this->configuration_service);
+        $this->configuration_service = new Synchro_Mailchimp_Configuration_Service();
+        $this->user_service          = new Synchro_Mailchimp_User_Service($this->configuration_service);
 
         /**
  		* Adapters. 
 		*/
-        $this->user_service_adapter = new Sincro_Mailchimp_User_Service_Adapter($this->user_service);
+        $this->user_service_adapter = new Synchro_Mailchimp_User_Service_Adapter($this->user_service);
 
     }
 
     /**
      * Define the locale for this plugin for internationalization.
      *
-     * Uses the Sincro_Mailchimp_i18n class in order to set the domain and to register the hook
+     * Uses the Synchro_Mailchimp_i18n class in order to set the domain and to register the hook
      * with WordPress.
      *
      * @since  1.0.0
@@ -198,7 +198,7 @@ class Sincro_Mailchimp
     private function set_locale() 
     {
 
-        $plugin_i18n = new Sincro_Mailchimp_i18n();
+        $plugin_i18n = new Synchro_Mailchimp_i18n();
 
         $this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
 
@@ -214,12 +214,12 @@ class Sincro_Mailchimp
     private function define_admin_hooks() 
     {
 
-        $plugin_admin           = new Sincro_Mailchimp_Admin($this->get_plugin_name(), $this->get_version());
-        $plugin_requirements    = new Sincro_Mailchimp_Requirements_Service();
+        $plugin_admin           = new Synchro_Mailchimp_Admin($this->get_plugin_name(), $this->get_version());
+        $plugin_requirements    = new Synchro_Mailchimp_Requirements_Service();
 
         $this->loader->add_action('admin_notices', $plugin_requirements, 'mfw_missing_admin_notice');
 
-        $this->loader->add_action('admin_menu', $plugin_admin, 'sincro_mailchimp_admin_menu');
+        $this->loader->add_action('admin_menu', $plugin_admin, 'synchro_mailchimp_admin_menu');
         $this->loader->add_action('show_user_profile', $plugin_admin, 'form_field_iscrizione_mailing_list');
         $this->loader->add_action('edit_user_profile', $plugin_admin, 'form_field_iscrizione_mailing_list');
         $this->loader->add_action('wp_ajax_esegui_iscrizione', $plugin_admin, 'esegui_iscrizione');
@@ -243,7 +243,7 @@ class Sincro_Mailchimp
     private function define_public_hooks() 
     {
 
-        $plugin_public = new Sincro_Mailchimp_Public($this->get_plugin_name(), $this->get_version());
+        $plugin_public = new Synchro_Mailchimp_Public($this->get_plugin_name(), $this->get_version());
 
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');

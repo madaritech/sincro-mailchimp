@@ -1,14 +1,14 @@
 <?php
 /**
- * Class SincroMailchimpConfigurationServiceTest
+ * Class SynchroMailchimpConfigurationServiceTest
  *
- * @package Sincro_Mailchimp
+ * @package Synchro_Mailchimp
  */
 
 /**
- * Sincro_Mailchimp_configuration_Service Class test case.
+ * Synchro_Mailchimp_configuration_Service Class test case.
  */
-class SincroMailchimpConfigurationServiceTest extends WP_UnitTestCase
+class SynchroMailchimpConfigurationServiceTest extends WP_UnitTestCase
 {
     private $config;
     private $lists;
@@ -54,7 +54,7 @@ class SincroMailchimpConfigurationServiceTest extends WP_UnitTestCase
         $this->lists = $lists;
         $this->interests = $interests;
 
-        $this->smcs_mock = $this->getMockBuilder('Sincro_Mailchimp_Configuration_Service')
+        $this->smcs_mock = $this->getMockBuilder('Synchro_Mailchimp_Configuration_Service')
                                 ->disableOriginalConstructor()
                                 ->setMethods(null)
                                 ->getMock();

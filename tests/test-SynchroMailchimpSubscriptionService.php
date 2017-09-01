@@ -1,14 +1,14 @@
 <?php
 /**
- * Class SincroMailchimpSubscriptionServiceTest
+ * Class SynchroMailchimpSubscriptionServiceTest
  *
- * @package Sincro_Mailchimp
+ * @package Synchro_Mailchimp
  */
 
 /**
- * Sincro_Mailchimp_Admin Class test case.
+ * Synchro_Mailchimp_Admin Class test case.
  */
-class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
+class SynchroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
 {
 
     private $emailRoleStack;
@@ -69,12 +69,12 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
         $this->lists = $lists;
         $this->interests = $interests;
 
-        $this->mock_configuration_service = $this->getMockBuilder('Sincro_Mailchimp_Configuration_Service')
+        $this->mock_configuration_service = $this->getMockBuilder('Synchro_Mailchimp_Configuration_Service')
                                                 ->disableOriginalConstructor()
                                                 ->setMethods(array( 'get_by_role' ))
                                                 ->getMock();
 
-        $this->dummy_api = $this->getMockBuilder('Sincro_Mailchimp_Api_Service')
+        $this->dummy_api = $this->getMockBuilder('Synchro_Mailchimp_Api_Service')
             ->disableOriginalConstructor()
             ->setMethods(array( 'get_lists', 'get_list_member', 'add_list_member', 'delete_list_member' ))
             ->getMock();
@@ -88,7 +88,7 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
     public function test_subscribe_user() 
     {
 
-        $smss_obj = new Sincro_Mailchimp_Subscription_Service();
+        $smss_obj = new Synchro_Mailchimp_Subscription_Service();
 
         $this->dummy_api->expects($this->any())
             ->method('add_list_member')
@@ -108,7 +108,7 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
     public function test_unsubscribe_user_config() 
     {
 
-        $smss_obj = new Sincro_Mailchimp_Subscription_Service();
+        $smss_obj = new Synchro_Mailchimp_Subscription_Service();
 
         $this->dummy_api->expects($this->any())
             ->method('delete_list_member')
@@ -130,7 +130,7 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
     public function test_unsubscribe_user_mailchimp() 
     {
 
-        $smss_obj = new Sincro_Mailchimp_Subscription_Service();
+        $smss_obj = new Synchro_Mailchimp_Subscription_Service();
 
         $this->dummy_api->expects($this->any())
             ->method('delete_list_member')
@@ -179,7 +179,7 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
      */
     public function test_check_subscription_status($role) 
     {
-        $smss_obj = new Sincro_Mailchimp_Subscription_Service();
+        $smss_obj = new Synchro_Mailchimp_Subscription_Service();
         
         $obj0 = new stdClass();
         $obj0->id = $this->lists['test'];
@@ -241,7 +241,7 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
      */
     public function test_check_subscription_status_not_empty() 
     {        
-        $smss_obj = new Sincro_Mailchimp_Subscription_Service();
+        $smss_obj = new Synchro_Mailchimp_Subscription_Service();
 
         //Stub list restituita su mailchimp -> vuota
         $this->dummy_api->expects($this->any())
@@ -276,7 +276,7 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
                             [3, $this->factory->user->create_and_get(array( 'role' => 'contributor' ))->user_email, 'contributor', true],
                             [2, $this->factory->user->create_and_get(array( 'role' => 'subscriber' ))->user_email, 'subscriber', true]);
 
-        $smss_obj = new Sincro_Mailchimp_Subscription_Service();
+        $smss_obj = new Synchro_Mailchimp_Subscription_Service();
 
         //Stub eliminazione utente dalle liste mailchimp 
         $this->dummy_api->expects($this->any())
@@ -314,7 +314,7 @@ class SincroMailchimpSubscriptionServiceTest extends WP_UnitTestCase
                         [3, $this->factory->user->create_and_get(array( 'role' => 'contributor' ))->user_email, 'contributor', true],
                         [2, $this->factory->user->create_and_get(array( 'role' => 'subscriber' ))->user_email, 'subscriber', false]);
 
-        $smss_obj = new Sincro_Mailchimp_Subscription_Service();
+        $smss_obj = new Synchro_Mailchimp_Subscription_Service();
 
         foreach($provider as $test_data) {
 

@@ -9,8 +9,8 @@
  * @link       
  * @since 1.0.0
  *
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/includes
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/includes
  */
 
 /**
@@ -20,11 +20,11 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/includes
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/includes
  * @author     Madaritech <freelance@madaritech.com>
  */
-class Sincro_Mailchimp_i18n
+class Synchro_Mailchimp_i18n
 {
 
 
@@ -37,7 +37,7 @@ class Sincro_Mailchimp_i18n
     {
 
         load_plugin_textdomain(
-            'sincro_mailchimp',
+            'synchro_mailchimp',
             false,
             dirname(dirname(plugin_basename(__FILE__))) . '/languages/'
         );

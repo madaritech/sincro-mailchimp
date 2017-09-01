@@ -1,17 +1,17 @@
 <?php
 /**
- * Class Sincro_Mailchimp_Admin_Ajax_Test
+ * Class Synchro_Mailchimp_Admin_Ajax_Test
  *
- * @package Sincro_Mailchimp
+ * @package Synchro_Mailchimp
  */
 
 
 /**
- * Sincro_Mailchimp_Admin_Ajax Class test case.
+ * Synchro_Mailchimp_Admin_Ajax Class test case.
  *
  * @group ajax
  */
-class Sincro_Mailchimp_Admin_Ajax_Test extends WP_Ajax_UnitTestCase
+class Synchro_Mailchimp_Admin_Ajax_Test extends WP_Ajax_UnitTestCase
 {
 
     function test_ajax_esegui_iscrizione() 

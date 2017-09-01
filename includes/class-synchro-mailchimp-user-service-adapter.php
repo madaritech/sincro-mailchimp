@@ -2,52 +2,52 @@
 /**
  * Adapters: User Service Adapter.
  *
- * Define an adapter that hooks WP's actions/filters to the {@link Sincro_Mailchimp_User_Service}.
+ * Define an adapter that hooks WP's actions/filters to the {@link Synchro_Mailchimp_User_Service}.
  *
  * @since      1.0.0
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/includes
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/includes
  */
 
 /**
- * Define the {@link Sincro_Mailchimp_User_Service_Adapter} class.
+ * Define the {@link Synchro_Mailchimp_User_Service_Adapter} class.
  *
  * @since      1.0.0
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/includes
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/includes
  */
-class Sincro_Mailchimp_User_Service_Adapter
+class Synchro_Mailchimp_User_Service_Adapter
 {
 
     /**
-     * A {@link Sincro_MailChimp_Log_Service} instance.
+     * A {@link Synchro_MailChimp_Log_Service} instance.
      *
      * @since  1.0.0
      * @access private
-     * @var    \Sincro_MailChimp_Log_Service $log A {@link Sincro_MailChimp_Log_Service} instance.
+     * @var    \Synchro_MailChimp_Log_Service $log A {@link Synchro_MailChimp_Log_Service} instance.
      */
     private $log;
 
     /**
-     * The {@link Sincro_Mailchimp_User_Service} instance.
+     * The {@link Synchro_Mailchimp_User_Service} instance.
      *
      * @since  1.0.0
      * @access private
-     * @var    \Sincro_Mailchimp_User_Service $user_service The {@link Sincro_Mailchimp_User_Service} instance.
+     * @var    \Synchro_Mailchimp_User_Service $user_service The {@link Synchro_Mailchimp_User_Service} instance.
      */
     private $user_service;
 
     /**
-     * Create a {@link Sincro_Mailchimp_User_Service_Adapter} instance.
+     * Create a {@link Synchro_Mailchimp_User_Service_Adapter} instance.
      *
      * @since 1.0.0
      *
-     * @param \Sincro_Mailchimp_User_Service $user_service The {@link Sincro_Mailchimp_User_Service} instance.
+     * @param \Synchro_Mailchimp_User_Service $user_service The {@link Synchro_Mailchimp_User_Service} instance.
      */
     public function __construct( $user_service ) 
     {
 
-        $this->log = Sincro_MailChimp_Log_Service::create('Sincro_Mailchimp_User_Service_Adapter');
+        $this->log = Synchro_MailChimp_Log_Service::create('Synchro_Mailchimp_User_Service_Adapter');
 
         $this->user_service = $user_service;
 
@@ -58,7 +58,7 @@ class Sincro_Mailchimp_User_Service_Adapter
      *
      * @since 1.0.0
      *
-     * @uses Sincro_Mailchimp_User_Service::get_lists() to get the interests.
+     * @uses Synchro_Mailchimp_User_Service::get_lists() to get the interests.
      *
      * @param array  $interests {
      * The precomputed array of interests.
@@ -82,7 +82,7 @@ class Sincro_Mailchimp_User_Service_Adapter
     public function user_lists($lists, $user_id) 
     {
 
-        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+        if (Synchro_MailChimp_Log_Service::is_enabled() ) {
             $this->log->debug("Getting the lists and interests for user $user_id");
         }
 
@@ -95,7 +95,7 @@ class Sincro_Mailchimp_User_Service_Adapter
      *
      * @since 1.0.0
      *
-     * @uses Sincro_Mailchimp_User_Service::get_interests() to get the interests.
+     * @uses Synchro_Mailchimp_User_Service::get_interests() to get the interests.
      *
      * @param array  $interests {
      * The precomputed array of interests.
@@ -117,7 +117,7 @@ class Sincro_Mailchimp_User_Service_Adapter
     public function user_list_interests( $interests, $user_id, $list_id ) 
     {
 
-        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+        if (Synchro_MailChimp_Log_Service::is_enabled() ) {
             $this->log->debug("Getting the interests for user $user_id and list $list_id...");
         }
 

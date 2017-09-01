@@ -2,53 +2,53 @@
 /**
  * Services: User Service.
  *
- * The {@link Sincro_Mailchimp_User_Service} provides methods related to {@link WP_User}s such as
+ * The {@link Synchro_Mailchimp_User_Service} provides methods related to {@link WP_User}s such as
  * getting the lists/interests a {@link WP_User} should be subscribed to.
  *
  * @since      1.0.0
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/includes
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/includes
  */
 
 /**
- * Define the {@link Sincro_Mailchimp_User_Service} class.
+ * Define the {@link Synchro_Mailchimp_User_Service} class.
  *
  * @since      1.0.0
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/includes
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/includes
  */
-class Sincro_Mailchimp_User_Service
+class Synchro_Mailchimp_User_Service
 {
 
     /**
-     * A {@link Sincro_MailChimp_Log_Service} instance.
+     * A {@link Synchro_MailChimp_Log_Service} instance.
      *
      * @since  1.0.0
      * @access private
-     * @var    \Sincro_MailChimp_Log_Service $log A {@link Sincro_MailChimp_Log_Service} instance.
+     * @var    \Synchro_MailChimp_Log_Service $log A {@link Synchro_MailChimp_Log_Service} instance.
      */
     private $log;
 
     /**
-     * The {@link Sincro_Mailchimp_Configuration_Service} instance.
+     * The {@link Synchro_Mailchimp_Configuration_Service} instance.
      *
      * @since  1.0.0
      * @access private
-     * @var    \Sincro_Mailchimp_Configuration_Service $configuration_service The {@link Sincro_Mailchimp_Configuration_Service} instance.
+     * @var    \Synchro_Mailchimp_Configuration_Service $configuration_service The {@link Synchro_Mailchimp_Configuration_Service} instance.
      */
     private $configuration_service;
 
     /**
-     * Create a {@link Sincro_Mailchimp_User_Service} instance.
+     * Create a {@link Synchro_Mailchimp_User_Service} instance.
      *
      * @since 1.0.0
      *
-     * @param \Sincro_Mailchimp_Configuration_Service $configuration_service The {@link Sincro_Mailchimp_Configuration_Service} instance.
+     * @param \Synchro_Mailchimp_Configuration_Service $configuration_service The {@link Synchro_Mailchimp_Configuration_Service} instance.
      */
     public function __construct( $configuration_service ) 
     {
 
-        $this->log = Sincro_MailChimp_Log_Service::create('Sincro_Mailchimp_User_Service');
+        $this->log = Synchro_MailChimp_Log_Service::create('Synchro_Mailchimp_User_Service');
 
         $this->configuration_service = $configuration_service;
 
@@ -74,7 +74,7 @@ class Sincro_Mailchimp_User_Service
     public function get_lists( $lists, $user_id ) 
     {
 
-        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+        if (Synchro_MailChimp_Log_Service::is_enabled() ) {
             $this->log->debug("Getting the lists for user $user_id");
         }
 
@@ -84,7 +84,7 @@ class Sincro_Mailchimp_User_Service
         // Return an empty array if the user doesn't exist.
         if (false === $user ) {
 
-            if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            if (Synchro_MailChimp_Log_Service::is_enabled() ) {
                 $this->log->warn("User $user_id not found.");
             }
 
@@ -97,7 +97,7 @@ class Sincro_Mailchimp_User_Service
             // Get the lists for the specified role.
             $role_lists = $this->configuration_service->get_by_role($role);
 
-            if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            if (Synchro_MailChimp_Log_Service::is_enabled() ) {
                 $this->log->trace('Got ' . count($role_lists) . " list(s) for user $user_id, role $role.");
             }
 
@@ -108,7 +108,7 @@ class Sincro_Mailchimp_User_Service
 
         }
 
-        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+        if (Synchro_MailChimp_Log_Service::is_enabled() ) {
             $this->log->info('Found ' . count($lists) . " list(s) for user $user_id: " . var_export($lists, true));
         }
 
@@ -140,7 +140,7 @@ class Sincro_Mailchimp_User_Service
     public function get_interests( $user_id, $list_id, $seed = array() ) 
     {
 
-        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+        if (Synchro_MailChimp_Log_Service::is_enabled() ) {
             $this->log->debug("Getting the interests for user $user_id and list $list_id...");
         }
 
@@ -150,7 +150,7 @@ class Sincro_Mailchimp_User_Service
         // Return an empty array if the user doesn't exist.
         if (false === $user ) {
 
-            if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            if (Synchro_MailChimp_Log_Service::is_enabled() ) {
                 $this->log->warn("User $user_id not found.");
             }
 
@@ -166,7 +166,7 @@ class Sincro_Mailchimp_User_Service
             // Get the interests for the specified role.
             $role_interests = $this->configuration_service->get_by_role_and_list($role, $list_id);
 
-            if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+            if (Synchro_MailChimp_Log_Service::is_enabled() ) {
                 $this->log->trace('Got ' . count($role_interests) . " interest(s) for user $user_id, role $role, list $list_id.");
             }
 
@@ -177,7 +177,7 @@ class Sincro_Mailchimp_User_Service
 
         }
 
-        if (Sincro_MailChimp_Log_Service::is_enabled() ) {
+        if (Synchro_MailChimp_Log_Service::is_enabled() ) {
             $this->log->info('Found ' . count($interests) . " interest(s) for user $user_id and list $list_id: " . var_export($interests, true));
         }
 

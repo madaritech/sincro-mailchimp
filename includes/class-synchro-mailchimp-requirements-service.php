@@ -6,26 +6,26 @@
  * @link
  * @since 1.0.0
  *
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/admin
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/admin
  */
 
 /**
  * The core subscription functionality of the plugin.
  *
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/admin
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/admin
  * @author     Madaritech <freelance@madaritech.com>
  */
-class Sincro_Mailchimp_Requirements_Service
+class Synchro_Mailchimp_Requirements_Service
 {
 
     /*
-    * A {@link Sincro_MailChimp_Log_Service} instance.
+    * A {@link Synchro_MailChimp_Log_Service} instance.
     *
     * @since 1.0.0
     * @access private
-    * @var \Sincro_MailChimp_Log_Service $log A {@link Sincro_MailChimp_Log_Service} instance.
+    * @var \Synchro_MailChimp_Log_Service $log A {@link Synchro_MailChimp_Log_Service} instance.
     */
     private $log;
 
@@ -36,7 +36,7 @@ class Sincro_Mailchimp_Requirements_Service
      */
     public function __construct() 
     {
-        $this->log = Sincro_MailChimp_Log_Service::create('Sincro_Mailchimp_Admin_Requirements_Service');
+        $this->log = Synchro_MailChimp_Log_Service::create('Synchro_Mailchimp_Admin_Requirements_Service');
     }
 
     /**
@@ -61,7 +61,7 @@ class Sincro_Mailchimp_Requirements_Service
         if ( !$this->mfw_is_missing() ) :
     ?>
     <div class="notice error is-dismissible" >
-        <p><?php _e( 'Sincro MailChimp per funzionare richiede che il plugin MailChimp per WordPress sia installato ed attivo. Installalo ora!', 'sincro_mailchimp' ); ?></p>
+        <p><?php _e( 'Synchro MailChimp per funzionare richiede che il plugin MailChimp per WordPress sia installato ed attivo. Installalo ora!', 'synchro_mailchimp' ); ?></p>
     </div>
     <?php
         endif;

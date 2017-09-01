@@ -2,22 +2,22 @@
 /**
  * Services: Configuration Service.
  *
- * The {@link Sincro_Mailchimp_Configuration_Service} provides functions to access the plugin
+ * The {@link Synchro_Mailchimp_Configuration_Service} provides functions to access the plugin
  * configuration.
  *
  * @since      1.0.0
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/includes
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/includes
  */
 
 /**
- * Define the {@link Sincro_Mailchimp_Configuration_Service} class.
+ * Define the {@link Synchro_Mailchimp_Configuration_Service} class.
  *
  * @since      1.0.0
- * @package    Sincro_Mailchimp
- * @subpackage Sincro_Mailchimp/includes
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/includes
  */
-class Sincro_Mailchimp_Configuration_Service
+class Synchro_Mailchimp_Configuration_Service
 {
 
     /**
@@ -30,24 +30,24 @@ class Sincro_Mailchimp_Configuration_Service
     private $configuration;
 
     /*
-    * A {@link Sincro_MailChimp_Log_Service} instance.
+    * A {@link Synchro_MailChimp_Log_Service} instance.
     *
     * @since 1.0.0
     * @access private
-    * @var \Sincro_MailChimp_Log_Service $log A {@link Sincro_MailChimp_Log_Service} instance.
+    * @var \Synchro_MailChimp_Log_Service $log A {@link Synchro_MailChimp_Log_Service} instance.
     */
     private $log;
 
     /**
-     * Create a {@link Sincro_Mailchimp_Configuration_Service} instance.
+     * Create a {@link Synchro_Mailchimp_Configuration_Service} instance.
      *
      * @since 1.0.0
      *
      */
     public function __construct() 
     {
-        $sincro_mailchimp_options = get_option('sincro_mailchimp_options');
-        $this->configuration = isset($sincro_mailchimp_options) ? unserialize($sincro_mailchimp_options) : array();
+        $synchro_mailchimp_options = get_option('synchro_mailchimp_options');
+        $this->configuration = isset($synchro_mailchimp_options) ? unserialize($synchro_mailchimp_options) : array();
     }
 
     /**
