@@ -13,12 +13,16 @@
  */
 ?>
 
-<h1><?php esc_attr_e( 'Sincro MailChimp Plugin', 'sincro_mailchimp' ); ?></h1>
+<form method="POST">
+<input type="hidden" name="form_submitted" value="Y">
+
+<h1><span><img src="http://greenlightup.com/wp-content/uploads/2014/06/mailchimp_logo.png" alt="Mia Immagine" height="80px"></span><?php esc_attr_e( 'Synchro MailChimp Plugin', 'sincro_mailchimp' ); ?></h1>
 
 <div class="wrap">
 
     <div id="icon-options-general" class="icon32"></div>
-    <h2><?php esc_attr_e( 'Impostazioni', 'sincro_mailchimp' ); ?></h2>
+    <!--h1><?php esc_attr_e( 'Settings  ', 'sincro_mailchimp' ); ?></h1-->
+
     <div id="poststuff">
 
         <div id="post-body" class="metabox-holder columns-2">
@@ -27,73 +31,57 @@
             <div id="post-body-content">
 
                 <div class="meta-box-sortables ui-sortable">
-
-                    <div class="postbox">
-
-                        <div class="handlediv" title="Click to toggle"><br></div>
-                        <!-- Toggle -->
-
-                        <div class="inside">
-
-                            <form method="POST">
-                                <input type="hidden" name="form_submitted" value="Y">
-                                <table class="widefat">
 <?php 
 
 foreach ($all_roles as $role => $role_val) {
     $schema_name = $role . '_subscription_schema';
     $name = $role_val['name'];
+
 ?>
 
-                                    <tr>
-                                        <td class="row-title" style="background: #0074a2;color: #fff;border: 2px solid #fff;padding: 2em 
-0"><label for="tablecell">
-                                            <?php esc_attr_e(
-                                                    $name, 'sincro_mailchimp'
-                                                ); ?></label>
-                                        </td>
-                                        <td>
+                    <div class="postbox">
 
+                        <h3 class="hndle"><span style="font-size: 16px; font-weight: bold;"><?php esc_attr_e( $name, 'sincro_mailchimp' ); ?></span></h3>
+
+                        <div class="inside">
+                            <table style="width: 80%;text-align: center;border: 0 none" align="center">
+                                <tbody>
 <?php foreach ($settings_lists[$role] as $list_id => $list_array) { ?>
 
+                                    <tr>
+                                        <td style="border: 0px solid #0073aa; padding: 2em 0">
+                                            <input name="<?php echo $role.'-list-'.$list_id; ?>" type="checkbox" id="" value="<?php echo $list_id; ?>"  <?php if ($list_array['checked']) echo " checked"; ?>/>
+                                            <span style="font-size: 20px; font-weight: bold;"><?php esc_attr_e( $list_array['name'], 'sincro_mailchimp' ); ?></span>
+                                        </td>
+                                        <td style="border: 1px solid #82878c;padding: 2em 0">
 
-
-                                                    <h1 style="margin-top: 30px"><input name="<?php echo $role.'-list-'.$list_id; ?>" type="checkbox" id="" value="<?php echo $list_id; ?>"  <?php if ($list_array['checked']) echo " checked"; ?>/>
-                                                    <span><?php esc_attr_e( $list_array['name'], 'sincro_mailchimp' ); ?></span></h1>
-
-
-<?php
+<?php 
         foreach ($settings_interest_categories[$role][$list_id] as $category_id => $category_name) {
-             echo "<h4>$category_name</h4>";
-
-             foreach ($settings_interests[$role][$category_id] as $interest_id => $interest_array) {
+            echo '<div style="font-size: 16px; font-weight: bold; margin: 0 0 12px 0;">'.$category_name.'</span></div>';
+            echo '<div style="margin: 0 0 12px 0;">';
+            foreach ($settings_interests[$role][$category_id] as $interest_id => $interest_array) {
 ?>
 
-                <input style="margin-left: 30px" name="<?php echo $role.'-list-'.$list_id.'-interest-'.$interest_id; ?>" type="checkbox" id="" value="<?php echo $interest_id; ?>" <?php if ($interest_array['checked']) echo " checked"; ?>/>
-                <span ><?php esc_attr_e( $interest_array['name'], 'sincro_mailchimp' ); ?></span>
+                                            <input style="margin-left: 30px" name="<?php echo $role.'-list-'.$list_id.'-interest-'.$interest_id; ?>" type="checkbox" id="" value="<?php echo $interest_id; ?>" <?php if ($interest_array['checked']) echo " checked"; ?>/>
+                                            <span style="font-size: 14px" ><?php esc_attr_e( $interest_array['name'], 'sincro_mailchimp' ); ?></span>
 
 <?php
-             }
-
+            }
+            echo '</div>';
         } 
     } 
 ?>
-                                            <!--textarea id="<?php echo $schema_name; ?>" name="<?php echo $schema_name; ?>" cols="80" rows="10" class="large-text"><?php echo $sincro_mailchimp_options[$schema_name]; ?></textarea--><br>
                                         </td>
                                     </tr>
-
-<?php } ?>
-
-                                </table>
-                                <br>
-                                <input class="button-primary" type="submit" name="salva" id="save_dec_nat_plugin" value="<?php esc_attr_e( 'Save Settings' ); ?>" />
-                                <div id="save_spinner_effect" class="spinner" style="float:none;width:auto;height:auto;padding:10px 0 10px 50px;background-position:20px 0;"></div>
-                            </form>
+                                </tbody>
+                            </table>
+                            <p align="right"><input class="button-primary" type="submit" name="salva" id="<?php echo $name; ?>-submit-button" value="<?php esc_attr_e( 'Save Settings', 'sincro_mailchimp' ); ?>" /></p>
                         </div>
                         <!-- .inside -->
 
                     </div>
                     <!-- .postbox -->
+<?php } ?>
 
                 </div>
                 <!-- .meta-box-sortables .ui-sortable -->
@@ -102,29 +90,45 @@ foreach ($all_roles as $role => $role_val) {
             <!-- post-body-content -->
 
             <!-- sidebar -->
-            <div id="postbox-containerwp-1" class="postbox-container">
+            <div id="postbox-container-1" class="postbox-container">
 
                 <div class="meta-box-sortables">
 
                     <div class="postbox">
 
-                        <div class="handlediv" title="Click to toggle"><br></div>
-                        <!-- Toggle -->
-
                         <h2 class="hndle"><span><?php esc_attr_e(
-                                    'Istruzioni', 'wp_admin_style'
+                                    'Instructions', 'sincro_mailchimp'
                                 ); ?></span></h2>
 
                         <div class="inside">
-                            <p><?php esc_attr_e( 'Nel riquadro a sinistra è possibile selezionare le impostazioni di visualizzazione per la corretta visualizzazione delle coming soon Page o Maintenance Mode Page. Per visualizzare le modifiche premere il pulsante "Salva Impostazioni". Per attivare il plugin ricordarsi di abilitare la voce "Attiva la pagina".', 'wp_admin_style' ); ?></p>
+                            <p><?php esc_attr_e( 'This plugin let you synchronize the subscription of the WordPress users to MailChimp list upon the selections made on this page for every role. This selection set the desired match. Then, to apply your choose to a particular user, go on the WordPress user setting page and check the Sincro MailChimp select box.', 'sincro_mailchimp' ); ?></p>
+                            <p><?php esc_attr_e( 'Important: is not possibile to select interests without select the corresponding list. In this case the selection will be lost.' ); ?></p>
+                            <p><?php esc_attr_e( 'Important: is possible to switch users between the lists, but is not possible to unsubscribe the user from all the MailChimp lists. In this case you need to go on MailChimp and manually delete the user. This will be addressed in next release.', 'sincro_mailchimp' ); ?></p>
+                        </div>
+                        <!-- .inside -->
 
-                            <div align="center"><p><form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                            <input type="hidden" name="cmd" value="_s-xclick">
-                            <input type="hidden" name="hosted_button_id" value="G48ZMD7HLATSE">
-                            <input type="image" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
-                            <img alt="" border="0" src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" width="1" height="1">
-                            </form></p></div>
+                    </div>
+                    <!-- .postbox -->
 
+                    <div class="postbox">
+
+                        <h2 class="hndle"><span><?php esc_attr_e(
+                                    'Want to contribute?', 'sincro_mailchimp'
+                                ); ?></span></h2>
+
+                        <div class="inside">
+                            <p><?php esc_attr_e( 'This plugin is completely free. Help me to improve it and release new updated version. If you have suggestion or request for features or bug fixing leave a message: ', 'sincro_mailchimp' ); ?><a href="http://www.madaritech.com/#menu-contact" target="_blank">Madaritech contact form</a></p>
+
+                            <div align="center">
+                                <p>
+                                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                                        <input type="hidden" name="cmd" value="_s-xclick">
+                                        <input type="hidden" name="hosted_button_id" value="G48ZMD7HLATSE">
+                                        <input type="image" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+                                        <img alt="" border="0" src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" width="1" height="1">
+                                    </form>
+                                </p>
+                            </div>
                         </div>
                         <!-- .inside -->
 
@@ -137,6 +141,7 @@ foreach ($all_roles as $role => $role_val) {
             </div>
             <!-- #postbox-container-1 .postbox-container -->
 
+
         </div>
         <!-- #post-body .metabox-holder .columns-2 -->
 
@@ -145,3 +150,4 @@ foreach ($all_roles as $role => $role_val) {
     <!-- #poststuff -->
 
 </div> <!-- .wrap -->
+</form>

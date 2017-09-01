@@ -17,21 +17,21 @@
 	    <table class="form-table">
 	        <tr>
 	            <th>
-	                <label for="mc_subscribe"><?php echo __("Iscrivi alla Mailing List", "sincro_mailchimp"); ?></label>
+	                <label for="mc_subscribe"><?php echo __("Subscribe to Mailing List", "sincro_mailchimp"); ?></label>
 	                <div id="spinner"></div>
 	            </th>
-	            <td id="sm_result"><h4><?php echo __("Operazione Completata!", "sincro_mailchimp"); ?></h4></td>
+	            <td id="sm_result"><h4><?php echo __("Success!", "sincro_mailchimp"); ?></h4></td>
 	            <td id="chk_block">
 	                <input type="checkbox"
 	                       class="regular-text ltr"
 	                       id="mc_subscribe"
 	                       name="mc_subscribe"
 	                       <?php checked($checked,1); ?>
-	                       title=<?php echo __("Iscrizione utente alla/e mailing list MailChimp", "sincro_mailchimp"); ?>
+	                       title=<?php echo __("User subscription to MailChimp list/s", "sincro_mailchimp"); ?>
 	                       <?php if (!current_user_can('administrator')) echo "disabled" ?>
 	                       >
 	                <p class="description">
-	                    <?php echo __("Selezionare il checkbox se si intende iscrivere l'utente alla/e mailing list MailChimp", "sincro_mailchimp"); ?>
+	                    <?php echo __("Select the checkbox to subscribe user to MailChimp mailig lists", "sincro_mailchimp"); ?>
 	                </p>
 	            </td>
 	        </tr>
