@@ -301,45 +301,49 @@ class Synchro_Mailchimp_Admin
             wp_die( __('You do not have sufficient permissions to access this page.', 'synchro_mailchimp') );
         }
 
-        $configuration_options = array();
-        $mailchimp_lists = array();                //['list_id' => ['name' => 'list_name', 'checked' => false] ]
-        $mailchimp_interest_categories = array();  //['list_id' => ['category_id' => 'category_name'] ]
-        $mailchimp_interests = array();            //['category_id' => ['interest_id' => ['name' => 'interest_name', 'checked' => false]]]
+        if (!$this->requirements_service->mfw_is_missing()) {
 
-        $this->read_mailchimp_schema($mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests);
+            $configuration_options = array();
+            $mailchimp_lists = array();                //['list_id' => ['name' => 'list_name', 'checked' => false] ]
+            $mailchimp_interest_categories = array();  //['list_id' => ['category_id' => 'category_name'] ]
+            $mailchimp_interests = array();            //['category_id' => ['interest_id' => ['name' => 'interest_name', 'checked' => false]]]
 
-        if (isset($_POST['form_submitted'])) {
+            $this->read_mailchimp_schema($mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests);
 
-            $hidden_field = esc_html( $_POST['form_submitted'] );
+            if (isset($_POST['form_submitted'])) {
 
-            if ($hidden_field == 'Y') {
+                $hidden_field = esc_html( $_POST['form_submitted'] );
 
-                $configuration_options = $this->build_configuration_option($configuration_options, $mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests);
+                if ($hidden_field == 'Y') {
 
-                update_option('synchro_mailchimp_options', serialize($configuration_options));
+                    $configuration_options = $this->build_configuration_option($configuration_options, $mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests);
+
+                    update_option('synchro_mailchimp_options', serialize($configuration_options));
+                }
             }
+
+            $synchro_mailchimp_options = get_option('synchro_mailchimp_options');
+            $configuration = unserialize($synchro_mailchimp_options);        
+
+            $settings_lists;
+            $settings_interest_categories;
+            $settings_interests;
+            
+            global $wp_roles;
+            $all_roles = $wp_roles->roles;
+
+            foreach ($all_roles as $role => $role_name) {
+                //Initializing mailchimp lists and interests for the role for the settings page
+                $settings_lists[$role] = $mailchimp_lists;
+                $settings_interest_categories[$role] = $mailchimp_interest_categories;
+                $settings_interests[$role] = $mailchimp_interests;
+            }
+
+            $this->build_setting_form($all_roles, $configuration, $settings_lists, $settings_interest_categories, $settings_interests);
         }
-
-        $synchro_mailchimp_options = get_option('synchro_mailchimp_options');
-        $configuration = unserialize($synchro_mailchimp_options);        
-
-        $settings_lists;
-        $settings_interest_categories;
-        $settings_interests;
-        
-        global $wp_roles;
-        $all_roles = $wp_roles->roles;
-
-        foreach ($all_roles as $role => $role_name) {
-            //Initializing mailchimp lists and interests for the role for the settings page
-            $settings_lists[$role] = $mailchimp_lists;
-            $settings_interest_categories[$role] = $mailchimp_interest_categories;
-            $settings_interests[$role] = $mailchimp_interests;
-        }
-
-        $this->build_setting_form($all_roles, $configuration, $settings_lists, $settings_interest_categories, $settings_interests);
-
+            
         require_once('partials/synchro-mailchimp-admin-display.php');
+        
     }
 
     /**
@@ -351,7 +355,7 @@ class Synchro_Mailchimp_Admin
      */
     public function form_field_iscrizione_mailing_list( $user ) 
     {
-    	if ( $this->requirements_service->mfw_is_missing() ) {
+    	if ( !$this->requirements_service->mfw_is_missing() ) {
 	        $checked = 0;
 
 	        // Estrazione dati utente

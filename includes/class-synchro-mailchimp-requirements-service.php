@@ -30,6 +30,14 @@ class Synchro_Mailchimp_Requirements_Service
     private $log;
 
     /**
+     * Api Mailchimp.
+     *
+     * @since  1.0.0
+     * @access public
+     */
+    private $api;
+
+    /**
      * Initialize the class and set its properties.
      *
      * @since 1.0.0
@@ -37,6 +45,7 @@ class Synchro_Mailchimp_Requirements_Service
     public function __construct() 
     {
         $this->log = Synchro_MailChimp_Log_Service::create('Synchro_Mailchimp_Admin_Requirements_Service');
+        $this->api = new Synchro_Mailchimp_Api_Service();
     }
 
     /**
@@ -48,7 +57,7 @@ class Synchro_Mailchimp_Requirements_Service
     public function mfw_is_missing() {
         // is_plugin_active is only available from within the admin pages. If you want to use this function you will need to manually require plugin.php
         include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-        return (is_plugin_active( 'mailchimp-for-wp/mailchimp-for-wp.php' ) );
+        return ( !is_plugin_active( 'mailchimp-for-wp/mailchimp-for-wp.php' ) || !$this->api->is_connected());
     }
 
     /**
@@ -58,12 +67,12 @@ class Synchro_Mailchimp_Requirements_Service
      * @access public
      */
     public function mfw_missing_admin_notice() {
-        if ( !$this->mfw_is_missing() ) :
+        if ( $this->mfw_is_missing() ) :
     ?>
     <div class="notice error is-dismissible" >
-        <p><?php _e( 'Synchro MailChimp per funzionare richiede che il plugin MailChimp per WordPress sia installato ed attivo. Installalo ora!', 'synchro_mailchimp' ); ?></p>
+        <p><?php _e( '<strong>Synchro MailChimp</strong> needs <strong>MailChimp for WordPress</strong> installed, active and configured. Download it now! ', 'synchro_mailchimp' ); ?><a href="https://it.wordpress.org/plugins/mailchimp-for-wp/" target="_blank">MailChimp for WordPress</a></p>
     </div>
-    <?php
-        endif;
+    <?php endif; 
     }
 }
+?>

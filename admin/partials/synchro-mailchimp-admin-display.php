@@ -29,6 +29,8 @@
 </table>
 
 <div class="wrap">
+<h2></h2>
+<?php if (!$this->requirements_service->mfw_is_missing()) : ?>
 
     <div id="icon-options-general" class="icon32"></div>
     <!--h1><?php esc_attr_e( 'Settings  ', 'synchro_mailchimp' ); ?></h1-->
@@ -159,5 +161,8 @@ foreach ($all_roles as $role => $role_val) {
     </div>
     <!-- #poststuff -->
 
+<?php endif; ?>
+
 </div> <!-- .wrap -->
+
 </form>

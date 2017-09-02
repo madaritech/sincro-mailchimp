@@ -21,6 +21,19 @@ class Synchro_Mailchimp_Api_Service
 {
 
     /**
+     * Calls is_connected API from MailChimp for WP Plugin.
+     *
+     * @since  1.0.0
+     * @access public
+     */
+    public function is_connected() 
+    {
+        global $mc4wp;
+
+        return ( $mc4wp['api']->is_connected() );
+    }
+
+    /**
      * Calls get_lists API from MailChimp for WP Plugin.
      *
      * @since  1.0.0
