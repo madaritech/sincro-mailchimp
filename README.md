@@ -1,8 +1,10 @@
-== Synchro Mailchimp Plugin ==
+Synchro Mailchimp Plugin
+========================
 
 The plugin permits administrators to subscribe/unsubscribe WordPress users to MailChimp by a checkbox on the WordPress user settings page. Every user, depending on their roles and the template defined in plugin settings page, can be associated to MailChimp lists and interests. The plugin requires MailChimp for WordPress plugin.
 
-== Installation ==
+Installation
+============
 
 1. This plugin needs "MailChimp for WordPress" installed and connected to MailChimp, so install, activate and connect this plugin first
 1. Download the plugin files and upload them to the `/wp-content/plugins/synchro-mailchimp` directory, or install the plugin through the WordPress plugins screen directly.
