@@ -1,37 +1,14 @@
-Sincro Mailchimp Trial WP Plugin
+== Synchro Mailchimp Plugin ==
 
-To use plugin you need to add settings script to wp-config.php file as the following example :
+The plugin permits administrators to subscribe/unsubscribe WordPress users to MailChimp by a checkbox on the WordPress user settings page. Every user, depending on their roles and the template defined in plugin settings page, can be associated to MailChimp lists and interests. The plugin requires MailChimp for WordPress plugin.
 
-$list['acme'] = 'e87b1536bb';
-$list['test'] = '060a231f4f';
-$interest['group1'] 		= 'dafaf73c29';
-$interest['group2'] 		= 'ab364ca78d';
-$interest['group3'] 		= '2bec2ca41d';
-$interest['acme-group1'] 	= '27e89ce542';
-$interest['acme-group2'] 	= '9e05bcd6ce';
-$interest['acme-group3'] 	= 'cf5965131a';
-$interest['acme-group4'] 	= '7cd76ab7e9';
+== Installation ==
 
-$smc = array('administrator' => array($list['test'] => array($interest['group1'] => false,
-			  				     $interest['group2'] => true,
-			  				     $interest['group3'] => true)),
+1. This plugin needs "MailChimp for WordPress" installed and connected to MailChimp, so install, activate and connect this plugin first
+1. Download the plugin files and upload them to the `/wp-content/plugins/synchro-mailchimp` directory, or install the plugin through the WordPress plugins screen directly.
+1. Activate the plugin through the 'Plugins' screen in WordPress
+1. Use the link "Synchro MC" on the admin menu to enter in the plugin setting page
+1. In the Synchro Mailchimp settings page you will see for every role your Lists and Interests as defined in MailChimp. Select with checkbox the lists and interests you want to be able to subscribe for every role
+1. To actually subscribe a user go in WordPress user settings page, choose the user, scrool down and select the Synchro MailChimp checkbox. To unsubscribe uncheck it
 
-			 'editor' => array($list['acme'] => array($interest['acme-group1'] => true, 
-								  $interest['acme-group2'] => false, 
-								  $interest['acme-group3'] => true, 
-								  $interest['acme-group4'] => false)),
-			 'author' => array(),
 
-			 'contributor' => array($list['test'] => array($interest['group1'] => true,
-			  					       $interest['group2'] => false,
-			  					        $interest['group3'] => true)),
-
-			 'subscriber' => array($list['acme'] => array($interest['acme-group1'] => true, 
-								      $interest['acme-group2'] => false, 
-								      $interest['acme-group3'] => true, 
-								      $interest['acme-group4'] => true), 
-			  			$list['test'] => array($interest['group1'] => false,
-			  					       $interest['group2'] => true,
-			  					       $interest['group3'] => false)));
-
-define( "SINCRO_MAILCHIMP_CONFIG", serialize($smc) );
