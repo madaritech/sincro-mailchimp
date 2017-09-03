@@ -156,7 +156,10 @@ class Synchro_Mailchimp_Admin
     public function read_mailchimp_schema(&$mailchimp_lists, &$mailchimp_interest_categories, &$mailchimp_interests) {
 
         $lists_obj = $this->api->get_lists(array());
-        $list_arr = json_decode(json_encode($lists_obj), true);
+        $list_arr = array();
+
+        if (!is_null($lists_obj)  && !empty($lists_obj) && isset($lists_obj))
+            $list_arr = json_decode(json_encode($lists_obj), true);
 
         foreach ($list_arr as $list) {
 
@@ -197,33 +200,35 @@ class Synchro_Mailchimp_Admin
 
         foreach ($all_roles as $role => $role_name) {
 
-                    $configuration_options[$role] = array();
+            $configuration_options[$role] = array();
 
-                    foreach ($mailchimp_lists as $list_id => $list_array) {
+            foreach ($mailchimp_lists as $list_id => $list_array) {
 
-                        if ( isset($_POST[$role.'-list-'.$list_id]) && esc_html($_POST[$role.'-list-'.$list_id]) == $list_id )  {
+                if ( isset($_POST[$role.'-list-'.$list_id]) && esc_html($_POST[$role.'-list-'.$list_id]) == $list_id )  {
+                    
+                    $configuration_options[$role][$list_id] = array();
+
+                    if (isset($mailchimp_interest_categories[$list_id])) {
+                        foreach ( $mailchimp_interest_categories[$list_id] as $category_id => $category_name) {
                             
-                            $configuration_options[$role][$list_id] = array();
+                            foreach ( $mailchimp_interests[$category_id] as $interest_id => $interest_array) {
 
-                            foreach ( $mailchimp_interest_categories[$list_id] as $category_id => $category_name) {
-                                
-                                foreach ( $mailchimp_interests[$category_id] as $interest_id => $interest_array) {
+                                if ( isset($_POST[$role.'-list-'.$list_id.'-interest-'.$interest_id]) && esc_html($_POST[$role.'-list-'.$list_id.'-interest-'.$interest_id]) == $interest_id ) {
 
-                                    if ( isset($_POST[$role.'-list-'.$list_id.'-interest-'.$interest_id]) && esc_html($_POST[$role.'-list-'.$list_id.'-interest-'.$interest_id]) == $interest_id ) {
-
-                                        $configuration_options[$role][$list_id][$interest_id] = true;
-
-                                    }
-                                    else {
-                                        $configuration_options[$role][$list_id][$interest_id] = false;
-                                    }
+                                    $configuration_options[$role][$list_id][$interest_id] = true;
 
                                 }
+                                else {
+                                    $configuration_options[$role][$list_id][$interest_id] = false;
+                                }
+
                             }
                         }
                     }
-
                 }
+            }
+
+        }
 
         return($configuration_options);
     }
@@ -256,14 +261,17 @@ class Synchro_Mailchimp_Admin
                     }
 
                     if ($settings_lists[$role][$mailchimp_list_id]['checked']) {
-                        foreach ($settings_interest_categories[$role][$mailchimp_list_id] as $mailchimp_category_id => $mailchimp_category_name) {
-                            
-                            foreach ($settings_interests[$role][$mailchimp_category_id] as $mailchimp_interest_id => $mailchimp_interest_bool) {
-                            
-                                if (array_key_exists($mailchimp_interest_id, $configuration_interest_array)) {
 
-                                    $settings_interests[$role][$mailchimp_category_id][$mailchimp_interest_id]['checked'] = $configuration_interest_array[$mailchimp_interest_id];
-                            
+                        if (isset($settings_interest_categories[$role][$mailchimp_list_id])) {
+                            foreach ($settings_interest_categories[$role][$mailchimp_list_id] as $mailchimp_category_id => $mailchimp_category_name) {
+                                
+                                foreach ($settings_interests[$role][$mailchimp_category_id] as $mailchimp_interest_id => $mailchimp_interest_bool) {
+                                
+                                    if (array_key_exists($mailchimp_interest_id, $configuration_interest_array)) {
+
+                                        $settings_interests[$role][$mailchimp_category_id][$mailchimp_interest_id]['checked'] = $configuration_interest_array[$mailchimp_interest_id];
+                                
+                                    }
                                 }
                             }
                         }
@@ -380,7 +388,6 @@ class Synchro_Mailchimp_Admin
 
 			include_once 'partials/synchro-mailchimp-users-admin-display.php';
 		}
-        
     }
 
     /**
@@ -406,22 +413,26 @@ class Synchro_Mailchimp_Admin
         }
 
         if (! current_user_can('administrator') ) {
-            wp_send_json_error(__('Permessi non sufficienti, operazione fallita', 'synchro_mailchimp'));
+            wp_send_json_error(__('Insufficient permissions, operation failed', 'synchro_mailchimp'));
         }
 
         //Elaborazione
         try {
             $subscription_status = $this->subscription_service->check_subscription_status($user_email, $user_role);
             if (Synchro_MailChimp_Log_Service::is_enabled() ) {
-            $this->log->debug("Checking subscrition status [ subscription status :: $subscription_status ][ user e-mail :: $user_email ][ user role :: $user_role ]");
+                $this->log->debug("Checking subscrition status [ subscription status :: $subscription_status ][ user e-mail :: $user_email ][ user role :: $user_role ]");
             }
         } catch (Exception $e) {
-            $error_message = __("Verifica stato sottoscrizione fallita. ", 'synchro_mailchimp');
+            $error_message = __("Subscription check status failed. ", 'synchro_mailchimp');
             wp_send_json_error($error_message.$e->getMessage());
         }
 
         if (! $subscription_status ) {
-            wp_send_json_error(__('Configurazione assente, operazione fallita', 'synchro_mailchimp'));
+            wp_send_json_error(__('No configuration available, operation failed.', 'synchro_mailchimp'));
+        }
+
+        if ( $subscription_status == 4 ) {
+            wp_send_json_error(__('The configuration on MailChimp has changed. Before subscribe the user go to Synchro MC settings page, update the configuration and press "Save Settings" button.', 'synchro_mailchimp'));
         }
 
         if (Synchro_MailChimp_Log_Service::is_enabled() ) {
@@ -433,7 +444,7 @@ class Synchro_Mailchimp_Admin
                 $this->subscription_service->subscribe_process($subscription_status, $user_email, $user_role);
             }
             catch (Exception $e) {
-                $error_message = __("Processo di sottoscrizione fallito. ", 'synchro_mailchimp');
+                $error_message = __("Subscription process failure. ", 'synchro_mailchimp');
                 wp_send_json_error($error_message.$e->getMessage());
             }
         } else {
@@ -441,12 +452,12 @@ class Synchro_Mailchimp_Admin
                 $this->subscription_service->unsubscribe_process($subscription_status, $user_email, $user_role);
             }
             catch (Exception $e) {
-                $error_message = __("Processo di cancellazione della sottoscrizione fallito. ", 'synchro_mailchimp');
+                $error_message = __("Subscription delete process failure. ", 'synchro_mailchimp');
                 wp_send_json_error($error_message.$e->getMessage());
             }
         }
 
-        wp_send_json_success(__('Operazione eseguita', 'synchro_mailchimp'));
+        wp_send_json_success(__('Operation performed.', 'synchro_mailchimp'));
     }
 
 }

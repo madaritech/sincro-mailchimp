@@ -13,7 +13,7 @@
  */
 ?>
 
-<h3><?php echo __("Iscrizione MailChimp", "synchro_mailchimp"); ?></h3>
+<h3><?php echo __("Synchro MailChimp Subscrition", "synchro_mailchimp"); ?></h3>
 	    <table class="form-table">
 	        <tr>
 	            <th>
