@@ -7,13 +7,12 @@
  * @package Synchro_Mailchimp
  *
  * @wordpress-plugin
- * Plugin Name:       Synchro Mailchimp
- * Plugin URI:        http://www.madaritech.com
- * Description:       The plugin permits administrators to subscribe/unsubscribe WordPress users to MailChimp by a checkbox on the user page. Every user, depending on their roles and the template defined in wp-config file, can be associated to MailChimp                     lists and interests. The plugin requires MailChimp for WordPress plugin.
- * Version:           1.0.0
- * Author:            Madaritech
+ * Plugin Name:       Synchro MailChimp
+ * Description:       The plugin permits administrators to subscribe/unsubscribe WordPress users to MailChimp by a checkbox on the WordPress user settings page. Every user, depending on their roles and the template defined in plugin settings page, can be associated to MailChimp lists and interests. The plugin requires MailChimp for WordPress plugin. 
+ * Version:           1.0
+ * Author:            madaritech
  * Author URI:        http://www.madaritech.com
- * License:           GPLv2 or later.
+ * License:           GPL2
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       synchro-mailchimp
  * Domain Path:       /languages
