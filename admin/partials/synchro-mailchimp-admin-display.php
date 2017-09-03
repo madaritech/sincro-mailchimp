@@ -63,7 +63,14 @@ foreach ($all_roles as $role => $role_val) {
                                 <table style="width: 80%;text-align: center;border: 0 none" align="center">
                                     <tbody>
 
-<?php foreach ($settings_lists[$role] as $list_id => $list_array) { ?>
+<?php 
+    //var_dump($settings_lists[$role]);
+    if (empty($settings_lists[$role])) 
+        _e('No Lists defined on MailChimp','synchro_mailchimp');
+    else {
+        foreach ($settings_lists[$role] as $list_id => $list_array) { 
+
+?>
 
                                         <tr>
                                             <td style="border: 0px solid #0073aa; padding: 2em 0">
@@ -73,36 +80,43 @@ foreach ($all_roles as $role => $role_val) {
                                             <td style="border: 1px solid #82878c;padding: 2em 0">
 
 <?php 
-        if (isset($settings_interest_categories[$role][$list_id])) {
-            foreach ($settings_interest_categories[$role][$list_id] as $category_id => $category_name) {
-                echo '<div style="font-size: 14px; font-weight: bold; margin: 0 0 12px 0;">'.$category_name.'</span></div>';
-                echo '<div style="margin: 0 0 12px 0;">';
-                foreach ($settings_interests[$role][$category_id] as $interest_id => $interest_array) {
+            if (isset($settings_interest_categories[$role][$list_id])) {
+                foreach ($settings_interest_categories[$role][$list_id] as $category_id => $category_name) {
+                    echo '<div style="font-size: 14px; font-weight: bold; margin: 0 0 12px 0;">'.$category_name.'</span></div>';
+                    echo '<div style="margin: 0 0 12px 0;">';
+                    foreach ($settings_interests[$role][$category_id] as $interest_id => $interest_array) {
 ?>
 
                                                 <input style="margin-left: 30px" name="<?php echo $role.'-list-'.$list_id.'-interest-'.$interest_id; ?>" type="checkbox" id="" value="<?php echo $interest_id; ?>" <?php if ($interest_array['checked']) echo " checked"; ?>/>
                                                 <span style="font-size: 14px" ><?php esc_attr_e( $interest_array['name'], 'synchro_mailchimp' ); ?></span>
 
 <?php
-                }
-                echo '</div>';
-            } 
-        } else {
-            _e('No interests defined on MailChimp','synchro_mailchimp');
+                    }
+                    echo '</div>';
+                } 
+            } else {
+                _e('No interests defined on MailChimp','synchro_mailchimp');
+            }
         }
-    } 
 ?>
                                             </td>
                                         </tr>
+<?php   
+    }
+?>
                                     </tbody>
                                 </table>
+<?php if (!empty($settings_lists[$role])) : ?>
                                 <p align="right"><input class="button-primary" type="submit" name="salva" id="<?php echo $role; ?>-submit-button" value="<?php esc_attr_e( 'Save Settings', 'synchro_mailchimp' ); ?>" /></p>
+<?php endif; ?>
                             </div>
                             <!-- .inside -->
 
                         </div>
                         <!-- .postbox -->
-<?php } ?>
+<?php 
+} 
+?>
 
                     </form>
                 </div>
