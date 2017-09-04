@@ -311,6 +311,8 @@ class Synchro_Mailchimp_Admin
 
         if (!$this->requirements_service->mfw_is_missing()) {
 
+            $save_settings = false;
+
             $configuration_options = array();
             $mailchimp_lists = array();                //['list_id' => ['name' => 'list_name', 'checked' => false] ]
             $mailchimp_interest_categories = array();  //['list_id' => ['category_id' => 'category_name'] ]
@@ -324,6 +326,8 @@ class Synchro_Mailchimp_Admin
 
                 if ($hidden_field == 'Y') {
 
+                    $save_settings = true;
+                    
                     $configuration_options = $this->build_configuration_option($configuration_options, $mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests);
 
                     update_option('synchro_mailchimp_options', serialize($configuration_options));

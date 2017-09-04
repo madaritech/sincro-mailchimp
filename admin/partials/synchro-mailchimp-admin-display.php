@@ -29,6 +29,14 @@
 <div class="wrap">
 <h2></h2>
 
+<?php if ($save_settings) : ?>
+
+    <div class="notice notice-success is-dismissible" >
+        <p><strong><?php _e( 'Configuration settings saved.', 'synchro_mailchimp' ); ?></strong></p>
+    </div>
+
+<?php endif; ?>
+
 <?php if (!$this->requirements_service->mfw_is_missing()) : ?>
 
     <div id="icon-options-general" class="icon32"></div>

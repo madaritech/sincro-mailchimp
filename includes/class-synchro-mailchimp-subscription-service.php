@@ -367,7 +367,7 @@ class Synchro_Mailchimp_Subscription_Service
                     $this->log->debug("Subscribing user: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]");
                 
                 }
-                throw new Exception(__('Resource not found in subscring user.','synchro_mailchimp'));
+                throw new Exception(__('Resource not found in subscribing user.','synchro_mailchimp'));
             
             }
             catch (MC4WP_API_Exception $e) {
