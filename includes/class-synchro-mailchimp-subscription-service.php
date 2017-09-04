@@ -447,7 +447,7 @@ class Synchro_Mailchimp_Subscription_Service
                     $this->log->debug("Unsubscribe User Config: MC4WP_API_Connection_Exception [ message :: $message ] [ code :: $code]");
                 
                 }
-                throw new Exception(__("Problema di connessione. $message",'synchro_mailchimp'));
+                throw new Exception(__("Connection problem. $message",'synchro_mailchimp'));
             
             }
             catch (MC4WP_API_Resource_Not_Found_Exception $e) {
@@ -459,7 +459,7 @@ class Synchro_Mailchimp_Subscription_Service
                     $this->log->debug("Unsubscribe User Config: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]");
                 
                 }
-                throw new Exception(__('Risorsa not trovata.','synchro_mailchimp'));
+                throw new Exception(__('Resource not found.','synchro_mailchimp'));
             
             }
             catch (MC4WP_API_Exception $e) {
@@ -471,7 +471,7 @@ class Synchro_Mailchimp_Subscription_Service
                     $this->log->debug("Unsubscribe User Config: MC4WP_API_Exception [ message :: $message ] [ code :: $code]");
                 
                 }
-                throw new Exception(__('Errore nelle API di connessione.','synchro_mailchimp'));
+                throw new Exception(__('API connection error.','synchro_mailchimp'));
             
             }
             catch (Exception $e) {
@@ -483,7 +483,7 @@ class Synchro_Mailchimp_Subscription_Service
                     $this->log->debug("Unsubscribe User Config: Exception [ message :: $message ] [ code :: $code]");
 
                 }
-                throw new Exception(__('Errore generico.','synchro_mailchimp'));
+                throw new Exception(__('Generic error.','synchro_mailchimp'));
             
             }
 
@@ -522,7 +522,7 @@ class Synchro_Mailchimp_Subscription_Service
                     $this->log->debug("Unsubscribe User MailChimp: MC4WP_API_Connection_Exception [ message :: $message ] [ code :: $code]");
                 
                 }
-                throw new Exception(__("Problema di connessione. $message",'synchro_mailchimp'));
+                throw new Exception(__("Connection problem. $message",'synchro_mailchimp'));
             
             }
             catch (MC4WP_API_Resource_Not_Found_Exception $e) {
@@ -534,7 +534,7 @@ class Synchro_Mailchimp_Subscription_Service
                     $this->log->debug("Unsubscribe User MailChimp: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]");
                 
                 }
-                throw new Exception(__('Risorsa not trovata.','synchro_mailchimp'));
+                throw new Exception(__('Resource not found.','synchro_mailchimp'));
             
             }
             catch (MC4WP_API_Exception $e) {
@@ -546,7 +546,7 @@ class Synchro_Mailchimp_Subscription_Service
                     $this->log->debug("Unsubscribe User MailChimp: MC4WP_API_Exception [ message :: $message ] [ code :: $code]");
                 
                 }
-                throw new Exception(__('Errore nelle API di connessione.','synchro_mailchimp'));
+                throw new Exception(__('API connection error.','synchro_mailchimp'));
             
             }
             catch (Exception $e) {
@@ -558,7 +558,7 @@ class Synchro_Mailchimp_Subscription_Service
                     $this->log->debug("Unsubscribe User MailChimp: Exception [ message :: $message ] [ code :: $code]");
 
                 }
-                throw new Exception(__('Errore generico.','synchro_mailchimp'));
+                throw new Exception(__('Generic error.','synchro_mailchimp'));
             
             }
 
