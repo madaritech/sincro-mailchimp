@@ -8,8 +8,9 @@
  * @link       http://www.madaritech.com
  * @since      1.0.0
  *
- * @package    Madaritech_Camp_Page
- * @subpackage Plugin_Name/admin/partials
+ * @package    Synchro_Mailchimp
+ * @subpackage Synchro_Mailchimp/admin/partials
+ * @author     Madaritech <freelance@madaritech.com>
  */
 ?>
 
