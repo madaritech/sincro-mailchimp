@@ -3,7 +3,7 @@
 /**
  * Fired during plugin activation
  *
- * @link       
+ * @link
  * @since 1.0.0
  *
  * @package    Synchro_Mailchimp
@@ -30,18 +30,19 @@ class Synchro_Mailchimp_Activator
      *
      * @since 1.0.0
      */
-    public static function activate() 
+    public static function activate()
     {
-        global $wp_roles;
-        $all_roles = $wp_roles->roles;
+        if (!get_option('synchro_mailchimp_options')) {
+            global $wp_roles;
+            $all_roles = $wp_roles->roles;
 
-        $options = array();
+            $options = array();
         
-        foreach ($all_roles as $role => $name) {
-            $options[$role] = array();
+            foreach ($all_roles as $role => $name) {
+                $options[$role] = array();
+            }
+        
+            update_option('synchro_mailchimp_options', serialize($options));
         }
-        
-        update_option( 'synchro_mailchimp_options', serialize($options) );
     }
-
 }
