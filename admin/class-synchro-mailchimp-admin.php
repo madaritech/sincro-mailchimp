@@ -54,7 +54,7 @@ class Synchro_Mailchimp_Admin {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @var object $api Handler for the MailChimp api.
+	 * @var object $api Handler for the MailChimp api, a {@link Synchro_MailChimp_Api_Service} instance.
 	 */
 	public $api;
 
