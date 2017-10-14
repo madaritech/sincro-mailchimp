@@ -289,25 +289,33 @@ class Synchro_Mailchimp_Admin {
 
 			$save_settings = false;
 
+			// Generate random tag to build the form nonce.
+			$rand = wp_generate_password( 6 );
+
 			$configuration_options = array();
-			$mailchimp_lists = array();                // ['list_id' => ['name' => 'list_name', 'checked' => false] ]
-			$mailchimp_interest_categories = array();  // ['list_id' => ['category_id' => 'category_name'] ]
-			$mailchimp_interests = array();            // ['category_id' => ['interest_id' => ['name' => 'interest_name', 'checked' => false]]]
+
+			// mailchimp_lists structure: ['list_id' => ['name' => 'list_name', 'checked' => false] ].
+			$mailchimp_lists = array();
+
+			// mailchimp_interest_categories structure: ['list_id' => ['category_id' => 'category_name'] ].
+			$mailchimp_interest_categories = array();
+
+			// mailchimp_interests structure: ['category_id' => ['interest_id' => ['name' => 'interest_name', 'checked' => false]]].
+			$mailchimp_interests = array();
 
 			$this->read_mailchimp_schema( $mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests );
 
+			// Settings page posts setting data to itself.
 			if ( isset( $_POST['form_submitted'] ) ) {
 
-				$hidden_field = sanitize_text_field( $_POST['form_submitted'] );
+				// Form submitted, so we check the nonce.
+				check_admin_referer( 'setting_configuration_' . $rand );
 
-				if ( 'Y' == $hidden_field ) {
+				$save_settings = true;
 
-					$save_settings = true;
+				$configuration_options = $this->build_configuration_option( $configuration_options, $mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests );
 
-					$configuration_options = $this->build_configuration_option( $configuration_options, $mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests );
-
-					update_option( 'synchro_mailchimp_options', serialize( $configuration_options ) );
-				}
+				update_option( 'synchro_mailchimp_options', serialize( $configuration_options ) );
 			}
 
 			$synchro_mailchimp_options = get_option( 'synchro_mailchimp_options' );
@@ -378,8 +386,8 @@ class Synchro_Mailchimp_Admin {
 		check_admin_referer( 'esegui_iscrizione', '_wpnonce' );
 
 		$check_status = isset( $_POST['check_status'] ) ? intval( $_POST['check_status'] ) : -1;
-		$user_email   = isset( $_POST['user_email'] ) ? sanitize_email( $_POST['user_email'] ) : '';
-		$user_role    = isset( $_POST['user_role'] ) ? sanitize_text_field( $_POST['user_role'] ) : '';
+		$user_email   = isset( $_POST['user_email'] ) ? sanitize_email( wp_unslash( $_POST['user_email'] ) ) : '';
+		$user_role    = isset( $_POST['user_role'] ) ? sanitize_text_field( wp_unslash( $_POST['user_role'] ) ) : '';
 		$ut           = isset( $_POST['ut'] ) ? intval( $_POST['ut'] ) : 0;
 
 		if ( ! is_email( $user_email ) || $check_status < 0 || $check_status > 1 ) {
