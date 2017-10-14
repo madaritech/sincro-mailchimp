@@ -30,7 +30,8 @@
 						   title=<?php esc_html_e( 'User subscription to MailChimp list/s', 'synchro_mailchimp' ); ?>
 							<?php
 							if ( ! current_user_can( 'administrator' ) ) {
-								echo 'disabled';}
+								echo 'disabled';
+							}
 ?>
 						   >
 					<p class="description">
