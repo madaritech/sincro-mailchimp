@@ -12,9 +12,6 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/admin
  * @author     Madaritech <freelance@madaritech.com>
@@ -103,18 +100,6 @@ class Synchro_Mailchimp_Admin {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Name_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Plugin_Name_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/synchro-mailchimp-admin.css', array(), $this->version, 'all' );
 
 	}
@@ -125,18 +110,6 @@ class Synchro_Mailchimp_Admin {
 	 * @since 1.0.0
 	 */
 	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Name_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Plugin_Name_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/synchro-mailchimp-admin.js', array( 'jquery' ), $this->version, false );
 
@@ -331,7 +304,7 @@ class Synchro_Mailchimp_Admin {
 
 					$save_settings = true;
 
-										$configuration_options = $this->build_configuration_option( $configuration_options, $mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests );
+					$configuration_options = $this->build_configuration_option( $configuration_options, $mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests );
 
 					update_option( 'synchro_mailchimp_options', serialize( $configuration_options ) );
 				}
@@ -344,7 +317,7 @@ class Synchro_Mailchimp_Admin {
 			$settings_interest_categories;
 			$settings_interests;
 
-						global $wp_roles;
+			global $wp_roles;
 			$all_roles = $wp_roles->roles;
 
 			foreach ( $all_roles as $role => $role_name ) {
@@ -357,7 +330,7 @@ class Synchro_Mailchimp_Admin {
 			$this->build_setting_form( $all_roles, $configuration, $settings_lists, $settings_interest_categories, $settings_interests );
 		}
 
-					require_once( 'partials/synchro-mailchimp-admin-display.php' );
+		require_once( 'partials/synchro-mailchimp-admin-display.php' );
 
 	}
 
