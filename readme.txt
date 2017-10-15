@@ -51,6 +51,9 @@ For security reasons MailChimp can temporary ban email addresses that subscribe/
 
 == Changelog ==
 
+= 1.4 =
+* Settings form bug fixed.
+
 = 1.3 =
 * Refactoring based on WordPress Standard
 
@@ -64,6 +67,9 @@ For security reasons MailChimp can temporary ban email addresses that subscribe/
 * First release.
 
 == Upgrade Notice ==
+
+= 1.4 =
+This version fixes settings form bug.  Upgrade immediately.
 
 = 1.3 =
 This version fixes a security issue.  Upgrade immediately.
