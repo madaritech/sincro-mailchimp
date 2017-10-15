@@ -1,9 +1,8 @@
 <?php
-
 /**
  * Fired during plugin deactivation
  *
- * @link       
+ * @link
  * @since 1.0.0
  *
  * @package    Synchro_Mailchimp
@@ -20,19 +19,18 @@
  * @subpackage Synchro_Mailchimp/includes
  * @author     Madaritech <freelance@madaritech.com>
  */
-class Synchro_Mailchimp_Deactivator
-{
+class Synchro_Mailchimp_Deactivator {
 
-    /**
-     * Short Description. (use period)
-     *
-     * Long Description.
-     *
-     * @since 1.0.0
-     */
-    public static function deactivate() 
-    {
 
-    }
+	/**
+	 * Short Description. (use period)
+	 *
+	 * Long Description.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function deactivate() {
+
+	}
 
 }
