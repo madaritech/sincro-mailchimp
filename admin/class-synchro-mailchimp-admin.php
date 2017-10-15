@@ -289,9 +289,6 @@ class Synchro_Mailchimp_Admin {
 
 			$save_settings = false;
 
-			// Generate random tag to build the form nonce.
-			$rand = wp_generate_password( 6 );
-
 			$configuration_options = array();
 
 			// mailchimp_lists structure: ['list_id' => ['name' => 'list_name', 'checked' => false] ].
@@ -309,7 +306,7 @@ class Synchro_Mailchimp_Admin {
 			if ( isset( $_POST['form_submitted'] ) ) {
 
 				// Form submitted, so we check the nonce.
-				check_admin_referer( 'setting_configuration_' . $rand );
+				check_admin_referer( 'mdt_setting_configuration', 'conf_set_nonce' );
 
 				$save_settings = true;
 

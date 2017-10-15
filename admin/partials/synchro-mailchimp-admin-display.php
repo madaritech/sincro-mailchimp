@@ -53,7 +53,7 @@
 				<div class="meta-box-sortables ui-sortable">
 
 					<form method="POST">
-						<?php wp_nonce_field( 'setting_configuration_' . $rand ); ?>
+						<?php wp_nonce_field( 'mdt_setting_configuration', 'conf_set_nonce' ); ?>
 						<input type="hidden" name="form_submitted" value="Y">
 
 <?php
