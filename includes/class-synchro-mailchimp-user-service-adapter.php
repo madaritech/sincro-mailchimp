@@ -4,7 +4,7 @@
  *
  * Define an adapter that hooks WP's actions/filters to the {@link Synchro_Mailchimp_User_Service}.
  *
- * @since      1.0.0
+ * @since      1.0
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/includes
  */
@@ -12,17 +12,15 @@
 /**
  * Define the {@link Synchro_Mailchimp_User_Service_Adapter} class.
  *
- * @since      1.0.0
+ * @since      1.0
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/includes
  */
 class Synchro_Mailchimp_User_Service_Adapter {
-
-
 	/**
 	 * A {@link Synchro_MailChimp_Log_Service} instance.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 * @var    \Synchro_MailChimp_Log_Service $log A {@link Synchro_MailChimp_Log_Service} instance.
 	 */
@@ -31,7 +29,7 @@ class Synchro_Mailchimp_User_Service_Adapter {
 	/**
 	 * The {@link Synchro_Mailchimp_User_Service} instance.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 * @var    \Synchro_Mailchimp_User_Service $user_service The {@link Synchro_Mailchimp_User_Service} instance.
 	 */
@@ -40,7 +38,7 @@ class Synchro_Mailchimp_User_Service_Adapter {
 	/**
 	 * Create a {@link Synchro_Mailchimp_User_Service_Adapter} instance.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param \Synchro_Mailchimp_User_Service $user_service The {@link Synchro_Mailchimp_User_Service} instance.
 	 */
@@ -55,7 +53,7 @@ class Synchro_Mailchimp_User_Service_Adapter {
 	/**
 	 * Called by the `sm_user_lists`, processes the lists with the relative interests for a {@link WP_User}
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @uses Synchro_Mailchimp_User_Service::get_lists() to get the interests.
 	 *
@@ -86,7 +84,7 @@ class Synchro_Mailchimp_User_Service_Adapter {
 	 * Called by the `sm_user_list_interests`, processes the interests for a {@link WP_User}/list
 	 * combination.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @uses Synchro_Mailchimp_User_Service::get_interests() to get the interests.
 	 *

@@ -5,7 +5,7 @@
  * The {@link Synchro_Mailchimp_User_Service} provides methods related to {@link WP_User}s such as
  * getting the lists/interests a {@link WP_User} should be subscribed to.
  *
- * @since      1.0.0
+ * @since      1.0
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/includes
  */
@@ -13,7 +13,7 @@
 /**
  * Define the {@link Synchro_Mailchimp_User_Service} class.
  *
- * @since      1.0.0
+ * @since      1.0
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/includes
  */
@@ -23,7 +23,7 @@ class Synchro_Mailchimp_User_Service {
 	/**
 	 * A {@link Synchro_MailChimp_Log_Service} instance.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 * @var    \Synchro_MailChimp_Log_Service $log A {@link Synchro_MailChimp_Log_Service} instance.
 	 */
@@ -32,7 +32,7 @@ class Synchro_Mailchimp_User_Service {
 	/**
 	 * The {@link Synchro_Mailchimp_Configuration_Service} instance.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 * @var    \Synchro_Mailchimp_Configuration_Service $configuration_service The {@link Synchro_Mailchimp_Configuration_Service} instance.
 	 */
@@ -41,7 +41,7 @@ class Synchro_Mailchimp_User_Service {
 	/**
 	 * Create a {@link Synchro_Mailchimp_User_Service} instance.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param \Synchro_Mailchimp_Configuration_Service $configuration_service The {@link Synchro_Mailchimp_Configuration_Service} instance.
 	 */
@@ -56,7 +56,7 @@ class Synchro_Mailchimp_User_Service {
 	/**
 	 * Get the MailChimp lists and relative interests for a {@link WP_User}.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param array $lists The lists associated with the user.
 	 * @param int   $user_id The {@link WP_User}'s id.
@@ -117,7 +117,7 @@ class Synchro_Mailchimp_User_Service {
 	/**
 	 * Get the list of interests for a {@link WP_User} and MailChimp list.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param int    $user_id The {@link WP_User}'s id.
 	 * @param string $list_id MailChimp's list id.

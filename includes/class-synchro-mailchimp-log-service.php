@@ -4,7 +4,7 @@
  *
  * A service which provides functions for logging.
  *
- * @since      1.0.0
+ * @since      1.0
  * @package    Synchro_MailChimp
  * @subpackage Synchro_MailChimp/includes
  */
@@ -12,7 +12,7 @@
 /**
  * Define the {@link Synchro_MailChimp_Log_Service} class.
  *
- * @since      1.0.0
+ * @since      1.0
  * @package    Synchro_MailChimp
  * @subpackage Synchro_MailChimp/includes
  */
@@ -22,7 +22,7 @@ class Synchro_MailChimp_Log_Service {
 	/**
 	 * The class name source of logging events.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 * @var    string $class_name The class name source of logging events.
 	 */
@@ -31,7 +31,7 @@ class Synchro_MailChimp_Log_Service {
 	/**
 	 * Create a {@link Synchro_MailChimp_Log_Service} instance.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param string $class_name The class name for the logger.
 	 */
@@ -44,7 +44,7 @@ class Synchro_MailChimp_Log_Service {
 	/**
 	 * Check whether debugging is enabled.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @return bool True if debugging is enabled otherwise false.
 	 */
@@ -56,7 +56,7 @@ class Synchro_MailChimp_Log_Service {
 	/**
 	 * Create a {@link Synchro_MailChimp_Log_Service} instance with the provided class name.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param string $class_name The class name source of logging events.
 	 *
@@ -70,7 +70,7 @@ class Synchro_MailChimp_Log_Service {
 	/**
 	 * Debug log.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param string $message The message to log.
 	 */
@@ -83,7 +83,7 @@ class Synchro_MailChimp_Log_Service {
 	/**
 	 * Information log.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param string $message The message to log.
 	 */
@@ -96,7 +96,7 @@ class Synchro_MailChimp_Log_Service {
 	/**
 	 * Warning log.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param string $message The message to log.
 	 */
@@ -109,7 +109,7 @@ class Synchro_MailChimp_Log_Service {
 	/**
 	 * Trace log.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param string $message The message to log.
 	 */
@@ -122,7 +122,7 @@ class Synchro_MailChimp_Log_Service {
 	/**
 	 * Internal log function.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param string $level   The debug level.
 	 * @param string $message The message.

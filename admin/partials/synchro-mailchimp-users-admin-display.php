@@ -5,7 +5,7 @@
  * This file is used to markup the admin-facing aspects of the plugin.
  *
  * @link
- * @since      1.0.0
+ * @since      1.0
  *
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/admin/partials

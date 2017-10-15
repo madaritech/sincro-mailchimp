@@ -3,7 +3,7 @@
  * The MailChimp subscription service.
  *
  * @link
- * @since 1.0.0
+ * @since 1.0
  *
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/includes
@@ -20,7 +20,7 @@ class Synchro_Mailchimp_Subscription_Service {
 	/**
 	 * A {@link Synchro_MailChimp_Log_Service} instance.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 * @access private
 	 * @var \Synchro_MailChimp_Log_Service $log A {@link Synchro_MailChimp_Log_Service} instance.
 	 */
@@ -29,7 +29,7 @@ class Synchro_Mailchimp_Subscription_Service {
 	/**
 	 * Api Mailchimp.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access public
 	 * @var object $api Handler for the MailChimp api, a {@link Synchro_MailChimp_Api_Service} instance.
 	 */
@@ -38,7 +38,7 @@ class Synchro_Mailchimp_Subscription_Service {
 	/**
 	 * Plugin Settings.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 * @var object $configuration Handler for the MailChimp api, a {@link Synchro_Mailchimp_Configuration_Service} instance.
 	 */
@@ -47,7 +47,7 @@ class Synchro_Mailchimp_Subscription_Service {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function __construct() {
 
@@ -61,7 +61,7 @@ class Synchro_Mailchimp_Subscription_Service {
 	 * Configuration set method.
 	 *
 	 * @param object $configuration The configuration object.
-	 * @since 1.0.0
+	 * @since 1.0
 	 * @access public
 	 */
 	public function set_configuration( $configuration ) {
@@ -75,7 +75,7 @@ class Synchro_Mailchimp_Subscription_Service {
 	 * @param string $user_email Email of the user.
 	 * @param string $user_role Role of the user.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function subscribe_process( $subscription_status, $user_email, $user_role ) {
 
@@ -126,7 +126,7 @@ class Synchro_Mailchimp_Subscription_Service {
 	 * @param string $user_email Email of the user.
 	 * @param string $user_role Role of the user.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function unsubscribe_process( $subscription_status, $user_email, $user_role ) {
 
@@ -170,7 +170,7 @@ class Synchro_Mailchimp_Subscription_Service {
 	 *                          }.
 	 * @throws Exception If there are connection issues or generic problems in checking the status.
 	 * @access public
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function check_subscription_status( $user_email, $user_role ) {
 		if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
@@ -296,7 +296,7 @@ class Synchro_Mailchimp_Subscription_Service {
 	 * @param string $user_email The email of the user.
 	 * @throws Exception If there are connection issues or generic problems in subscribing the user.
 	 * @return bool True if the process end without errors.
-	 * @since 1.0.0
+	 * @since 1.0
 	 * @access public
 	 */
 	public function subscribe_user( $user_email ) {
@@ -321,7 +321,7 @@ class Synchro_Mailchimp_Subscription_Service {
 			 * Call the `sm_merge_fields` filter to allow 3rd parties to preprocess the `merge_fields` before the
 			 * request to MailChimp.
 			 *
-			 * @since 1.0.0
+			 * @since 1.0
 			 *
 			 * @api
 			 *
@@ -399,7 +399,7 @@ class Synchro_Mailchimp_Subscription_Service {
 	 * @param string $user_email The user email.
 	 * @throws Exception If there are connection issues or generic problems in unsubscribing the user.
 	 * @access public
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function unsubscribe_user_config( $user_email ) {
 
@@ -483,7 +483,7 @@ class Synchro_Mailchimp_Subscription_Service {
 	 * @param string $user_email The user email.
 	 * @throws Exception If there are connection issues or generic problems in unsubscribing the user.
 	 * @access public
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function unsubscribe_user_mailchimp( $user_email ) {
 

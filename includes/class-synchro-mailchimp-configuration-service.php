@@ -5,7 +5,7 @@
  * The {@link Synchro_Mailchimp_Configuration_Service} provides functions to access the plugin
  * configuration.
  *
- * @since      1.0.0
+ * @since      1.0
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/includes
  */
@@ -13,7 +13,7 @@
 /**
  * Define the {@link Synchro_Mailchimp_Configuration_Service} class.
  *
- * @since      1.0.0
+ * @since      1.0
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/includes
  */
@@ -23,7 +23,7 @@ class Synchro_Mailchimp_Configuration_Service {
 	/**
 	 * The configuration array.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 * @var    array $configuration The configuration array.
 	 */
@@ -32,7 +32,7 @@ class Synchro_Mailchimp_Configuration_Service {
 	/**
 	 * A {@link Synchro_MailChimp_Log_Service} instance.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 * @access private
 	 * @var \Synchro_MailChimp_Log_Service $log A {@link Synchro_MailChimp_Log_Service} instance.
 	 */
@@ -41,7 +41,7 @@ class Synchro_Mailchimp_Configuration_Service {
 	/**
 	 * Create a {@link Synchro_Mailchimp_Configuration_Service} instance.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function __construct() {
 		$synchro_mailchimp_options = get_option( 'synchro_mailchimp_options' );
@@ -51,7 +51,7 @@ class Synchro_Mailchimp_Configuration_Service {
 	/**
 	 * Set the configuration.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param array $configuration The configuration array.
 	 * @access public
@@ -63,7 +63,7 @@ class Synchro_Mailchimp_Configuration_Service {
 	/**
 	 * Get the configuration given a role name.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param string $role The role name.
 	 *
@@ -76,7 +76,7 @@ class Synchro_Mailchimp_Configuration_Service {
 	/**
 	 * Get the configuration given a role name and a list id.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param string $role    The {@link WP_User}'s role.
 	 * @param string $list_id The MailChimp list id.

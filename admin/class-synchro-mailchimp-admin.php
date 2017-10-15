@@ -3,7 +3,7 @@
  * The admin-specific functionality of the plugin.
  *
  * @link
- * @since 1.0.0
+ * @since 1.0
  *
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/admin
@@ -22,7 +22,7 @@ class Synchro_Mailchimp_Admin {
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 * @var    string $plugin_name The ID of this plugin.
 	 */
@@ -31,7 +31,7 @@ class Synchro_Mailchimp_Admin {
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 * @var    string $version The current version of this plugin.
 	 */
@@ -40,7 +40,7 @@ class Synchro_Mailchimp_Admin {
 	/**
 	 * A {@link Synchro_MailChimp_Log_Service} instance.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 * @access private
 	 * @var \Synchro_MailChimp_Log_Service $log A {@link Synchro_MailChimp_Log_Service} instance.
 	 */
@@ -49,7 +49,7 @@ class Synchro_Mailchimp_Admin {
 	/**
 	 * Api Mailchimp.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access public
 	 * @var object $api Handler for the MailChimp api, a {@link Synchro_MailChimp_Api_Service} instance.
 	 */
@@ -58,7 +58,7 @@ class Synchro_Mailchimp_Admin {
 	/**
 	 * Subscription Service.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 * @var object $subscription_service Services used to executes all the operations to complete the subscription process.
 	 */
@@ -67,7 +67,7 @@ class Synchro_Mailchimp_Admin {
 	/**
 	 * Requirements Service.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 * @var object $requirements_service Services used to check the requirements needed to let the plugin working properly.
 	 */
@@ -76,7 +76,7 @@ class Synchro_Mailchimp_Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 *
 	 * @param string $plugin_name The name of this plugin.
 	 * @param string $version     The version of this plugin.
@@ -96,7 +96,7 @@ class Synchro_Mailchimp_Admin {
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function enqueue_styles() {
 
@@ -107,7 +107,7 @@ class Synchro_Mailchimp_Admin {
 	/**
 	 * Register the JavaScript for the admin area.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function enqueue_scripts() {
 
@@ -122,7 +122,7 @@ class Synchro_Mailchimp_Admin {
 	 * @param array $mailchimp_interest_categories Mailchimp categories and interests: ['list_id' => ['category_id' => 'category_name'] ].
 	 * @param array $mailchimp_interests Mailchimp categories and interests: ['category_id' => ['interest_id' => ['name' => 'interest_name', 'checked' => false]]].
 	 *
-	 * @since    1.0.0
+	 * @since    1.0
 	 * @access public
 	 */
 	public function read_mailchimp_schema( &$mailchimp_lists, &$mailchimp_interest_categories, &$mailchimp_interests ) {
@@ -169,7 +169,7 @@ class Synchro_Mailchimp_Admin {
 	 *
 	 * @return array $configuration_options Array for the configuration of the lists and interests values actually associated to role for every subscribed user
 	 *
-	 * @since    1.0.0
+	 * @since    1.0
 	 * @access public
 	 */
 	public function build_configuration_option( $configuration_options, $mailchimp_lists, $mailchimp_interest_categories, $mailchimp_interests ) {
@@ -218,7 +218,7 @@ class Synchro_Mailchimp_Admin {
 	 * @param array $settings_interest_categories Mailchimp categories and interests to update with checked tags: ['list_id' => ['category_id' => 'category_name'] ].
 	 * @param array $settings_interests Mailchimp categories and interests to update with checked tags: ['category_id' => ['interest_id' => ['name' => 'interest_name', 'checked' => false]]].
 	 *
-	 * @since    1.0.0
+	 * @since    1.0
 	 * @access public
 	 */
 	public function build_setting_form( $all_roles, $configuration, &$settings_lists, &$settings_interest_categories, &$settings_interests ) {
@@ -261,7 +261,7 @@ class Synchro_Mailchimp_Admin {
 	/**
 	 * The Admin Menu for the plugin.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function synchro_mailchimp_admin_menu() {
 		add_menu_page(
@@ -277,7 +277,7 @@ class Synchro_Mailchimp_Admin {
 	/**
 	 * Create the Settings Page for the admin area.
 	 *
-	 * @since    1.0.0
+	 * @since    1.0
 	 */
 	public function synchro_mailchimp_settings_page() {
 
@@ -347,7 +347,7 @@ class Synchro_Mailchimp_Admin {
 	 *
 	 * @param WP_User $user The user who is proceeding to subscribe to MailChimp.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function form_field_iscrizione_mailing_list( $user ) {
 		if ( ! $this->requirements_service->mfw_is_missing() ) {
@@ -380,7 +380,7 @@ class Synchro_Mailchimp_Admin {
 	/**
 	 * In base ai parametri ricevuti via post esegue o meno l'iscrizione.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function esegui_iscrizione() {
 		check_admin_referer( 'esegui_iscrizione', '_wpnonce' );

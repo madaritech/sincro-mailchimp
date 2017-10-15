@@ -3,7 +3,7 @@
  * The MailChimp subscription service.
  *
  * @link
- * @since 1.0.0
+ * @since 1.0
  *
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/admin
@@ -20,7 +20,7 @@ class Synchro_Mailchimp_Requirements_Service {
 	/**
 	 * A {@link Synchro_MailChimp_Log_Service} instance.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 * @access private
 	 * @var \Synchro_MailChimp_Log_Service $log A {@link Synchro_MailChimp_Log_Service} instance.
 	 */
@@ -29,7 +29,7 @@ class Synchro_Mailchimp_Requirements_Service {
 	/**
 	 * Api Mailchimp.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access public
 	 * @var \Synchro_MailChimp_Api_Service $api A {@link Synchro_MailChimp_Api_Service} instance.
 	 */
@@ -38,7 +38,7 @@ class Synchro_Mailchimp_Requirements_Service {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function __construct() {
 		$this->log = Synchro_MailChimp_Log_Service::create( 'Synchro_Mailchimp_Admin_Requirements_Service' );
@@ -48,7 +48,7 @@ class Synchro_Mailchimp_Requirements_Service {
 	/**
 	 * Check if MailChimp for WordPress is active.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access public
 	 */
 	public function mfw_is_missing() {
@@ -60,7 +60,7 @@ class Synchro_Mailchimp_Requirements_Service {
 	/**
 	 * Missing MailChimp for WordPress notice.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access public
 	 */
 	public function mfw_missing_admin_notice() {

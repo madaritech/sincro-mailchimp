@@ -3,7 +3,7 @@
  * Fired during plugin activation
  *
  * @link
- * @since 1.0.0
+ * @since 1.0
  *
  * @package    Synchro_Mailchimp
  * @subpackage Plugin_Name/includes
@@ -14,20 +14,18 @@
  *
  * This class defines all code necessary to run during the plugin's activation.
  *
- * @since      1.0.0
+ * @since      1.0
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/includes
  * @author     Madaritech <freelance@madaritech.com>
  */
 class Synchro_Mailchimp_Activator {
-
-
 	/**
-	 * Short Description. (use period)
+	 * Check previous settings on activation.
 	 *
-	 * Long Description.
+	 * If old settings are found on activation, the settings are not deleted, but reused.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public static function activate() {
 		if ( ! get_option( 'synchro_mailchimp_options' ) ) {
@@ -40,7 +38,7 @@ class Synchro_Mailchimp_Activator {
 				$options[ $role ] = array();
 			}
 
-					update_option( 'synchro_mailchimp_options', serialize( $options ) );
+			update_option( 'synchro_mailchimp_options', serialize( $options ) );
 		}
 	}
 }

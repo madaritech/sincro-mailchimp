@@ -6,7 +6,7 @@
  * public-facing side of the site and the admin area.
  *
  * @link
- * @since 1.0.0
+ * @since 1.0
  *
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/includes
@@ -21,7 +21,7 @@
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
  *
- * @since      1.0.0
+ * @since      1.0
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/includes
  * @author     Madaritech <freelance@madaritech.com>
@@ -32,7 +32,7 @@ class Synchro_Mailchimp {
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access protected
 	 * @var    Synchro_Mailchimp_Loader $loader Maintains and registers all hooks for the plugin.
 	 */
@@ -41,7 +41,7 @@ class Synchro_Mailchimp {
 	/**
 	 * The unique identifier of this plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access protected
 	 * @var    string $synchro_mailchimp The string used to uniquely identify this plugin.
 	 */
@@ -50,7 +50,7 @@ class Synchro_Mailchimp {
 	/**
 	 * The current version of the plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access protected
 	 * @var    string $version The current version of the plugin.
 	 */
@@ -59,7 +59,7 @@ class Synchro_Mailchimp {
 	/**
 	 * The {@link Synchro_Mailchimp_Configuration_Service} instance.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access protected
 	 * @var    \Synchro_Mailchimp_Configuration_Service $configuration_service The {@link Synchro_Mailchimp_Configuration_Service} instance.
 	 */
@@ -68,7 +68,7 @@ class Synchro_Mailchimp {
 	/**
 	 * The {@link Synchro_Mailchimp_User_Service} instance.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access protected
 	 * @var    \Synchro_Mailchimp_User_Service $user_service The {@link Synchro_Mailchimp_User_Service} instance.
 	 */
@@ -77,7 +77,7 @@ class Synchro_Mailchimp {
 	/**
 	 * The {@link Synchro_Mailchimp_User_Service_Adapter} instance.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access protected
 	 * @var    \Synchro_Mailchimp_User_Service_Adapter $user_service The {@link Synchro_Mailchimp_User_Service_Adapter} instance.
 	 */
@@ -90,12 +90,12 @@ class Synchro_Mailchimp {
 	 * Load the dependencies, define the locale, and set the hooks for the admin area and
 	 * the public-facing side of the site.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function __construct() {
 
 		$this->plugin_name = 'synchro_mailchimp';
-		$this->version     = '1.0.0';
+		$this->version     = '1.2';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -117,7 +117,7 @@ class Synchro_Mailchimp {
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 */
 	private function load_dependencies() {
@@ -181,7 +181,7 @@ class Synchro_Mailchimp {
 	 * Uses the Synchro_Mailchimp_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 */
 	private function set_locale() {
@@ -196,7 +196,7 @@ class Synchro_Mailchimp {
 	 * Register all of the hooks related to the admin area functionality
 	 * of the plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 */
 	private function define_admin_hooks() {
@@ -224,7 +224,7 @@ class Synchro_Mailchimp {
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access private
 	 */
 	private function define_public_hooks() {
@@ -242,7 +242,7 @@ class Synchro_Mailchimp {
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	public function run() {
 		$this->loader->run();
@@ -252,7 +252,7 @@ class Synchro_Mailchimp {
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @return string    The name of the plugin.
 	 */
 	public function get_plugin_name() {
@@ -262,7 +262,7 @@ class Synchro_Mailchimp {
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @return Plugin_Name_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
@@ -272,7 +272,7 @@ class Synchro_Mailchimp {
 	/**
 	 * Retrieve the version number of the plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @return string    The version number of the plugin.
 	 */
 	public function get_version() {

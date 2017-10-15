@@ -6,7 +6,7 @@
  * of control:
  *
  * @link  http://example.com
- * @since 1.0.0
+ * @since 1.0
  *
  * @package Synchro_Mailchimp
  */

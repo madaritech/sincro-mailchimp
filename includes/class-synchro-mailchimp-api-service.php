@@ -3,7 +3,7 @@
  * The api functionality.
  *
  * @link
- * @since 1.0.0
+ * @since 1.0
  *
  * @package    Synchro_Mailchimp
  * @subpackage Synchro_Mailchimp/includes
@@ -22,7 +22,7 @@ class Synchro_Mailchimp_Api_Service {
 	/**
 	 * Calls is_connected API from MailChimp for WP Plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access public
 	 */
 	public function is_connected() {
@@ -34,7 +34,7 @@ class Synchro_Mailchimp_Api_Service {
 	/**
 	 * Calls get_lists API from MailChimp for WP Plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @param array $args Parametri per l'API MailChimp.
@@ -48,7 +48,7 @@ class Synchro_Mailchimp_Api_Service {
 	/**
 	 * Calls get_list_interest_categories API from MailChimp for WP Plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @param int   $list_id the list id.
@@ -67,7 +67,7 @@ class Synchro_Mailchimp_Api_Service {
 	 * @param int   $interest_category_id The category interest id.
 	 * @param array $args MailChimp API parameters.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access public
 	 */
 	public function get_list_interest_category_interests( $list_id, $interest_category_id, array $args = array() ) {
@@ -79,7 +79,7 @@ class Synchro_Mailchimp_Api_Service {
 	/**
 	 * Calls get_list_member API from MailChimp for WP Plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @param string $list_id    Id della Mailing List.
@@ -94,7 +94,7 @@ class Synchro_Mailchimp_Api_Service {
 	/**
 	 * Calls add_list_member API from MailChimp for WP Plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @param string $list_id Id della Mailing List.
@@ -109,7 +109,7 @@ class Synchro_Mailchimp_Api_Service {
 	/**
 	 * Calls delete_list_member API from MailChimp for WP Plugin.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @param string $list_id    Id della Mailing List.
