@@ -73,10 +73,7 @@ class Synchro_Mailchimp_User_Service_Adapter {
 	 */
 	public function user_lists( $lists, $user_id ) {
 
-		if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-			$this->log->debug( "Getting the lists and interests for user $user_id" );
-		}
-
+		$this->log->debug( "Getting the lists and interests for user $user_id" );
 		return $this->user_service->get_lists( $lists, $user_id );
 	}
 
@@ -106,11 +103,7 @@ class Synchro_Mailchimp_User_Service_Adapter {
 	 * }
 	 */
 	public function user_list_interests( $interests, $user_id, $list_id ) {
-
-		if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-			$this->log->debug( "Getting the interests for user $user_id and list $list_id..." );
-		}
-
+		$this->log->debug( "Getting the interests for user $user_id and list $list_id..." );
 		return $this->user_service->get_interests( $user_id, $list_id, $interests );
 	}
 

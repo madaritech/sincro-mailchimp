@@ -36,9 +36,7 @@ class Synchro_MailChimp_Log_Service {
 	 * @param string $class_name The class name for the logger.
 	 */
 	public function __construct( $class_name ) {
-
 		$this->class_name = $class_name;
-
 	}
 
 	/**
@@ -49,7 +47,6 @@ class Synchro_MailChimp_Log_Service {
 	 * @return bool True if debugging is enabled otherwise false.
 	 */
 	public static function is_enabled() {
-
 		return defined( 'WP_DEBUG' ) && WP_DEBUG;
 	}
 
@@ -63,7 +60,6 @@ class Synchro_MailChimp_Log_Service {
 	 * @return \Synchro_MailChimp_Log_Service A {@link Synchro_MailChimp_Log_Service} instance.
 	 */
 	public static function create( $class_name ) {
-
 		return new Synchro_MailChimp_Log_Service( $class_name );
 	}
 
@@ -75,9 +71,7 @@ class Synchro_MailChimp_Log_Service {
 	 * @param string $message The message to log.
 	 */
 	public function debug( $message ) {
-
 		$this->log( 'DEBUG', $message );
-
 	}
 
 	/**
@@ -126,11 +120,14 @@ class Synchro_MailChimp_Log_Service {
 	 *
 	 * @param string $level   The debug level.
 	 * @param string $message The message.
+	 * @param bool   $override True if the logger print the message without check if the debug is enabled on wp-config.
 	 */
-	private function log( $level, $message ) {
-
-		error_log( sprintf( '%-6s [%-40s] %s', $level, $this->class_name, $message ) );
-
+	private function log( $level, $message, $override = false ) {
+		if ( $override ) {
+			error_log( sprintf( '%-6s [%-40s] %s', $level, $this->class_name, $message ) );
+		} elseif ( $this->is_enabled() ) {
+			error_log( sprintf( '%-6s [%-40s] %s', $level, $this->class_name, $message ) );
+		}
 	}
 
 }

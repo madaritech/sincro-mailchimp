@@ -145,7 +145,7 @@ class Synchro_Mailchimp_Admin {
 
 			foreach ( $interest_categories_arr as $interest_category ) {
 
-								$mailchimp_interest_categories[ $list['id'] ][ $interest_category['id'] ] = $interest_category['title'];
+				$mailchimp_interest_categories[ $list['id'] ][ $interest_category['id'] ] = $interest_category['title'];
 				$interests_obj = $this->api->get_list_interest_category_interests( $list['id'], $interest_category['id'] );
 				$interests_arr = json_decode( json_encode( $interests_obj ), true );
 
@@ -402,9 +402,7 @@ class Synchro_Mailchimp_Admin {
 		// Elaborazione.
 		try {
 			$subscription_status = $this->subscription_service->check_subscription_status( $user_email, $user_role );
-			if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-				$this->log->debug( "Checking subscrition status [ subscription status :: $subscription_status ][ user e-mail :: $user_email ][ user role :: $user_role ]" );
-			}
+			$this->log->debug( "Checking subscrition status [ subscription status :: $subscription_status ][ user e-mail :: $user_email ][ user role :: $user_role ]" );
 		} catch ( Exception $e ) {
 			$error_message = __( 'Subscription check status failed. ', 'synchro_mailchimp' );
 			wp_send_json_error( $error_message . $e->getMessage() );
@@ -418,9 +416,7 @@ class Synchro_Mailchimp_Admin {
 			wp_send_json_error( __( 'The configuration on MailChimp has changed. Before subscribe the user go to Synchro MC settings page, update the configuration and press "Save Settings" button.', 'synchro_mailchimp' ) );
 		}
 
-		if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-			$this->log->debug( "Checkbox status received [ check status :: $check_status ]" );
-		}
+		$this->log->debug( "Checkbox status received [ check status :: $check_status ]" );
 
 		if ( $check_status ) {
 			try {

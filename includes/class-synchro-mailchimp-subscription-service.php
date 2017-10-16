@@ -79,9 +79,7 @@ class Synchro_Mailchimp_Subscription_Service {
 	 */
 	public function subscribe_process( $subscription_status, $user_email, $user_role ) {
 
-		if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-			$this->log->debug( "Subscribing [ subscription status :: $subscription_status ][ user e-mail :: $user_email ][ user role :: $user_role ]..." );
-		}
+		$this->log->debug( "Subscribing [ subscription status :: $subscription_status ][ user e-mail :: $user_email ][ user role :: $user_role ]..." );
 
 		$res = false;
 
@@ -111,9 +109,7 @@ class Synchro_Mailchimp_Subscription_Service {
 				break;
 		}
 
-		if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-			$this->log->info( "Subscribed [ subscription status :: $subscription_status ][ user e-mail :: $user_email ][ user role :: $user_role ]." );
-		}
+		$this->log->info( "Subscribed [ subscription status :: $subscription_status ][ user e-mail :: $user_email ][ user role :: $user_role ]." );
 
 		return ( $res );
 
@@ -173,17 +169,14 @@ class Synchro_Mailchimp_Subscription_Service {
 	 * @since 1.0
 	 */
 	public function check_subscription_status( $user_email, $user_role ) {
-		if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-			$this->log->debug( "Checking subscription status [ user e-mail :: $user_email ][ user role :: $user_role ]..." );
-		}
+
+		$this->log->debug( "Checking subscription status [ user e-mail :: $user_email ][ user role :: $user_role ]..." );
 
 		// Extract configuration parameters.
 		$smc = $this->configuration->get_by_role( $user_role );
 
-		if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-				$c = count( $smc );
-				$this->log->debug( "Checking configuration [ count smc :: $c ][ user role :: $user_role ]" );
-		}
+		$c = count( $smc );
+		$this->log->debug( "Checking configuration [ count smc :: $c ][ user role :: $user_role ]" );
 
 		// User lists extraction and verifies alignment with configuration.
 		$args['email']  = $user_email;
@@ -199,9 +192,7 @@ class Synchro_Mailchimp_Subscription_Service {
 				return ( 1 );
 			} // Unchecked.
 
-			if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-				$this->log->debug( "Check Subscription Status [ num_list_config :: $num_list_config ]" );
-			}
+			$this->log->debug( "Check Subscription Status [ num_list_config :: $num_list_config ]" );
 
 			if ( 0 == $num_list_config ) {
 				return ( 0 );
@@ -245,47 +236,35 @@ class Synchro_Mailchimp_Subscription_Service {
 			}
 		} catch ( MC4WP_API_Connection_Exception $e ) {
 
-			if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
+			$message = $e->getMessage();
+			$code = $e->getCode();
+			$this->log->debug( "Check Subscription Status: MC4WP_API_Connection_Exception [ message :: $message ] [ code :: $code]" );
 
-				$message = $e->getMessage();
-				$code = $e->getCode();
-				$this->log->debug( "Check Subscription Status: MC4WP_API_Connection_Exception [ message :: $message ] [ code :: $code]" );
-
-			}
 			$exep_message = __( 'Connection failure.','synchro_mailchimp' );
 			throw new Exception( $exep_message . ' ' . $message );
 
 		} catch ( MC4WP_API_Resource_Not_Found_Exception $e ) {
 
-			if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
+			$message = $e->getMessage();
+			$code = $e->getCode();
+			$this->log->debug( "Check Subscription Status: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]" );
 
-				$message = $e->getMessage();
-				$code = $e->getCode();
-				$this->log->debug( "Check Subscription Status: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]" );
-
-			}
 			throw new Exception( __( 'Resource not found.','synchro_mailchimp' ) );
 
 		} catch ( MC4WP_API_Exception $e ) {
 
-			if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
+			$message = $e->getMessage();
+			$code = $e->getCode();
+			$this->log->debug( "Check Subscription Status: MC4WP_API_Exception [ message :: $message ] [ code :: $code]" );
 
-				$message = $e->getMessage();
-				$code = $e->getCode();
-				$this->log->debug( "Check Subscription Status: MC4WP_API_Exception [ message :: $message ] [ code :: $code]" );
-
-			}
 			throw new Exception( __( 'Connection API error.','synchro_mailchimp' ) );
 
 		} catch ( Exception $e ) {
 
-			if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
+			$message = $e->getMessage();
+			$code = $e->getCode();
+			$this->log->debug( "Check Subscription Status: Exception [ message :: $message ] [ code :: $code]" );
 
-				$message = $e->getMessage();
-				$code = $e->getCode();
-				$this->log->debug( "Check Subscription Status: Exception [ message :: $message ] [ code :: $code]" );
-
-			}
 			throw new Exception( __( 'Generic error.','synchro_mailchimp' ) );
 		}
 	}
@@ -300,9 +279,8 @@ class Synchro_Mailchimp_Subscription_Service {
 	 * @access public
 	 */
 	public function subscribe_user( $user_email ) {
-		if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-			$this->log->debug( "Subscribing user [ user e-mail :: $user_email ]..." );
-		}
+
+		$this->log->debug( "Subscribing user [ user e-mail :: $user_email ]..." );
 
 		$args['email_address'] = $user_email;
 		$args['status']        = 'subscribed';
@@ -338,56 +316,39 @@ class Synchro_Mailchimp_Subscription_Service {
 				$add_status = $this->api->add_list_member( $list_id, $args );
 
 			} catch ( MC4WP_API_Connection_Exception $e ) {
+				$message = $e->getMessage();
+				$code = $e->getCode();
 
-				if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
+				$this->log->debug( "Subscribing user: MC4WP_API_Connection_Exception [ message :: $message ] [ code :: $code]" );
 
-					$message = $e->getMessage();
-					$code = $e->getCode();
-					$this->log->debug( "Subscribing user: MC4WP_API_Connection_Exception [ message :: $message ] [ code :: $code]" );
-
-				}
 				$excep_message = __( 'Connection problem.','synchro_mailchimp' );
 				throw new Exception( $excep_message . ' ' . $message );
 
 			} catch ( MC4WP_API_Resource_Not_Found_Exception $e ) {
+				$message = $e->getMessage();
+				$code = $e->getCode();
+				$this->log->debug( "Subscribing user: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]" );
 
-				if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-
-					$message = $e->getMessage();
-					$code = $e->getCode();
-					$this->log->debug( "Subscribing user: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]" );
-
-				}
 				throw new Exception( __( 'Resource not found in subscribing user.','synchro_mailchimp' ) );
 
 			} catch ( MC4WP_API_Exception $e ) {
+				$message = $e->getMessage();
+				$code = $e->getCode();
+				$this->log->debug( "Subscribing user: MC4WP_API_Exception [ message :: $message ] [ code :: $code]" );
 
-				if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-
-					$message = $e->getMessage();
-					$code = $e->getCode();
-					$this->log->debug( "Subscribing user: MC4WP_API_Exception [ message :: $message ] [ code :: $code]" );
-
-				}
 				$excep_message = __( 'Subscribing user: API error. MailChimp message:','synchro_mailchimp' );
 				throw new Exception( $excep_message . ' ' . $e->detail );
 
 			} catch ( Exception $e ) {
+				$message = $e->getMessage();
+				$code = $e->getCode();
+				$this->log->debug( "Subscribing user: Exception [ message :: $message ] [ code :: $code]" );
 
-				if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-
-					$message = $e->getMessage();
-					$code = $e->getCode();
-					$this->log->debug( "Subscribing user: Exception [ message :: $message ] [ code :: $code]" );
-
-				}
 				throw new Exception( __( 'Subscribing user: generic error.','synchro_mailchimp' ) );
 
 			}
 
-			if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-				$this->log->trace( 'Call to `add_list_member` returned [ ' . var_export( $add_status, true ) . ' ]' );
-			}
+			$this->log->trace( 'Call to `add_list_member` returned [ ' . var_export( $add_status, true ) . ' ]' );
 		}
 
 		return ( true );
@@ -403,9 +364,7 @@ class Synchro_Mailchimp_Subscription_Service {
 	 */
 	public function unsubscribe_user_config( $user_email ) {
 
-		if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-			$this->log->debug( "Unsubscribing user config [ user e-mail :: $user_email ]" );
-		}
+		$this->log->debug( "Unsubscribing user config [ user e-mail :: $user_email ]" );
 
 		// Get the user id.
 		$user = get_user_by( 'email', $user_email );
@@ -413,10 +372,8 @@ class Synchro_Mailchimp_Subscription_Service {
 		$lists = array();
 		$lists = apply_filters( 'sm_user_list', $lists, $user->ID );
 
-		if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
-			$c = count( $lists );
-			$this->log->debug( "Unsubscribing user config [ lists after apply filter :: $c ]" );
-		}
+		$c = count( $lists );
+		$this->log->debug( "Unsubscribing user config [ lists after apply filter :: $c ]" );
 
 		$reset_args['email'] = $user_email;
 
@@ -428,47 +385,35 @@ class Synchro_Mailchimp_Subscription_Service {
 
 			} catch ( MC4WP_API_Connection_Exception $e ) {
 
-				if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
+				$message = $e->getMessage();
+				$code = $e->getCode();
+				$this->log->debug( "Unsubscribe User Config: MC4WP_API_Connection_Exception [ message :: $message ] [ code :: $code]" );
 
-										$message = $e->getMessage();
-					$code = $e->getCode();
-					$this->log->debug( "Unsubscribe User Config: MC4WP_API_Connection_Exception [ message :: $message ] [ code :: $code]" );
-
-				}
 				$excep_message = __( 'Connection problem.','synchro_mailchimp' );
 				throw new Exception( $excep_message . ' ' . $message );
 
 			} catch ( MC4WP_API_Resource_Not_Found_Exception $e ) {
 
-				if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
+				$message = $e->getMessage();
+				$code = $e->getCode();
+				$this->log->debug( "Unsubscribe User Config: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]" );
 
-							$message = $e->getMessage();
-					$code = $e->getCode();
-					$this->log->debug( "Unsubscribe User Config: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]" );
-
-				}
 				throw new Exception( __( 'Resource not found.','synchro_mailchimp' ) );
 
 			} catch ( MC4WP_API_Exception $e ) {
 
-				if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
+				$message = $e->getMessage();
+				$code = $e->getCode();
+				$this->log->debug( "Unsubscribe User Config: MC4WP_API_Exception [ message :: $message ] [ code :: $code]" );
 
-					$message = $e->getMessage();
-					$code = $e->getCode();
-					$this->log->debug( "Unsubscribe User Config: MC4WP_API_Exception [ message :: $message ] [ code :: $code]" );
-
-				}
 				throw new Exception( __( 'API connection error.','synchro_mailchimp' ) );
 
 			} catch ( Exception $e ) {
 
-				if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
+				$message = $e->getMessage();
+				$code = $e->getCode();
+				$this->log->debug( "Unsubscribe User Config: Exception [ message :: $message ] [ code :: $code]" );
 
-					$message = $e->getMessage();
-					$code = $e->getCode();
-					$this->log->debug( "Unsubscribe User Config: Exception [ message :: $message ] [ code :: $code]" );
-
-				}
 				throw new Exception( __( 'Generic error.','synchro_mailchimp' ) );
 
 			}
@@ -498,47 +443,35 @@ class Synchro_Mailchimp_Subscription_Service {
 			}
 		} catch ( MC4WP_API_Connection_Exception $e ) {
 
-			if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
+			$message = $e->getMessage();
+			$code = $e->getCode();
+			$this->log->debug( "Unsubscribe User MailChimp: MC4WP_API_Connection_Exception [ message :: $message ] [ code :: $code]" );
 
-									$message = $e->getMessage();
-				$code = $e->getCode();
-				$this->log->debug( "Unsubscribe User MailChimp: MC4WP_API_Connection_Exception [ message :: $message ] [ code :: $code]" );
-
-			}
 			$excep_message = __( 'Connection problem.','synchro_mailchimp' );
 			throw new Exception( $excep_message . ' ' . $message );
 
 		} catch ( MC4WP_API_Resource_Not_Found_Exception $e ) {
 
-			if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
+			$message = $e->getMessage();
+			$code = $e->getCode();
+			$this->log->debug( "Unsubscribe User MailChimp: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]" );
 
-						$message = $e->getMessage();
-				$code = $e->getCode();
-				$this->log->debug( "Unsubscribe User MailChimp: MC4WP_API_Resource_Not_Found_Exception [ message :: $message ] [ code :: $code]" );
-
-			}
 			throw new Exception( __( 'Resource not found.','synchro_mailchimp' ) );
 
 		} catch ( MC4WP_API_Exception $e ) {
 
-			if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
+			$message = $e->getMessage();
+			$code = $e->getCode();
+			$this->log->debug( "Unsubscribe User MailChimp: MC4WP_API_Exception [ message :: $message ] [ code :: $code]" );
 
-				$message = $e->getMessage();
-				$code = $e->getCode();
-				$this->log->debug( "Unsubscribe User MailChimp: MC4WP_API_Exception [ message :: $message ] [ code :: $code]" );
-
-			}
 			throw new Exception( __( 'API connection error.','synchro_mailchimp' ) );
 
 		} catch ( Exception $e ) {
 
-			if ( Synchro_MailChimp_Log_Service::is_enabled() ) {
+			$message = $e->getMessage();
+			$code = $e->getCode();
+			$this->log->debug( "Unsubscribe User MailChimp: Exception [ message :: $message ] [ code :: $code]" );
 
-				$message = $e->getMessage();
-				$code = $e->getCode();
-				$this->log->debug( "Unsubscribe User MailChimp: Exception [ message :: $message ] [ code :: $code]" );
-
-			}
 			throw new Exception( __( 'Generic error.','synchro_mailchimp' ) );
 
 		}
