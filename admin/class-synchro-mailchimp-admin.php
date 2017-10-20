@@ -224,26 +224,36 @@ class Synchro_Mailchimp_Admin {
 	public function build_setting_form( $all_roles, $configuration, &$settings_lists, &$settings_interest_categories, &$settings_interests ) {
 
 		// Update 'checked' property using configuration, and assignment to the proper wp role.
+		// Scan every role.
 		foreach ( $all_roles as $role => $role_name ) {
 
+			// The $configuration was extracted by MailChimp site, and it contains only the selected lists and interests.
 			foreach ( $configuration[ $role ] as $configuration_list_id => $configuration_interest_array ) {
 
+				// The $setting_* contains all the values, without know if checked or not: in this function we find out and set properly thei values. Here we cycle on all the lists for the $role.
 				foreach ( $settings_lists[ $role ] as $mailchimp_list_id => $mailchimp_list_array ) {
 
+					// If the list exists in $configuration, it means is checked on MailChimp, so we have to check it too on the form.
 					if ( $mailchimp_list_id == $configuration_list_id ) {
 
-						// Checked sulla lista.
+						// Check the list!
 						$settings_lists[ $role ][ $mailchimp_list_id ]['checked'] = true;
 
 					}
 
 					if ( $settings_lists[ $role ][ $mailchimp_list_id ]['checked'] ) {
 
+						// Now examine the related interests.
+						// If there are interest categories for the list...
 						if ( isset( $settings_interest_categories[ $role ][ $mailchimp_list_id ] ) ) {
+
+							// ...let's cycle over these categories...
 							foreach ( $settings_interest_categories[ $role ][ $mailchimp_list_id ] as $mailchimp_category_id => $mailchimp_category_name ) {
 
+								// ...and so from the category let's cycle over all the relative interests.
 								foreach ( $settings_interests[ $role ][ $mailchimp_category_id ] as $mailchimp_interest_id => $mailchimp_interest_bool ) {
 
+									// If the particular interest exists in the configuration array, it means have to be checked. We get that value from the $configuration_interest_array that contain all the set checked interests.
 									if ( array_key_exists( $mailchimp_interest_id, $configuration_interest_array ) ) {
 
 										$settings_interests[ $role ][ $mailchimp_category_id ][ $mailchimp_interest_id ]['checked'] = $configuration_interest_array[ $mailchimp_interest_id ];
