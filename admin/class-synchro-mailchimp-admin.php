@@ -239,10 +239,6 @@ class Synchro_Mailchimp_Admin {
 						// Check the list!
 						$settings_lists[ $role ][ $mailchimp_list_id ]['checked'] = true;
 
-					}
-
-					if ( $settings_lists[ $role ][ $mailchimp_list_id ]['checked'] ) {
-
 						// Now examine the related interests.
 						// If there are interest categories for the list...
 						if ( isset( $settings_interest_categories[ $role ][ $mailchimp_list_id ] ) ) {
