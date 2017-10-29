@@ -52,6 +52,7 @@ For security reasons MailChimp can temporary ban email addresses that subscribe/
 == Changelog ==
 
 = 1.5 =
+* bug fixed
 * Comments to code added
 * Code refactoring
 
@@ -68,6 +69,9 @@ For security reasons MailChimp can temporary ban email addresses that subscribe/
 * First release.
 
 == Upgrade Notice ==
+
+= 1.5 =
+This version fixes a security issue.  Upgrade immediately.
 
 = 1.3 =
 This version fixes a security issue.  Upgrade immediately.
