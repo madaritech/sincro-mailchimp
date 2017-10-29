@@ -127,6 +127,7 @@ class Synchro_Mailchimp_Admin {
 	 */
 	public function read_mailchimp_schema( &$mailchimp_lists, &$mailchimp_interest_categories, &$mailchimp_interests ) {
 
+		// Extract lists from MailChimp.
 		$lists_obj = $this->api->get_lists( array() );
 		$list_arr = array();
 
@@ -134,22 +135,33 @@ class Synchro_Mailchimp_Admin {
 			$list_arr = json_decode( json_encode( $lists_obj ), true );
 		}
 
+		// For each list extracted...
 		foreach ( $list_arr as $list ) {
 
+			// ...save list name..
 			$mailchimp_lists[ $list['id'] ] = [
 				'name' => $list['name'],
 				'checked' => false,
 			];
+
+			// ...extract the list interest categories from MailChimp...
 			$interest_categories_obj = $this->api->get_list_interest_categories( $list['id'] );
 			$interest_categories_arr = json_decode( json_encode( $interest_categories_obj ), true );
 
+			// ... and foreach interest category extracted...
 			foreach ( $interest_categories_arr as $interest_category ) {
 
+				// ...save the interest category and...
 				$mailchimp_interest_categories[ $list['id'] ][ $interest_category['id'] ] = $interest_category['title'];
+
+				// ...extract from MailChimp the category interests...
 				$interests_obj = $this->api->get_list_interest_category_interests( $list['id'], $interest_category['id'] );
 				$interests_arr = json_decode( json_encode( $interests_obj ), true );
 
+				// ...finally for each interest...
 				foreach ( $interests_arr as $interest ) {
+
+					// ...save the interest informations.
 					$mailchimp_interests[ $interest_category['id'] ][ $interest['id'] ] = [
 						'name' => $interest['name'],
 						'checked' => false,
