@@ -74,7 +74,7 @@ class Synchro_Mailchimp_Requirements_Service {
 					'em' => array(),
 					'strong' => array(),
 				);
-				$html_text = kses( '<strong>Synchro MailChimp</strong> needs <strong>MailChimp for WordPress</strong> installed, active and configured. Download it now! ', $allowed_html );
+				$html_text = wp_kses( '<strong>Synchro MailChimp</strong> needs <strong>MailChimp for WordPress</strong> installed, active and configured. Download it now! ', $allowed_html );
 				echo __( $html_text, 'synchro_mailchimp' );
 			?>
 			<a href="https://it.wordpress.org/plugins/mailchimp-for-wp/" target="_blank">MailChimp for WordPress</a></p>
