@@ -231,9 +231,8 @@ class Synchro_Mailchimp {
 
 		$plugin_public = new Synchro_Mailchimp_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
+		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		// Hook to `sm_user_list_interests`.
 		$this->loader->add_filter( 'sm_user_list_interests', $this->user_service_adapter, 'user_list_interests', 10, 3 );
 
