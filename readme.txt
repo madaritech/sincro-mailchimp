@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: mailchimp, synchro
 Requires at least: 4.8
 Tested up to: 4.8.2
-Stable tag: 1.5
+Stable tag: 1.6
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,9 @@ For security reasons MailChimp can temporary ban email addresses that subscribe/
 
 == Changelog ==
 
+= 1.6 =
+* Bug fixed
+
 = 1.5 =
 * bug fixed
 * Comments to code added
@@ -69,6 +72,9 @@ For security reasons MailChimp can temporary ban email addresses that subscribe/
 * First release.
 
 == Upgrade Notice ==
+
+= 1.6 =
+This version fixes a bug. Upgrade immediately.
 
 = 1.5 =
 This version fixes a security issue.  Upgrade immediately.
